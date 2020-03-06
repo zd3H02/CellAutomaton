@@ -66389,7 +66389,7 @@ var useFetch = function useFetch(url) {
 
   function _fetchData() {
     _fetchData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
+      var response, json;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -66399,8 +66399,18 @@ var useFetch = function useFetch(url) {
 
             case 2:
               response = _context.sent;
+              _context.next = 5;
+              return response.json();
 
-            case 3:
+            case 5:
+              json = _context.sent;
+              // const json = await response;
+              console.log(json);
+              console.log(JSON.stringify({
+                "num": 1
+              })); //setData(json);
+
+            case 8:
             case "end":
               return _context.stop();
           }
@@ -66435,13 +66445,16 @@ function CellMatrix(props) {
       rColor = _useState6[0],
       setRColor = _useState6[1];
 
-  var data = useFetch('../local', {
+  var test = new FormData();
+  test.append('num', 1);
+  var data = useFetch('../local/stop', {
     method: "POST",
     //Headersを書き忘れるとエラーになる
     headers: {
       "X-CSRF-TOKEN": document.getElementById("csrf-token").content
     },
-    credentials: "include"
+    credentials: "include",
+    body: test
   }); // useEffect(
   //     () => (
   //         $(function(){
@@ -66451,15 +66464,15 @@ function CellMatrix(props) {
   //                     headers: {
   //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
   //                     },//Headersを書き忘れるとエラーになる
-  //                     url:  '../local',
-  //                     type: 'GET',
+  //                     url:  '../local/stop',
+  //                     type: 'POST',
   //                     data: {
-  //                     'num' : a
+  //                     'num' : 1
   //                     },
   //                     //通信状態に問題がないかどうか
   //                     success: function(array) {
   //                         console.log(array);
-  //                         // console.log(JSON.parse(array));
+  //                         //console.log(JSON.parse(array));
   //                         $('.num').text(array);
   //                         console.log($('meta[name="csrf-token"]').attr('content'))
   //                         console.log( document.getElementById("csrf-token").content)

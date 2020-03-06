@@ -6,9 +6,12 @@ const useFetch = (url, init={}) => {
     const [data, setData] = useState(null);
 
     async function fetchData() {
-      const response = await fetch(url, init);
-    //   const json = await response.json();
-    //   setData(json);
+        const response = await fetch(url,init);
+        const json = await response.json();
+        // const json = await response;
+        console.log(json)
+        console.log(JSON.stringify({"num":1}))
+        //setData(json);
     }
 
     useEffect(() => {fetchData()},[url]);
@@ -29,16 +32,18 @@ function Cell(props) {
 function CellMatrix(props) {
     const [cellColor, setCellColor] = useState(Array(9).fill('#000000'))
     const [rColor, setRColor] = useState(0)
-
+    const test = new FormData()
+    test.append('num', 1)
+    
     const data = useFetch(
-        '../local'
+        '../local/stop'
         ,
         {
             method: "POST",
             //Headersを書き忘れるとエラーになる
             headers: {"X-CSRF-TOKEN": document.getElementById("csrf-token").content},
-            credentials: "include"
-            
+            credentials: "include",
+            body:test
         }
     )
 
@@ -51,15 +56,15 @@ function CellMatrix(props) {
     //                     headers: {
     //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     //                     },//Headersを書き忘れるとエラーになる
-    //                     url:  '../local',
-    //                     type: 'GET',
+    //                     url:  '../local/stop',
+    //                     type: 'POST',
     //                     data: {
-    //                     'num' : a
+    //                     'num' : 1
     //                     },
     //                     //通信状態に問題がないかどうか
     //                     success: function(array) {
     //                         console.log(array);
-    //                         // console.log(JSON.parse(array));
+    //                         //console.log(JSON.parse(array));
     //                         $('.num').text(array);
     //                         console.log($('meta[name="csrf-token"]').attr('content'))
     //                         console.log( document.getElementById("csrf-token").content)

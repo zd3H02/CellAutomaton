@@ -27,5 +27,5 @@ Route::post('/local', 'LocalController@index');
 Route::get('/local', 'LocalController@index');
 Route::get('/local/run', 'LocalController@get');
 Route::post('/local/run', 'LocalController@run');
-Route::post('/local/run', 'LocalController@stop');
-Route::post('/local/save', 'LocalController@stop');
+Route::post('/local/stop', 'LocalController@stop');
+Route::post('/local/save', 'LocalController@save');
