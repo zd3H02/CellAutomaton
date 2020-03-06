@@ -1,38 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 
-function Cell(onClick) {
+const useFetch = (url, init={}) => {
+    const [data, setData] = useState(null);
+
+    async function fetchData() {
+      const response = await fetch(url, init);
+    //   const json = await response.json();
+    //   setData(json);
+    }
+
+    useEffect(() => {fetchData()},[url]);
+    return data;
+};
+
+
+
+function Cell(props) {
     return (
-        <button onClick={() => onClick()}/>
+        <button onClick={() => props.onClick()}/>
     )
 }
 
 
 
+
 function CellMatrix(props) {
-    const [cells, setCells] = useState(1)//Array(9).fill(null)
+    const [cellColor, setCellColor] = useState(Array(9).fill('#000000'))
+    const [rColor, setRColor] = useState(0)
 
+    const data = useFetch(
+        '../local'
+        ,
+        {
+            method: "POST",
+            //Headersを書き忘れるとエラーになる
+            headers: {"X-CSRF-TOKEN": document.getElementById("csrf-token").content},
+            credentials: "include"
+            
+        }
+    )
 
-    function HandleClick(now) {
+    // useEffect(
+    //     () => (
+    //         $(function(){
+    //             setInterval(function(){
+    //                 let a = $('.num').text();
+    //                 $.ajax({
+    //                     headers: {
+    //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                     },//Headersを書き忘れるとエラーになる
+    //                     url:  '../local',
+    //                     type: 'GET',
+    //                     data: {
+    //                     'num' : a
+    //                     },
+    //                     //通信状態に問題がないかどうか
+    //                     success: function(array) {
+    //                         console.log(array);
+    //                         // console.log(JSON.parse(array));
+    //                         $('.num').text(array);
+    //                         console.log($('meta[name="csrf-token"]').attr('content'))
+    //                         console.log( document.getElementById("csrf-token").content)
+    //                     },
+    //                     //通信エラーになった場合の処理
+    //                     error: function(err) {
+    //                         //エラー処理を書く
+    //                     }
+    //                 });
+    //             },2000)
+    //         })
+    //     )
+    // )
 
-        setCells(now+1)
+    function HandleClick(color) {
+        const newCellColor = cellColor.slice();
+        newCellColor[1] = color
+        setCellColor(newCellColor)
     }
 
-    
     function RenderCell(i) {
         return (
-            Cell(()=>HandleClick(cells))
+            <Cell onClick={()=>HandleClick(rColor)}/>
         )
     }
+
 
     return (
         <div>
             {RenderCell(1)}
             {RenderCell(2)}
+            <ColorInput value={rColor} onChange={setRColor}/>
         </div>
     )
 }
+
+
+function ColorInput(props) {
+    const rOptions = Array(255).fill(0)
+    const rRef = useRef(null)
+
+    rOptions.forEach((rOption, index) => (
+        rOptions.push( <option value= {index} key={'r'+ index}>{index}</option> )
+    ));
+
+    function handleChange(event) {
+        props.onChange(event.target.value)
+        console.log(event.target.value)
+    }
+
+    return (
+        <div>
+            <p>R:
+                <select ref={rRef} onChange={handleChange}>
+                    {rOptions}
+                </select>
+            </p>
+        </div>
+    )
+}
+
+
 
 const app = document.getElementById('app');
 ReactDOM.render(<CellMatrix/>, app);
@@ -43,6 +132,11 @@ ReactDOM.render(<CellMatrix/>, app);
 
 
 
+// function colorInput() {
+//     return (
+//         <input type="text"/>
+//     )
+// }
 
 
 

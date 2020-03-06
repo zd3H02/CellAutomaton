@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta id="csrf-token" name="csrf-token" content="{{ csrf_token() }}">
     <title>local cell</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
     </form>
     <div id="app"></div>
     <div id="root"></div>
-    <p class="num"></p>
+    {{-- <p class="num"></p> --}}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="{{ asset('js//app.js') }}"></script>
 </body>

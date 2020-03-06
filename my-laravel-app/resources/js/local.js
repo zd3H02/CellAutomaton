@@ -37,6 +37,7 @@ function Example() {
         Click me
       </button>
     </div>
+    <p className="num"></p>
   );
 }
 //test
