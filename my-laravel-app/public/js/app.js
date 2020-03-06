@@ -65618,64 +65618,43 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function Cell(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.i),
-      _useState2 = _slicedToArray(_useState, 2),
-      i = _useState2[0],
-      setI = _useState2[1];
-
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('#000000'),
-      _useState4 = _slicedToArray(_useState3, 2),
-      color = _useState4[0],
-      setColor = _useState4[1];
-
+function Cell(_onClick) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     onClick: function onClick() {
-      return setColor('ffffff');
-    },
-    style: {
-      color: color
+      return _onClick();
     }
   });
 }
 
 function CellMatrix(props) {
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(Array(9)(9).fill('#000000')),
-      _useState6 = _slicedToArray(_useState5, 2),
-      matrix = _useState6[0],
-      setMatrix = _useState6[1];
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      cells = _useState2[0],
+      setCells = _useState2[1]; //Array(9).fill(null)
 
-  var HandleClick = function HandleClick(i) {
-    return CellMatrix.setMatrix[i];
-  };
 
-  var RenderCell = function RenderCell(i) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, {
-      i: i,
-      onClick: HandleClick(i)
+  function HandleClick(now) {
+    setCells(now + 1);
+  }
+
+  function RenderCell(i) {
+    return Cell(function () {
+      return HandleClick(cells);
     });
-  };
+  }
 
-  var jsxMatrix = matrix.map(function (row) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      key: row.toString()
-    }, row.map(function (v) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, {
-        key: v.toString()
-      });
-    }));
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, {
-    x: "23",
-    y: "1"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, {
-    x: "2",
-    y: "1"
-  }));
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, RenderCell(1), RenderCell(2));
 }
 
 var app = document.getElementById('app');
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CellMatrix, null), app); // import React, { useState, memo } from "react";
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CellMatrix, null), app); // const jsxMatrix = matrix.map((row) =>
+// <div key={row.toString()}>
+//     {row.map((v) =>
+//         <Cell key={v.toString()}/>
+//     )}
+// </div>
+// )
+// import React, { useState, memo } from "react";
 // import ReactDOM from "react-dom";
 // function App() {
 //   const [isRender, setIsRender] = useState(0);
@@ -65747,9 +65726,8 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
  * includes React and other helpers. It's a great starting point while
  * building robust, powerful web applications using React + Laravel.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('./local');
 
-__webpack_require__(/*! ./local */ "./resources/js/local.js");
 
 __webpack_require__(/*! ./CellMatrix */ "./resources/js/CellMatrix.js");
 /**
@@ -65848,68 +65826,6 @@ if (document.getElementById('example')) {
 
 /***/ }),
 
-/***/ "./resources/js/local.js":
-/*!*******************************!*\
-  !*** ./resources/js/local.js ***!
-  \*******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-// $(function(){
-//     setInterval(function(){
-//         let a = $('.num').text();
-//         $.ajax({
-//             headers: {
-//                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//             },//Headersを書き忘れるとエラーになる
-//             url:  '../local',
-//             type: 'GET',
-//             data: {
-//               'num' : a
-//             },
-//             //通信状態に問題がないかどうか
-//             success: function(array) {
-//                 console.log(array);
-//                 // console.log(JSON.parse(array));
-//                 $('.num').text(array);
-//             },
-//             //通信エラーになった場合の処理
-//             error: function(err) {
-//                 //エラー処理を書く
-//             }
-//         });
-//     },2000);
-// });
-
-
-function Example() {
-  // Declare a new state variable, which we'll call "count"
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState2 = _slicedToArray(_useState, 2),
-      count = _useState2[0],
-      setCount = _useState2[1];
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "You clicked ", count, " times"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    onClick: function onClick() {
-      return setCount(count + 1);
-    }
-  }, "Click me"));
-} //test
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -65928,8 +65844,8 @@ function Example() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\DockerWorkspace\my-laravel-app\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\DockerWorkspace\my-laravel-app\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\zd3H02\Desktop\cellAutomaton\my-laravel-app\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\zd3H02\Desktop\cellAutomaton\my-laravel-app\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

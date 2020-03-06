@@ -24,6 +24,7 @@ Route::post('/home/del', 'HomeController@del');
 Route::get('/world', 'WorldController@index');
 
 Route::post('/local', 'LocalController@index');
+Route::get('/local', 'LocalController@index');
 Route::get('/local/run', 'LocalController@get');
 Route::post('/local/run', 'LocalController@run');
 Route::post('/local/run', 'LocalController@stop');

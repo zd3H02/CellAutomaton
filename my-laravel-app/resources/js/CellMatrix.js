@@ -1,54 +1,62 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-function Cell(props) {
-    const [i, setI] = useState(props.i)
-    const [color, setColor] = useState('#000000')
 
+function Cell(onClick) {
     return (
-        <button onClick={() => setColor('ffffff')} style={{color}}/>
+        <button onClick={() => onClick()}/>
     )
 }
 
 
 
 function CellMatrix(props) {
-    const [matrix, setMatrix] = useState(Array(9)(9).fill('#000000'))
-    
-    const HandleClick = (i) => {
-        return (
-            CellMatrix.setMatrix[i]
-        )
-    }
-    
-    const RenderCell = (i) => {
-        return (
-            <Cell
-                i={i}
-                onClick={HandleClick(i)}
-            />
-        )
+    const [cells, setCells] = useState(1)//Array(9).fill(null)
+
+
+    function HandleClick(now) {
+
+        setCells(now+1)
     }
 
-    const jsxMatrix = matrix.map((row) =>
-    <div key={row.toString()}>
-        {row.map((v) =>
-            <Cell key={v.toString()}/>
-        )}
-    </div>
-)
-
+    
+    function RenderCell(i) {
+        return (
+            Cell(()=>HandleClick(cells))
+        )
+    }
 
     return (
         <div>
-        <Cell x='23' y='1'/>
-        <Cell x='2' y='1'/>
+            {RenderCell(1)}
+            {RenderCell(2)}
         </div>
     )
 }
 
 const app = document.getElementById('app');
 ReactDOM.render(<CellMatrix/>, app);
+
+
+
+
+
+
+
+
+
+
+// const jsxMatrix = matrix.map((row) =>
+// <div key={row.toString()}>
+//     {row.map((v) =>
+//         <Cell key={v.toString()}/>
+//     )}
+// </div>
+// )
+
+
+
+
 
 
 // import React, { useState, memo } from "react";
