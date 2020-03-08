@@ -66343,10 +66343,82 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/CellMatrix.js":
-/*!************************************!*\
-  !*** ./resources/js/CellMatrix.js ***!
-  \************************************/
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes React and other helpers. It's a great starting point while
+ * building robust, powerful web applications using React + Laravel.
+ */
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('./local');
+
+
+__webpack_require__(/*! ./cell-matrix */ "./resources/js/cell-matrix.js");
+/**
+ * Next, we will create a fresh React component instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+
+__webpack_require__(/*! ./components/Example */ "./resources/js/components/Example.js");
+
+/***/ }),
+
+/***/ "./resources/js/bootstrap.js":
+/*!***********************************!*\
+  !*** ./resources/js/bootstrap.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/**
+ * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+ * for JavaScript based Bootstrap features such as modals and tabs. This
+ * code may be modified to fit the specific needs of your application.
+ */
+
+try {
+  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
+  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+  __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+} catch (e) {}
+/**
+ * We'll load the axios HTTP library which allows us to easily issue requests
+ * to our Laravel back-end. This library automatically handles sending the
+ * CSRF token as a header based on the value of the "XSRF" token cookie.
+ */
+
+
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+/**
+ * Echo exposes an expressive API for subscribing to channels and listening
+ * for events that are broadcast by Laravel. Echo and event broadcasting
+ * allows your team to easily build robust real-time web applications.
+ */
+// import Echo from 'laravel-echo';
+// window.Pusher = require('pusher-js');
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     encrypted: true
+// });
+
+/***/ }),
+
+/***/ "./resources/js/cell-matrix.js":
+/*!*************************************!*\
+  !*** ./resources/js/cell-matrix.js ***!
+  \*************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -66358,11 +66430,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/custom-useinterval */ "./resources/js/components/custom-useinterval.js");
+/* harmony import */ var _components_color_selector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/color-selector */ "./resources/js/components/color-selector.js");
+/* harmony import */ var _components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/cell-code-textarea */ "./resources/js/components/cell-code-textarea.js");
+/* harmony import */ var _components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/cell-control-button */ "./resources/js/components/cell-control-button.js");
 
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -66372,16 +66444,19 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
 
-var useFetch = function useFetch(url) {
+
+
+
+
+
+function GetFetchData(url) {
   var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      data = _useState2[0],
-      setData = _useState2[1];
 
   function fetchData() {
     return _fetchData.apply(this, arguments);
@@ -66404,13 +66479,10 @@ var useFetch = function useFetch(url) {
 
             case 5:
               json = _context.sent;
-              // const json = await response;
+              //const json = await response
               console.log(json);
-              console.log(JSON.stringify({
-                "num": 1
-              })); //setData(json);
 
-            case 8:
+            case 7:
             case "end":
               return _context.stop();
           }
@@ -66420,112 +66492,165 @@ var useFetch = function useFetch(url) {
     return _fetchData.apply(this, arguments);
   }
 
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    fetchData();
-  }, [url]);
-  return data;
-};
+  return fetchData();
+}
+
+function GetHexColor() {
+  var octR = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var octG = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var octB = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var hexR = Number(octR).toString(16);
+  var hexG = Number(octG).toString(16);
+  var hexB = Number(octB).toString(16);
+  var paddedHexR = ('00' + hexR).slice(-2);
+  var paddedHexG = ('00' + hexG).slice(-2);
+  var paddedHexB = ('00' + hexB).slice(-2);
+  return paddedHexR + paddedHexG + paddedHexB;
+}
 
 function Cell(props) {
+  var btnstyle = {
+    height: "40px",
+    width: "40px",
+    background: props.color
+  };
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     onClick: function onClick() {
       return props.onClick();
-    }
+    },
+    style: btnstyle
   });
 }
 
 function CellMatrix(props) {
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(Array(9).fill('#000000')),
+  var CELL_ROW_NUM = 10;
+  var CELL_COL_NUM = 10;
+  var CELL_ROW_I = CELL_ROW_NUM - 1; //const CELL_COL_INDEX    = CELL_COL_NUM - 1
+
+  var CELL_MAX_NUM = CELL_ROW_NUM * CELL_COL_NUM;
+  var CELL_MAX_INDEX = CELL_MAX_NUM - 1;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(Array(CELL_MAX_NUM).fill('#ffffff')),
+      _useState2 = _slicedToArray(_useState, 2),
+      cellColor = _useState2[0],
+      setCellColor = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState4 = _slicedToArray(_useState3, 2),
-      cellColor = _useState4[0],
-      setCellColor = _useState4[1];
+      r = _useState4[0],
+      setR = _useState4[1];
 
   var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState6 = _slicedToArray(_useState5, 2),
-      rColor = _useState6[0],
-      setRColor = _useState6[1];
+      g = _useState6[0],
+      setG = _useState6[1];
 
-  var test = new FormData();
-  test.append('num', 1);
-  var data = useFetch('../local/stop', {
-    method: "POST",
-    //Headersを書き忘れるとエラーになる
-    headers: {
-      "X-CSRF-TOKEN": document.getElementById("csrf-token").content
-    },
-    credentials: "include",
-    body: test
-  }); // useEffect(
-  //     () => (
-  //         $(function(){
-  //             setInterval(function(){
-  //                 let a = $('.num').text();
-  //                 $.ajax({
-  //                     headers: {
-  //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  //                     },//Headersを書き忘れるとエラーになる
-  //                     url:  '../local/stop',
-  //                     type: 'POST',
-  //                     data: {
-  //                     'num' : 1
-  //                     },
-  //                     //通信状態に問題がないかどうか
-  //                     success: function(array) {
-  //                         console.log(array);
-  //                         //console.log(JSON.parse(array));
-  //                         $('.num').text(array);
-  //                         console.log($('meta[name="csrf-token"]').attr('content'))
-  //                         console.log( document.getElementById("csrf-token").content)
-  //                     },
-  //                     //通信エラーになった場合の処理
-  //                     error: function(err) {
-  //                         //エラー処理を書く
-  //                     }
-  //                 });
-  //             },2000)
-  //         })
-  //     )
-  // )
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
+      _useState8 = _slicedToArray(_useState7, 2),
+      b = _useState8[0],
+      setB = _useState8[1];
 
-  function HandleClick(color) {
-    var newCellColor = cellColor.slice();
-    newCellColor[1] = color;
-    setCellColor(newCellColor);
-  }
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(""),
+      _useState10 = _slicedToArray(_useState9, 2),
+      cellCode = _useState10[0],
+      setCellCode = _useState10[1];
 
-  function RenderCell(i) {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Cell, {
-      onClick: function onClick() {
-        return HandleClick(rColor);
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])("stop"),
+      _useState12 = _slicedToArray(_useState11, 2),
+      contorolState = _useState12[0],
+      setControlState = _useState12[1];
+
+  var cellColorData = new FormData();
+  cellColorData.append("num", 1);
+  cellColorData.append("cellColorData", JSON.stringify(cellColor)); // cellColor.forEach((color, i) => {
+  //     cellColorData.append(i,color)
+  // })
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    GetFetchData('../local/save', {
+      method: "POST",
+      //Headersを書き忘れるとエラーになる
+      headers: {
+        "X-CSRF-TOKEN": csrf_token
       }
     });
+  }, []);
+  Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__["useInterval"])(function () {
+    GetFetchData('../local/stop', {
+      method: "POST",
+      //Headersを書き忘れるとエラーになる
+      headers: {
+        "X-CSRF-TOKEN": csrf_token
+      },
+      body: cellColorData
+    });
+  }, 1000);
+
+  function HandleClick(i, color) {
+    var newCellColor = cellColor.slice();
+    newCellColor[i] = color;
+    setCellColor(newCellColor);
+    console.log(i);
+    console.log(color);
   }
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, RenderCell(1), RenderCell(2), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(ColorInput, {
-    value: rColor,
-    onChange: setRColor
-  }));
-}
+  function RenderCells() {
+    var tempCells = Array(CELL_ROW_NUM).fill([]);
 
-function ColorInput(props) {
-  var rOptions = Array(255).fill(0);
-  var rRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(null);
-  rOptions.forEach(function (rOption, index) {
-    return rOptions.push(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
-      value: index,
-      key: 'r' + index
-    }, index));
-  });
+    for (var i = 0; i <= CELL_ROW_I; i++) {
+      tempCells[i] = Array(CELL_COL_NUM).fill(0);
+    }
 
-  function handleChange(event) {
-    props.onChange(event.target.value);
-    console.log(event.target.value);
+    var cells = tempCells.map(function (rows, rowI) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        key: rowI.toString()
+      }, rows.map(function (col, colI) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Cell, {
+          key: colI.toString(),
+          onClick: function onClick() {
+            return HandleClick(CELL_COL_NUM * rowI + colI, '#' + GetHexColor(r, g, b));
+          },
+          color: cellColor[CELL_COL_NUM * rowI + colI]
+        });
+      }));
+    });
+    console.log(cells);
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, cells);
   }
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
-    ref: rRef,
-    onChange: handleChange
-  }, rOptions)));
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+    method: "POST",
+    action: ""
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "hidden",
+    name: "_token",
+    value: csrf_token
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_5__["CellCodeTextarea"], {
+    value: cellCode,
+    onChange: setCellCode
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+    value: "run",
+    onChange: setControlState,
+    content: "実行"
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+    value: "stop",
+    onChange: setControlState,
+    content: "停止"
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+    value: "save",
+    onChange: setControlState,
+    content: "保存",
+    type: "submit"
+  })), RenderCells(), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    value: r,
+    onChange: setR
+  }), "G:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    value: g,
+    onChange: setG
+  }), "B:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    value: b,
+    onChange: setB
+  })));
 }
 
 var app = document.getElementById('app');
@@ -66601,78 +66726,6 @@ react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('./local');
-
-
-__webpack_require__(/*! ./CellMatrix */ "./resources/js/CellMatrix.js");
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-
-__webpack_require__(/*! ./components/Example */ "./resources/js/components/Example.js");
-
-/***/ }),
-
-/***/ "./resources/js/bootstrap.js":
-/*!***********************************!*\
-  !*** ./resources/js/bootstrap.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-
-try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
-  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-
-  __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
-} catch (e) {}
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-// import Echo from 'laravel-echo';
-// window.Pusher = require('pusher-js');
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
-// });
-
-/***/ }),
-
 /***/ "./resources/js/components/Example.js":
 /*!********************************************!*\
   !*** ./resources/js/components/Example.js ***!
@@ -66710,6 +66763,180 @@ function Example() {
 if (document.getElementById('example')) {
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Example, null), document.getElementById('example'));
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/cell-code-textarea.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/cell-code-textarea.js ***!
+  \*******************************************************/
+/*! exports provided: CellCodeTextarea */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CellCodeTextarea", function() { return CellCodeTextarea; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function CellCodeTextarea(props) {
+  var selectRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+
+  function handleChange(event) {
+    props.onChange(event.target.value);
+    console.log(event.target.value);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+    ref: selectRef,
+    onChange: handleChange,
+    value: props.value,
+    name: "code",
+    id: "code",
+    cols: "30",
+    rows: "10"
+  });
+}
+
+ // <form method="POST">
+//     @csrf
+//     <textarea name="code" id="code" cols="30" rows="10"></textarea>
+//     <button id="run_button" type="submit" formaction="{{ url('local/run')}}" name="run" value="true">実行</button>
+//     <button id="run_button" type="submit" formaction="{{ url('local/stop')}}" name="stop" value="true">停止</button>
+//     <button id="run_button" type="submit" formaction="{{ url('local/save')}}" name="save" value="true">保存</button>
+// </form>
+// import React, { useRef } from 'react'
+// function ColorSelector(props) {
+//     const colorOptions = Array(256).fill(0)
+//     const selectRef = useRef(null)
+//     colorOptions.forEach((colorOption, index) => (
+//         colorOptions.push( <option value= {index} key={index}>{index}</option> )
+//     ))
+//     function handleChange(event) {
+//         props.onChange(event.target.value)
+//         console.log(event.target.value)
+//     }
+//     return (
+//         <select ref={selectRef} onChange={handleChange}>
+//             {colorOptions}
+//         </select>
+//     )
+// }
+// export { ColorSelector }
+
+/***/ }),
+
+/***/ "./resources/js/components/cell-control-button.js":
+/*!********************************************************!*\
+  !*** ./resources/js/components/cell-control-button.js ***!
+  \********************************************************/
+/*! exports provided: CellControlButton */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CellControlButton", function() { return CellControlButton; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function CellControlButton(props) {
+  var selectRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+
+  function handleChange(event) {
+    props.onChange(event.target.value);
+    console.log(event.target.value);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    ref: selectRef,
+    onClick: handleChange,
+    value: props.value
+  }, props.content);
+}
+
+ //     <button id="run_button" type="submit" formaction="{{ url('local/run')}}" name="run" value="true">実行</button>
+//     <button id="run_button" type="submit" formaction="{{ url('local/stop')}}" name="stop" value="true">停止</button>
+//     <button id="run_button" type="submit" formaction="{{ url('local/save')}}" name="save" value="true">保存</button>
+
+/***/ }),
+
+/***/ "./resources/js/components/color-selector.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/color-selector.js ***!
+  \***************************************************/
+/*! exports provided: ColorSelector */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ColorSelector", function() { return ColorSelector; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function ColorSelector(props) {
+  var colorOptions = Array(256).fill(0);
+  var selectRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  colorOptions.forEach(function (colorOption, index) {
+    return colorOptions.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      value: index,
+      key: index
+    }, index));
+  });
+
+  function handleChange(event) {
+    props.onChange(event.target.value);
+    console.log(event.target.value);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    ref: selectRef,
+    onChange: handleChange
+  }, colorOptions);
+}
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/custom-useinterval.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/custom-useinterval.js ***!
+  \*******************************************************/
+/*! exports provided: useInterval */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useInterval", function() { return useInterval; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function useInterval(callback, delay) {
+  var savedCallback = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(); // Remember the latest callback.
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    savedCallback.current = callback;
+  }, [callback]); // Set up the interval.
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    function tick() {
+      savedCallback.current();
+    }
+
+    if (delay !== null) {
+      var id = setInterval(tick, delay);
+      return function () {
+        return clearInterval(id);
+      };
+    }
+  }, [delay]);
+}
+
+
 
 /***/ }),
 

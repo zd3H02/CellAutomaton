@@ -16,7 +16,9 @@ class CreateLocalCellsTable extends Migration
         Schema::create('local_cells', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('creator');
-            $table->string('cell_name');->nullable();
+            $table->string('cell_name')->nullable();
+            $table->string('code');
+            $table->string('cell_state');
             $table->softDeletes();
             $table->timestamps();
         });
