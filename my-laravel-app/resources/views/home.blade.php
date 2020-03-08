@@ -20,12 +20,12 @@
             <div><a href="{{ url('/world') }}">Worldへ行く</a></div>
             <form method="POST">
                 @csrf
-                <input type="hidden" name="creator" value="{{Auth::user()->name}}">
+                {{-- <input type="hidden" name="creator" value="{{Auth::user()->name}}"> --}}
                 <button type="submit" formaction="{{ url('home')}}">新規作成</button>
                 @if (isset($items))
                     @foreach ($items as $item)
                         <p>
-                            {{$item->creator}}:
+                            {{Auth::user()->name}}:
                             <button type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
                             <button type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
                         </p>

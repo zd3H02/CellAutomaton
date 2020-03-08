@@ -5,14 +5,15 @@ import {ColorSelector} from './components/color-selector'
 import {CellCodeTextarea} from './components/cell-code-textarea'
 import {CellControlButton} from './components/cell-control-button'
 
-
+// let csrf_token = '<?php echo csrf_token(); ?>'
 
 function GetFetchData(url, init={}) {
     async function fetchData() {
         const response = await fetch(url,init)
-        const json = await response.json()
-        //const json = await response
+        //const json = await response.json()
+        const json = await response
         console.log(json)
+        return json
     }
     return fetchData()
 }
@@ -33,8 +34,8 @@ function GetHexColor(octR = 0, octG = 0, octB = 0) {
 
 function Cell(props) {
     const btnstyle = {
-        height : "40px",
-        width  : "40px",
+        height : '40px',
+        width  : '40px',
         background : props.color,
     }
     return (
@@ -43,55 +44,82 @@ function Cell(props) {
 }
 
 
-
 function CellMatrix(props) {
     const CELL_ROW_NUM      = 10
     const CELL_COL_NUM      = 10
-    const CELL_ROW_I        = CELL_ROW_NUM - 1
-    //const CELL_COL_INDEX    = CELL_COL_NUM - 1
     const CELL_MAX_NUM      = CELL_ROW_NUM * CELL_COL_NUM
-    const CELL_MAX_INDEX    = CELL_MAX_NUM - 1
 
     const [cellColor, setCellColor] = useState(Array(CELL_MAX_NUM).fill('#ffffff'))
     const [r, setR] = useState(0)
     const [g, setG] = useState(0)
     const [b, setB] = useState(0)
-    const [cellCode, setCellCode] = useState("")
-    const [contorolState, setControlState] = useState("stop")
+    const [cellCode, setCellCode] = useState('')
 
-    const cellColorData = new FormData()
+    const cellCalcStateIsRun    = 'Run'
+    const cellCalcStateIsStop   = 'Stop'
+    const [cellCalcState, setCellCalcState] = useState(cellCalcStateIsStop)
 
-    cellColorData.append("num",1)
-    cellColorData.append("cellColorData",JSON.stringify(cellColor))
-    // cellColor.forEach((color, i) => {
-    //     cellColorData.append(i,color)
-    // })
+    const codeSaveStateIsNonRequested       = 'NonRequested'
+    const codeSaveStateIsRequested          = 'Requested'
+    const codeSaveStateIsRequestCompleted   = 'RequestCompleted'
+    const [codeSaveState, setCodeSaveState] = useState(codeSaveStateIsNonRequested)
 
+    // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+    // headers: {'X-CSRF-TOKEN': csrf_token}
     useEffect(
         () =>{
+            const sendData = new FormData()
+            sendData.append('id',testid)
             GetFetchData(
-                '../local/save',
+                '../local/first',
                 {
-                    method: "POST",
-                    //Headersを書き忘れるとエラーになる
-                    headers: {"X-CSRF-TOKEN": csrf_token},
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': csrf_token},
+                    body: sendData
                 }
             )
         },
         []
     )
-    
     useInterval(
         () => {
-            GetFetchData(
-                    '../local/stop',
-                    {
-                        method: "POST",
-                        //Headersを書き忘れるとエラーになる
-                        headers: {"X-CSRF-TOKEN": csrf_token},
-                        body:cellColorData
-                    }
-            )
+            if(cellCalcState === cellCalcStateIsRun){
+                if(codeSaveState === codeSaveStateIsRequestCompleted) {
+                    const sendData = new FormData()
+                    sendData.append('codeChangeReq',true)
+                    sendData.append('cell_name','')
+                    sendData.append('cell_code',cellCode)
+                    sendData.append('cell_color_data',JSON.stringify(cellColor))
+                    GetFetchData(
+                        '../local/save',
+                        {
+                            method: 'POST',
+                            headers: {'X-CSRF-TOKEN': csrf_token},
+                            body:sendData
+                        }
+                    )
+                }
+                else {
+                    const sendData = new FormData()
+                    sendData.append('codeChangeReq',false)
+                    sendData.append('cell_color_data',JSON.stringify(cellColor))
+                    const cellColorResult = GetFetchData(
+                        '../local/calc',
+                        {
+                            method: 'POST',
+                            headers: {'X-CSRF-TOKEN': csrf_token},
+                            body:sendData
+                        }
+                    )
+                    cellColorResult.then(
+                        result=>{
+                            setCellColor(result)
+                        }
+                    )
+                    // console.log(cellColorResult)
+                }
+
+            }
         },
         1000
     );
@@ -106,7 +134,7 @@ function CellMatrix(props) {
 
     function RenderCells() {
         const tempCells = Array(CELL_ROW_NUM).fill([])
-        for(let i = 0; i <= CELL_ROW_I; i++) {
+        for(let i = 0; i < CELL_ROW_NUM; i++) {
             tempCells[i] = Array(CELL_COL_NUM).fill(0)
         }
 
@@ -136,13 +164,10 @@ function CellMatrix(props) {
 
     return (
         <div>
-            <form method="POST" action="">
-                <input type="hidden" name="_token" value={csrf_token}/>
-                <CellCodeTextarea value={cellCode} onChange={setCellCode}/>
-                <CellControlButton value={"run"} onChange={setControlState} content={"実行"}/>
-                <CellControlButton value={"stop"} onChange={setControlState} content={"停止"}/>
-                <CellControlButton value={"save"} onChange={setControlState} content={"保存"} type={"submit"}/>
-            </form>
+            <CellCodeTextarea value={cellCode} onChange={setCellCode}/>
+            <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={'実行'}/>
+            <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={'停止'}/>
+            <CellControlButton value={codeSaveStateIsRequested} onChange={setCodeSaveState} content={'保存'}/>
             {RenderCells()}
             <p>
                 R:<ColorSelector value={r} onChange={setR}/>
@@ -155,8 +180,8 @@ function CellMatrix(props) {
 
 
 
-const app = document.getElementById('app')
-ReactDOM.render(<CellMatrix/>, app)
+const localApp = document.getElementById('local-app')
+ReactDOM.render(<CellMatrix/>, localApp)
 
 
 

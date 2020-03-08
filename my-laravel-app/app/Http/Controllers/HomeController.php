@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\LocalCell;
+use Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class HomeController extends Controller
 {
@@ -24,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $items = LocalCell::all();
+        $items = LocalCell::where('creator',Auth::user()->name)->get();
         //dd($items);
         return view('home', compact('items'));
     }
@@ -37,9 +40,13 @@ class HomeController extends Controller
     }
     public function post(Request $request)
     {
-        $localCell = new LocalCell;
-        $localCell->creator     = $request->creator;
-        $localCell->cell_name   = "test";
+        log::debug(config('CONST.LOCAL.INIT_CELL_COLOR_DATA'));
+
+        $localCell                  = new LocalCell;
+        $localCell->creator         = Auth::user()->name;
+        $localCell->cell_name       = "test";
+        $localCell->cell_code       = "";
+        $localCell->cell_color_data = config('CONST.LOCAL.INIT_CELL_COLOR_DATA');
         $localCell->save();
         return redirect('home');
     }

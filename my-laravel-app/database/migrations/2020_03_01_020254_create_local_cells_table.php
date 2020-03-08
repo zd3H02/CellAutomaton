@@ -17,8 +17,8 @@ class CreateLocalCellsTable extends Migration
             $table->bigIncrements('id');
             $table->string('creator');
             $table->string('cell_name')->nullable();
-            $table->string('code');
-            $table->string('cell_state');
+            $table->string('cell_code')->nullable();
+            $table->text('cell_color_data');
             $table->softDeletes();
             $table->timestamps();
         });
