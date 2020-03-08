@@ -29422,7 +29422,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
- // let csrf_token = '<?php echo csrf_token(); ?>'
+
 
 function GetFetchData(url) {
   var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -29537,16 +29537,16 @@ function CellMatrix(props) {
       _useState14 = _slicedToArray(_useState13, 2),
       codeSaveState = _useState14[0],
       setCodeSaveState = _useState14[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
-  // headers: {'X-CSRF-TOKEN': csrf_token}
+  // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
 
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     var sendData = new FormData();
-    sendData.append('id', testid);
+    sendData.append('id', G_LOCAL_CELL_ID);
     GetFetchData('../local/first', {
       method: 'POST',
       headers: {
-        'X-CSRF-TOKEN': csrf_token
+        'X-CSRF-TOKEN': G_CSRF_TOKEN
       },
       body: sendData
     });
@@ -29562,7 +29562,7 @@ function CellMatrix(props) {
         GetFetchData('../local/save', {
           method: 'POST',
           headers: {
-            'X-CSRF-TOKEN': csrf_token
+            'X-CSRF-TOKEN': G_CSRF_TOKEN
           },
           body: sendData
         });
@@ -29576,7 +29576,7 @@ function CellMatrix(props) {
         var cellColorResult = GetFetchData('../local/calc', {
           method: 'POST',
           headers: {
-            'X-CSRF-TOKEN': csrf_token
+            'X-CSRF-TOKEN': G_CSRF_TOKEN
           },
           body: _sendData
         });

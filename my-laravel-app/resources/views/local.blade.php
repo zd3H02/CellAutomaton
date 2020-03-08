@@ -19,8 +19,8 @@
     {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
     {{-- <input type="hidden" name="id" value="{{ $id }}"> --}}
     <script>
-        let csrf_token = '<?php echo csrf_token(); ?>'
-        let testid = {{ $id }}
+        const G_CSRF_TOKEN    = '<?php echo csrf_token(); ?>'
+        const G_LOCAL_CELL_ID = {{ $id }}
     </script>
     <script src="{{ asset('js//local-app.js') }}"></script>
 </body>

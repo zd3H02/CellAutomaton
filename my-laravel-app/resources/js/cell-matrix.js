@@ -5,8 +5,6 @@ import {ColorSelector} from './components/color-selector'
 import {CellCodeTextarea} from './components/cell-code-textarea'
 import {CellControlButton} from './components/cell-control-button'
 
-// let csrf_token = '<?php echo csrf_token(); ?>'
-
 function GetFetchData(url, init={}) {
     async function fetchData() {
         const response = await fetch(url,init)
@@ -65,16 +63,16 @@ function CellMatrix(props) {
     const [codeSaveState, setCodeSaveState] = useState(codeSaveStateIsNonRequested)
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
-    // headers: {'X-CSRF-TOKEN': csrf_token}
+    // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
     useEffect(
         () =>{
             const sendData = new FormData()
-            sendData.append('id',testid)
+            sendData.append('id',G_LOCAL_CELL_ID)
             GetFetchData(
                 '../local/first',
                 {
                     method: 'POST',
-                    headers: {'X-CSRF-TOKEN': csrf_token},
+                    headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
                     body: sendData
                 }
             )
@@ -94,7 +92,7 @@ function CellMatrix(props) {
                         '../local/save',
                         {
                             method: 'POST',
-                            headers: {'X-CSRF-TOKEN': csrf_token},
+                            headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
                             body:sendData
                         }
                     )
@@ -107,7 +105,7 @@ function CellMatrix(props) {
                         '../local/calc',
                         {
                             method: 'POST',
-                            headers: {'X-CSRF-TOKEN': csrf_token},
+                            headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
                             body:sendData
                         }
                     )
