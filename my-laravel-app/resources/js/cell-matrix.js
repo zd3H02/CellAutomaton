@@ -8,8 +8,8 @@ import {CellControlButton} from './components/cell-control-button'
 function GetFetchData(url, init={}) {
     async function fetchData() {
         const response = await fetch(url,init)
-        //const json = await response.json()
-        const json = await response
+        const json = await response.json()
+        //const json = await response
         console.log(json)
         return json
     }
@@ -48,27 +48,29 @@ function CellMatrix(props) {
     const CELL_MAX_NUM      = CELL_ROW_NUM * CELL_COL_NUM
 
     const [cellColor, setCellColor] = useState(Array(CELL_MAX_NUM).fill('#ffffff'))
+    const [cellCode, setCellCode] = useState('')
     const [r, setR] = useState(0)
     const [g, setG] = useState(0)
     const [b, setB] = useState(0)
-    const [cellCode, setCellCode] = useState('')
 
     const cellCalcStateIsRun    = 'Run'
     const cellCalcStateIsStop   = 'Stop'
     const [cellCalcState, setCellCalcState] = useState(cellCalcStateIsStop)
 
-    const codeSaveStateIsNonRequested       = 'NonRequested'
-    const codeSaveStateIsRequested          = 'Requested'
-    const codeSaveStateIsRequestCompleted   = 'RequestCompleted'
-    const [codeSaveState, setCodeSaveState] = useState(codeSaveStateIsNonRequested)
+    const codeChangeNotRequested    = 'NotRequested'
+    const codeChangeRequested       = 'Requested'
+    const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
+    
+    const [saveButtonCounter, setSaveButtonCounter] = useState(0)
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
+    // 初回送信
     useEffect(
         () =>{
             const sendData = new FormData()
             sendData.append('id',G_LOCAL_CELL_ID)
-            GetFetchData(
+            const firstRecvData = GetFetchData(
                 '../local/first',
                 {
                     method: 'POST',
@@ -76,32 +78,62 @@ function CellMatrix(props) {
                     body: sendData
                 }
             )
+            if(response.ok) {
+                firstRecvData.then(
+                    result=>{
+                        // console.log(result.cell_color_data)
+                        setCellColor(result.cell_color_data)
+                    }
+                )
+            }
         },
         []
     )
+    // コード保存送信
+    useEffect(
+        () =>{
+            const sendData = new FormData()
+            sendData.append('id',G_LOCAL_CELL_ID)
+            sendData.append('cell_code', cellCode)
+            const response = GetFetchData(
+                '../local/save',
+                {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
+                    body: sendData
+                }
+            )
+            if (response.ok) {
+                setCodeChangeState(codeChangeRequested)
+            }
+        },
+        [saveButtonCounter]
+    )
+    // 実行中の送信
     useInterval(
         () => {
             if(cellCalcState === cellCalcStateIsRun){
-                if(codeSaveState === codeSaveStateIsRequestCompleted) {
+                if(codeChangeState === codeChangeRequested) {
                     const sendData = new FormData()
-                    sendData.append('codeChangeReq',true)
-                    sendData.append('cell_name','')
+                    sendData.append('id',G_LOCAL_CELL_ID)
                     sendData.append('cell_code',cellCode)
                     sendData.append('cell_color_data',JSON.stringify(cellColor))
-                    GetFetchData(
-                        '../local/save',
+                    const response = GetFetchData(
+                        '../local/change',
                         {
                             method: 'POST',
                             headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
                             body:sendData
                         }
                     )
+                    if(response.ok) {
+                        setCodeChangeState(codeChangeNotRequested)
+                    }
                 }
                 else {
                     const sendData = new FormData()
-                    sendData.append('codeChangeReq',false)
                     sendData.append('cell_color_data',JSON.stringify(cellColor))
-                    const cellColorResult = GetFetchData(
+                    const response = GetFetchData(
                         '../local/calc',
                         {
                             method: 'POST',
@@ -109,11 +141,13 @@ function CellMatrix(props) {
                             body:sendData
                         }
                     )
-                    cellColorResult.then(
-                        result=>{
-                            setCellColor(result)
-                        }
-                    )
+                    if(response.ok) {
+                        response.then(
+                            result=>{
+                                setCellColor(result)
+                            }
+                        )
+                    }
                     // console.log(cellColorResult)
                 }
 
@@ -165,7 +199,7 @@ function CellMatrix(props) {
             <CellCodeTextarea value={cellCode} onChange={setCellCode}/>
             <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={'実行'}/>
             <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={'停止'}/>
-            <CellControlButton value={codeSaveStateIsRequested} onChange={setCodeSaveState} content={'保存'}/>
+            <CellControlButton value={saveButtonCounter} onChange={()=>{setSaveButtonCounter(saveButtonCounter + 1)}} content={'保存'}/>
             {RenderCells()}
             <p>
                 R:<ColorSelector value={r} onChange={setR}/>

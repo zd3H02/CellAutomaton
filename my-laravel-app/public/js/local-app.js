@@ -29444,10 +29444,11 @@ function GetFetchData(url) {
             case 2:
               response = _context.sent;
               _context.next = 5;
-              return response;
+              return response.json();
 
             case 5:
               json = _context.sent;
+              //const json = await response
               console.log(json);
               return _context.abrupt("return", json);
 
@@ -29501,25 +29502,25 @@ function CellMatrix(props) {
       cellColor = _useState2[0],
       setCellColor = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
       _useState4 = _slicedToArray(_useState3, 2),
-      r = _useState4[0],
-      setR = _useState4[1];
+      cellCode = _useState4[0],
+      setCellCode = _useState4[1];
 
   var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState6 = _slicedToArray(_useState5, 2),
-      g = _useState6[0],
-      setG = _useState6[1];
+      r = _useState6[0],
+      setR = _useState6[1];
 
   var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState8 = _slicedToArray(_useState7, 2),
-      b = _useState8[0],
-      setB = _useState8[1];
+      g = _useState8[0],
+      setG = _useState8[1];
 
-  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState10 = _slicedToArray(_useState9, 2),
-      cellCode = _useState10[0],
-      setCellCode = _useState10[1];
+      b = _useState10[0],
+      setB = _useState10[1];
 
   var cellCalcStateIsRun = 'Run';
   var cellCalcStateIsStop = 'Stop';
@@ -29529,60 +29530,96 @@ function CellMatrix(props) {
       cellCalcState = _useState12[0],
       setCellCalcState = _useState12[1];
 
-  var codeSaveStateIsNonRequested = 'NonRequested';
-  var codeSaveStateIsRequested = 'Requested';
-  var codeSaveStateIsRequestCompleted = 'RequestCompleted';
+  var codeChangeNotRequested = 'NotRequested';
+  var codeChangeRequested = 'Requested';
 
-  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(codeSaveStateIsNonRequested),
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(codeChangeNotRequested),
       _useState14 = _slicedToArray(_useState13, 2),
-      codeSaveState = _useState14[0],
-      setCodeSaveState = _useState14[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+      codeChangeState = _useState14[0],
+      setCodeChangeState = _useState14[1];
+
+  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
+      _useState16 = _slicedToArray(_useState15, 2),
+      saveButtonCounter = _useState16[0],
+      setSaveButtonCounter = _useState16[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
+  // 初回送信
 
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     var sendData = new FormData();
     sendData.append('id', G_LOCAL_CELL_ID);
-    GetFetchData('../local/first', {
+    var firstRecvData = GetFetchData('../local/first', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': G_CSRF_TOKEN
       },
       body: sendData
     });
-  }, []);
+
+    if (response.ok) {
+      firstRecvData.then(function (result) {
+        // console.log(result.cell_color_data)
+        setCellColor(result.cell_color_data);
+      });
+    }
+  }, []); // コード保存送信
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    var sendData = new FormData();
+    sendData.append('id', G_LOCAL_CELL_ID);
+    sendData.append('cell_code', cellCode);
+    var response = GetFetchData('../local/save', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': G_CSRF_TOKEN
+      },
+      body: sendData
+    });
+
+    if (response.ok) {
+      setCodeChangeState(codeChangeRequested);
+    }
+  }, [saveButtonCounter]); // 実行中の送信
+
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__["useInterval"])(function () {
     if (cellCalcState === cellCalcStateIsRun) {
-      if (codeSaveState === codeSaveStateIsRequestCompleted) {
+      if (codeChangeState === codeChangeRequested) {
         var sendData = new FormData();
-        sendData.append('codeChangeReq', true);
-        sendData.append('cell_name', '');
+        sendData.append('id', G_LOCAL_CELL_ID);
         sendData.append('cell_code', cellCode);
         sendData.append('cell_color_data', JSON.stringify(cellColor));
-        GetFetchData('../local/save', {
+
+        var _response = GetFetchData('../local/change', {
           method: 'POST',
           headers: {
             'X-CSRF-TOKEN': G_CSRF_TOKEN
           },
           body: sendData
         });
+
+        if (_response.ok) {
+          setCodeChangeState(codeChangeNotRequested);
+        }
       } else {
         var _sendData = new FormData();
 
-        _sendData.append('codeChangeReq', false);
-
         _sendData.append('cell_color_data', JSON.stringify(cellColor));
 
-        var cellColorResult = GetFetchData('../local/calc', {
+        var _response2 = GetFetchData('../local/calc', {
           method: 'POST',
           headers: {
             'X-CSRF-TOKEN': G_CSRF_TOKEN
           },
           body: _sendData
         });
-        cellColorResult.then(function (result) {
-          setCellColor(result);
-        }); // console.log(cellColorResult)
+
+        if (_response2.ok) {
+          _response2.then(function (result) {
+            setCellColor(result);
+          });
+        } // console.log(cellColorResult)
+
       }
     }
   }, 1000);
@@ -29631,8 +29668,10 @@ function CellMatrix(props) {
     onChange: setCellCalcState,
     content: '停止'
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
-    value: codeSaveStateIsRequested,
-    onChange: setCodeSaveState,
+    value: saveButtonCounter,
+    onChange: function onChange() {
+      setSaveButtonCounter(saveButtonCounter + 1);
+    },
     content: '保存'
   }), RenderCells(), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
     value: r,

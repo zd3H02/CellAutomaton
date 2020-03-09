@@ -28,6 +28,7 @@ Route::get(' /local',       'LocalController@index');
 Route::post('/local/first', 'LocalController@first');
 Route::post('/local/calc',  'LocalController@calc');
 Route::post('/local/save',  'LocalController@save');
+Route::post('/local/change',  'LocalController@save');
 // Route::post('/local', 'LocalController@index');
 // Route::get('/local', 'LocalController@index');
 // Route::get('/local/run', 'LocalController@get');
