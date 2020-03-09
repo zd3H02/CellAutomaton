@@ -65721,8 +65721,8 @@ if (document.getElementById('example')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\DockerWorkspace\my-laravel-app\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\DockerWorkspace\my-laravel-app\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
