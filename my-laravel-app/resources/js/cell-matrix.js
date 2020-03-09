@@ -70,7 +70,7 @@ function CellMatrix(props) {
         () =>{
             const sendData = new FormData()
             sendData.append('id',G_LOCAL_CELL_ID)
-            const firstRecvData = GetFetchData(
+            const response = GetFetchData(
                 '../local/first',
                 {
                     method: 'POST',
@@ -79,7 +79,7 @@ function CellMatrix(props) {
                 }
             )
             if(response.ok) {
-                firstRecvData.then(
+                response.then(
                     result=>{
                         // console.log(result.cell_color_data)
                         setCellColor(result.cell_color_data)

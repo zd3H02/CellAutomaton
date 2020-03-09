@@ -29549,7 +29549,7 @@ function CellMatrix(props) {
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     var sendData = new FormData();
     sendData.append('id', G_LOCAL_CELL_ID);
-    var firstRecvData = GetFetchData('../local/first', {
+    var response = GetFetchData('../local/first', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -29558,7 +29558,7 @@ function CellMatrix(props) {
     });
 
     if (response.ok) {
-      firstRecvData.then(function (result) {
+      response.then(function (result) {
         // console.log(result.cell_color_data)
         setCellColor(result.cell_color_data);
       });
@@ -29589,8 +29589,7 @@ function CellMatrix(props) {
         sendData.append('id', G_LOCAL_CELL_ID);
         sendData.append('cell_code', cellCode);
         sendData.append('cell_color_data', JSON.stringify(cellColor));
-
-        var _response = GetFetchData('../local/change', {
+        var response = GetFetchData('../local/change', {
           method: 'POST',
           headers: {
             'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -29598,7 +29597,7 @@ function CellMatrix(props) {
           body: sendData
         });
 
-        if (_response.ok) {
+        if (response.ok) {
           setCodeChangeState(codeChangeNotRequested);
         }
       } else {
@@ -29606,7 +29605,7 @@ function CellMatrix(props) {
 
         _sendData.append('cell_color_data', JSON.stringify(cellColor));
 
-        var _response2 = GetFetchData('../local/calc', {
+        var _response = GetFetchData('../local/calc', {
           method: 'POST',
           headers: {
             'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -29614,8 +29613,8 @@ function CellMatrix(props) {
           body: _sendData
         });
 
-        if (_response2.ok) {
-          _response2.then(function (result) {
+        if (_response.ok) {
+          _response.then(function (result) {
             setCellColor(result);
           });
         } // console.log(cellColorResult)
