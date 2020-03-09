@@ -17,11 +17,14 @@ class LocalController extends Controller
     {
         $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
         $param = [
-            'cell_name'         =>$item->cell_name,
-            'cell_code'         =>$item->cell_code,
-            'cell_color_data'   =>explode(',', $item->cell_color_data, config('CONST.LOCAL.MAX_CELL_NUM'))
+            'cell_name'         => $item->cell_name,
+            'cell_code'         => $item->cell_code,
+            'cell_color_data'   => explode(',', $item->cell_color_data, config('CONST.LOCAL.MAX_CELL_NUM')),
+            'MAX_CELL_ROW_NUM'  => config('CONST.LOCAL.MAX_CELL_ROW_NUM'),
+            'MAX_CELL_COL_NUM'  => config('CONST.LOCAL.MAX_CELL_COL_NUM'),
+            'MAX_CELL_NUM'      => config('CONST.LOCAL.MAX_CELL_NUM'),
         ];
-        // log::debug($param);
+        log::debug(config('CONST.LOCAL.MAX_CELL_NUM'));
         return $param;
     }
     public function calc(Request $request)
@@ -29,7 +32,7 @@ class LocalController extends Controller
         exec("sudo docker exec -i 804028b02ec5 python tmp/hello.py", $output, $status);
 
         $dummyCellColorData = [];
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
             $dummyCellColorData[$i] =
                  '#'
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
@@ -43,15 +46,27 @@ class LocalController extends Controller
     public function save(Request $request)
     {
         $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
-        log::debug($item);
-        log::debug($request->cell_code);
+        // log::debug($item);
+        // log::debug($request->cell_code);
         $item->cell_code = $request->cell_code;
         $item->save();
-        return ["buta"];
+        $cmd = 
+            'sudo docker exec -i 804028b02ec5 sh -c "'
+            .'cd /tmp;'
+            .'rm work.py;'
+            .'touch work.py;'
+            .'echo \"' . $item->cell_code . '\" >> work.py;'
+            . 'python work.py;'
+            .'"';
+
+        $test1 = exec($cmd,$test2, $test3);
+        log::debug($cmd);
+        log::debug($test2);
+        return ["cellCodeSaveSuccess"];
     }
     public function change(Request $request)
     {
-        return ["tanuki"];
+        return ["cellCodeChangeSuccess"];
     }
 }
 

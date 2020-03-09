@@ -13,7 +13,7 @@ class LocalCellsTableSeeder extends Seeder
     public function run()
     {
         $tmpDummyCellColorData = [];
-        for ($i=0; $i<100; $i++) {
+        for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
             $tmpDummyCellColorData[$i] = 
                  '#'
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
