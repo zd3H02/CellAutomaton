@@ -10882,3 +10882,7 @@ a.text-dark:focus {
   }
 }
 
+.local-app {
+  min-width: 400vw;
+}
+

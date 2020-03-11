@@ -43,7 +43,7 @@ class LocalController extends Controller
         // return $output;
         return $dummyCellColorData;
     }
-    public function save(Request $request)
+    public function codesave(Request $request)
     {
         $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
         // log::debug($item);
@@ -63,6 +63,12 @@ class LocalController extends Controller
         log::debug($cmd);
         log::debug($test2);
         return ["cellCodeSaveSuccess"];
+    }
+    public function cellcolorsave(Request $request)
+    {
+        log::debug(gd_info ());
+        // imagecreatetruecolor ( int $width , int $height )
+        return ["cellColorSaveSuccess"];
     }
     public function change(Request $request)
     {

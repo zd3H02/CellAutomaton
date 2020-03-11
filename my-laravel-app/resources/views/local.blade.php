@@ -9,10 +9,7 @@
 @endsection
 
 @section('content')
-    <div id="local-app"></div>
-    @auth
-        <a href="{{ url('/home') }}">Home</a>
-    @else
-        <a href="{{ route('login') }}">Login</a>
-    @endauth
+    <div class="container">
+        <div id="local-app" class="local-app"></div>
+    </div>
 @endsection

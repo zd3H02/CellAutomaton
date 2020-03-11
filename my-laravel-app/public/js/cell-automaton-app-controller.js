@@ -29527,8 +29527,13 @@ function CellAutomatonAppController(props) {
 
   var _useState21 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState22 = _slicedToArray(_useState21, 2),
-      saveButtonCounter = _useState22[0],
-      setSaveButtonCounter = _useState22[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+      codeSaveButtonCounter = _useState22[0],
+      setCodeSaveButtonCounter = _useState22[1];
+
+  var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
+      _useState24 = _slicedToArray(_useState23, 2),
+      cellColorSaveButtonCounter = _useState24[0],
+      setCellColorSaveButtonCounter = _useState24[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
 
@@ -29556,7 +29561,7 @@ function CellAutomatonAppController(props) {
     var sendData = new FormData();
     sendData.append('id', G_LOCAL_CELL_ID);
     sendData.append('cell_code', cellCode);
-    var response = GetFetchData('../local/save', {
+    var response = GetFetchData('../local/codesave', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -29564,7 +29569,21 @@ function CellAutomatonAppController(props) {
       body: sendData
     });
     setCodeChangeState(codeChangeRequested);
-  }, [saveButtonCounter]); // 実行中の送信
+  }, [codeSaveButtonCounter]); // 初期セル色保存送信
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    var sendData = new FormData();
+    sendData.append('id', G_LOCAL_CELL_ID);
+    sendData.append('cell_color', cellColor);
+    var response = GetFetchData('../local/cellcolorsave', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': G_CSRF_TOKEN
+      },
+      body: sendData
+    });
+    setCodeChangeState(codeChangeRequested);
+  }, [cellColorSaveButtonCounter]); // 実行中の送信
 
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__["useInterval"])(function () {
     if (cellCalcState === cellCalcStateIsRun) {
@@ -29629,25 +29648,52 @@ function CellAutomatonAppController(props) {
     onChange: setCellCalcState,
     content: '停止'
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
-    value: saveButtonCounter,
+    value: codeSaveButtonCounter,
     onChange: function onChange() {
-      setSaveButtonCounter(saveButtonCounter + 1);
+      setCodeSaveButtonCounter(codeSaveButtonCounter + 1);
     },
-    content: '保存'
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    content: 'コード保存'
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+    value: codeSaveButtonCounter,
+    onChange: function onChange() {
+      setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1);
+    },
+    content: '初期セル色保存'
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Slider, {
     value: colorR,
-    onChange: setColorR
-  }), "G:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    onChange: setColorR,
+    min: "0",
+    max: "255"
+  }), ":", colorR), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "G:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Slider, {
     value: colorG,
-    onChange: setColorG
-  }), "B:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_color_selector__WEBPACK_IMPORTED_MODULE_4__["ColorSelector"], {
+    onChange: setColorG,
+    min: "0",
+    max: "255"
+  }), ":", colorG), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "B:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Slider, {
     value: colorB,
-    onChange: setColorB
-  })));
+    onChange: setColorB,
+    min: "0",
+    max: "255"
+  }), ":", colorB));
+}
+
+function Slider(props) {
+  function handleChange(event) {
+    props.onChange(event.target.value); //console.log(event.target.value)
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "range",
+    value: props.value,
+    min: props.min,
+    max: props.max,
+    onChange: handleChange
+  });
 }
 
 var localApp = document.getElementById('local-app');
 react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(CellAutomatonAppController, null), localApp);
+/* R:<ColorSelector value={colorR} onChange={setColorR}/> */
 
 /***/ }),
 
@@ -29901,7 +29947,7 @@ function useInterval(callback, delay) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

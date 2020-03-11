@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import {useInterval} from './components/custom-useinterval'
-import {ColorSelector} from './components/color-selector'
+// import {ColorSelector} from './components/color-selector'
 import {CellCodeTextarea} from './components/cell-code-textarea'
 import {CellControlButton} from './components/cell-control-button'
 import {CellMatrix, cell} from './components/cell-matrix'
@@ -37,7 +37,8 @@ function CellAutomatonAppController(props) {
     const codeChangeRequested       = 'Requested'
     const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
 
-    const [saveButtonCounter, setSaveButtonCounter] = useState(0)
+    const [codeSaveButtonCounter, setCodeSaveButtonCounter] = useState(0)
+    const [cellColorSaveButtonCounter, setCellColorSaveButtonCounter] = useState(0)
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -73,7 +74,7 @@ function CellAutomatonAppController(props) {
             sendData.append('id',G_LOCAL_CELL_ID)
             sendData.append('cell_code', cellCode)
             const response = GetFetchData(
-                '../local/save',
+                '../local/codesave',
                 {
                     method: 'POST',
                     headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
@@ -82,7 +83,24 @@ function CellAutomatonAppController(props) {
             )
             setCodeChangeState(codeChangeRequested)
         },
-        [saveButtonCounter]
+        [codeSaveButtonCounter]
+    )
+    // 初期セル色保存送信
+    useEffect(
+        () =>{
+            const sendData = new FormData()
+            sendData.append('id',G_LOCAL_CELL_ID)
+            sendData.append('cell_color', cellColor)
+            const response = GetFetchData(
+                '../local/cellcolorsave',
+                {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
+                    body: sendData
+                }
+            )
+        },
+        [cellColorSaveButtonCounter]
     )
     // 実行中の送信
     useInterval(
@@ -149,13 +167,26 @@ function CellAutomatonAppController(props) {
             <CellCodeTextarea value={cellCode} onChange={setCellCode}/>
             <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={'実行'}/>
             <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={'停止'}/>
-            <CellControlButton value={saveButtonCounter} onChange={()=>{setSaveButtonCounter(saveButtonCounter + 1)}} content={'保存'}/>
-            <p>
-                R:<ColorSelector value={colorR} onChange={setColorR}/>
-                G:<ColorSelector value={colorG} onChange={setColorG}/>
-                B:<ColorSelector value={colorB} onChange={setColorB}/>
-            </p>
+            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}} content={'コード保存'}/>
+            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1)}} content={'初期セル色保存'}/>
+            <p>R:<Slider value={colorR} onChange={setColorR} min="0" max="255"/>:{colorR}</p>
+            <p>G:<Slider value={colorG} onChange={setColorG} min="0" max="255"/>:{colorG}</p>
+            <p>B:<Slider value={colorB} onChange={setColorB} min="0" max="255"/>:{colorB}</p>
+
         </div>
+    )
+}
+
+
+
+
+function Slider(props) {
+    function handleChange(event) {
+        props.onChange(event.target.value)
+        //console.log(event.target.value)
+    }
+    return (
+            <input type="range" value={props.value} min={props.min} max={props.max} onChange={handleChange}/>
     )
 }
 
@@ -171,3 +202,4 @@ ReactDOM.render(<CellAutomatonAppController/>, localApp)
 
 
 
+/* R:<ColorSelector value={colorR} onChange={setColorR}/> */
