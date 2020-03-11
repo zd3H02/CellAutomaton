@@ -66,8 +66,21 @@ class LocalController extends Controller
     }
     public function cellcolorsave(Request $request)
     {
-        log::debug(gd_info ());
-        // imagecreatetruecolor ( int $width , int $height )
+        $im = imagecreatetruecolor(120, 20);
+        log::debug(strval($im));
+
+        $text_color = imagecolorallocate($im, 233, 14, 91);
+        log::debug($text_color);
+
+
+        log::debug(imagestring($im, 1, 5, 5,  'A Simple Text String', $text_color));
+
+        // 画像を 'simpletext.jpg' として保存します
+        log::debug(imagejpeg($im, storage_path('simpletext.jpg')));
+        
+        // メモリを開放します
+        imagedestroy($im);
+
         return ["cellColorSaveSuccess"];
     }
     public function change(Request $request)
