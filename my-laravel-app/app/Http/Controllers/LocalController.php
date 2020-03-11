@@ -5,6 +5,7 @@ use App\LocalCell;
 use Illuminate\Support\Facades\Log;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LocalController extends Controller
 {
@@ -50,7 +51,7 @@ class LocalController extends Controller
         // log::debug($request->cell_code);
         $item->cell_code = $request->cell_code;
         $item->save();
-        $cmd = 
+        $cmd =
             'sudo docker exec -i 804028b02ec5 sh -c "'
             .'cd /tmp;'
             .'rm work.py;'
@@ -64,22 +65,51 @@ class LocalController extends Controller
         log::debug($test2);
         return ["cellCodeSaveSuccess"];
     }
+
     public function cellcolorsave(Request $request)
     {
-        $im = imagecreatetruecolor(120, 20);
-        log::debug(strval($im));
+        $createJpg = function($fileName, $height, $width, $cellColor){
+            Storage::delete($fileName);
+            $fillRectX = $height / config('CONST.LOCAL.MAX_CELL_COL_NUM');
+            $fillRextY = $width  / config('CONST.LOCAL.MAX_CELL_ROW_NUM');
+            $imgResource = imagecreatetruecolor($height, $width);
+            foreach($cellColor as $i => $color) {
 
-        $text_color = imagecolorallocate($im, 233, 14, 91);
-        log::debug($text_color);
+                $col = $i % config('CONST.LOCAL.MAX_CELL_COL_NUM');
+                $row = intval($i / config('CONST.LOCAL.MAX_CELL_ROW_NUM'));
 
+                $beginX = $fillRectX * $col;
+                $beginY = $fillRextY * $row;
+                $endX   = $beginX + $fillRectX;
+                $endY   = $beginY + $fillRextY;
+                // log::debug($col . "   :   " . $row);
+  
+                $colorR = hexdec(substr($color, 1, 2));
+                $colorG = hexdec(substr($color, 3, 2));
+                $colorB = hexdec(substr($color, 5, 2));
 
-        log::debug(imagestring($im, 1, 5, 5,  'A Simple Text String', $text_color));
+                $fillColor = imagecolorallocate($imgResource, $colorR, $colorG, $colorB);
 
-        // 画像を 'simpletext.jpg' として保存します
-        log::debug(imagejpeg($im, storage_path('simpletext.jpg')));
-        
-        // メモリを開放します
-        imagedestroy($im);
+                imagefilledrectangle(
+                    $imgResource
+                    , $beginX
+                    , $beginY
+                    , $endX
+                    , $endY
+                    , $fillColor
+                );
+            }
+            imagejpeg($imgResource, storage_path($fileName));
+            imagedestroy($imgResource);
+        } ;
+
+        $thumbnailFileName  = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
+        $detailsFileName    = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
+
+        $cellCollor = explode(',', $request->cell_color);
+
+        $createJpg($thumbnailFileName, 80, 80, $cellCollor);
+        $createJpg($detailsFileName, 400, 400, $cellCollor);
 
         return ["cellColorSaveSuccess"];
     }

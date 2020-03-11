@@ -29403,10 +29403,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/custom-useinterval */ "./resources/js/components/custom-useinterval.js");
-/* harmony import */ var _components_color_selector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/color-selector */ "./resources/js/components/color-selector.js");
-/* harmony import */ var _components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/cell-code-textarea */ "./resources/js/components/cell-code-textarea.js");
-/* harmony import */ var _components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/cell-control-button */ "./resources/js/components/cell-control-button.js");
-/* harmony import */ var _components_cell_matrix__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/cell-matrix */ "./resources/js/components/cell-matrix.js");
+/* harmony import */ var _components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/cell-code-textarea */ "./resources/js/components/cell-code-textarea.js");
+/* harmony import */ var _components_cell_control_button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/cell-control-button */ "./resources/js/components/cell-control-button.js");
+/* harmony import */ var _components_cell_matrix__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/cell-matrix */ "./resources/js/components/cell-matrix.js");
 
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -29423,7 +29422,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
+ // import {ColorSelector} from './components/color-selector'
 
 
 
@@ -29582,7 +29581,6 @@ function CellAutomatonAppController(props) {
       },
       body: sendData
     });
-    setCodeChangeState(codeChangeRequested);
   }, [cellColorSaveButtonCounter]); // 実行中の送信
 
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__["useInterval"])(function () {
@@ -29628,7 +29626,7 @@ function CellAutomatonAppController(props) {
     console.log(color);
   }
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_7__["CellMatrix"], {
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_6__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
     HandleClick: HandleClick,
@@ -29636,24 +29634,24 @@ function CellAutomatonAppController(props) {
     colorR: colorR,
     colorG: colorG,
     colorB: colorB
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_5__["CellCodeTextarea"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_code_textarea__WEBPACK_IMPORTED_MODULE_4__["CellCodeTextarea"], {
     value: cellCode,
     onChange: setCellCode
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_5__["CellControlButton"], {
     value: cellCalcStateIsRun,
     onChange: setCellCalcState,
     content: '実行'
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_5__["CellControlButton"], {
     value: cellCalcStateIsStop,
     onChange: setCellCalcState,
     content: '停止'
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_5__["CellControlButton"], {
     value: codeSaveButtonCounter,
     onChange: function onChange() {
       setCodeSaveButtonCounter(codeSaveButtonCounter + 1);
     },
     content: 'コード保存'
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_6__["CellControlButton"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_5__["CellControlButton"], {
     value: codeSaveButtonCounter,
     onChange: function onChange() {
       setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1);
@@ -29863,44 +29861,6 @@ function CellMatrix(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/color-selector.js":
-/*!***************************************************!*\
-  !*** ./resources/js/components/color-selector.js ***!
-  \***************************************************/
-/*! exports provided: ColorSelector */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ColorSelector", function() { return ColorSelector; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-function ColorSelector(props) {
-  var colorOptions = Array(256).fill(0);
-  var selectRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
-  colorOptions.forEach(function (colorOption, index) {
-    return colorOptions.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      value: index,
-      key: index
-    }, index));
-  });
-
-  function handleChange(event) {
-    props.onChange(event.target.value); //console.log(event.target.value)
-  }
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    ref: selectRef,
-    onChange: handleChange
-  }, colorOptions);
-}
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/custom-useinterval.js":
 /*!*******************************************************!*\
   !*** ./resources/js/components/custom-useinterval.js ***!
@@ -29947,7 +29907,7 @@ function useInterval(callback, delay) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })
