@@ -1,10 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import {useInterval} from './components/custom-useinterval'
+
 // import {ColorSelector} from './components/color-selector'
-import {CellCodeTextarea} from './components/cell-code-textarea'
+// import {CellCodeTextarea} from './components/cell-code-textarea'
 import {CellControlButton} from './components/cell-control-button'
 import {CellMatrix, cell} from './components/cell-matrix'
+
+
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-github";
+
+
+
 
 function GetFetchData(url, init={}) {
     async function fetchData() {
@@ -145,34 +154,36 @@ function CellAutomatonAppController(props) {
         1000
     );
 
-    function HandleClick(i, color) {
-        const newCellColor = cellColor.slice();
-        newCellColor[i] = color
-        setCellColor(newCellColor)
-        console.log(i)
-        console.log(color)
-    }
-
     return (
         <div>
-            <CellMatrix 
+            <CellMatrix
                 MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                 MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
-                HandleClick={HandleClick}
+                setCellColor={setCellColor}
                 cellColor={cellColor}
                 colorR={colorR}
                 colorG={colorG}
                 colorB={colorB}
             />
-            <CellCodeTextarea value={cellCode} onChange={setCellCode}/>
-            <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={'実行'}/>
-            <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={'停止'}/>
-            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}} content={'コード保存'}/>
-            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1)}} content={'初期セル色保存'}/>
-            <p>R:<Slider value={colorR} onChange={setColorR} min="0" max="255"/>:{colorR}</p>
-            <p>G:<Slider value={colorG} onChange={setColorG} min="0" max="255"/>:{colorG}</p>
-            <p>B:<Slider value={colorB} onChange={setColorB} min="0" max="255"/>:{colorB}</p>
+            {/* <CellCodeTextarea value={cellCode} onChange={setCellCode}/> */}
+            <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={"実行"}/>
+            <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={"停止"}/>
+            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}} content={"コード保存"}/>
+            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1)}} content={"初期セル色保存"}/>
 
+            <p>R:<input type="text" value={colorR} onChange={(event)=>setColorR(event.target.value)}/>:<Slider value={colorR} onChange={setColorR} min="0" max="255"/></p>
+            <p>G:<input type="text" value={colorG} onChange={(event)=>setColorG(event.target.value)}/>:<Slider value={colorG} onChange={setColorG} min="0" max="255"/></p>
+            <p>B:<input type="text" value={colorB} onChange={(event)=>setColorB(event.target.value)}/>:<Slider value={colorB} onChange={setColorB} min="0" max="255"/></p>
+
+            <div>
+                <AceEditor
+                    mode="python"
+                    theme="github"
+                    name="aceCodeEditor"
+                    value={cellCode}
+                    onChange={setCellCode}
+                />
+            </div>
         </div>
     )
 }

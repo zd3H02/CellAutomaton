@@ -28,7 +28,6 @@ class HomeController extends Controller
     public function index()
     {
         $items = LocalCell::where('creator',Auth::user()->name)->get();
-        //dd($items);
         return view('home', compact('items'));
     }
     public function del(Request $request)
@@ -44,9 +43,10 @@ class HomeController extends Controller
 
         $localCell                  = new LocalCell;
         $localCell->creator         = Auth::user()->name;
-        $localCell->cell_name       = "test";
-        $localCell->cell_code       = "";
+        $localCell->cell_name       = 'test';
+        $localCell->cell_code       = '';
         $localCell->cell_color_data = config('CONST.LOCAL.INIT_CELL_COLOR_DATA');
+        $localCell->publish = false;
         $localCell->save();
         return redirect('home');
     }

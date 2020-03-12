@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use MyFunc;
 
 class LocalController extends Controller
 {
@@ -83,7 +84,7 @@ class LocalController extends Controller
                 $endX   = $beginX + $fillRectX;
                 $endY   = $beginY + $fillRextY;
                 // log::debug($col . "   :   " . $row);
-  
+
                 $colorR = hexdec(substr($color, 1, 2));
                 $colorG = hexdec(substr($color, 3, 2));
                 $colorB = hexdec(substr($color, 5, 2));
@@ -103,13 +104,21 @@ class LocalController extends Controller
             imagedestroy($imgResource);
         } ;
 
-        $thumbnailFileName  = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
-        $detailsFileName    = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
+        $commonThumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
+        $commonDetailsFileName      = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
+
+        $thumbnailFileName  = 'app/public/' . $commonThumbnailFileName;
+        $detailsFileName    = 'app/public/' . $commonDetailsFileName;
 
         $cellCollor = explode(',', $request->cell_color);
 
         $createJpg($thumbnailFileName, 80, 80, $cellCollor);
         $createJpg($detailsFileName, 400, 400, $cellCollor);
+
+        $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        $item->thumbnail_image_path = $commonThumbnailFileName;
+        $item->detail_image_path    = $commonDetailsFileName;
+        $item->save();
 
         return ["cellColorSaveSuccess"];
     }

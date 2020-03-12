@@ -7,7 +7,9 @@ function CellCodeTextarea(props) {
         props.onChange(event.target.value)
         console.log(event.target.value)
     }
-
+    const tstyle ={
+        opacity: 0
+    }
     return (
         <textarea
             ref={selectRef}
@@ -27,7 +29,23 @@ export { CellCodeTextarea }
 
 
 
+// const divStyle = {
+//     position: 'relative',
+// }
+// const textareaStyle = {
+//     heigth: '100px',
+//     width: '100px',
+//     position: 'absolute',
+//     // color: 'transparent',
+//     // backgroundcolor: 'transparent',
+//     opacity: 0
+// }
+// const syntaxHighlighterStyle = {
+//     heigth: '100px',
+//     width: '100px',
+//     position: 'absolute',
 
+// }
 
     // <form method="POST">
     //     @csrf

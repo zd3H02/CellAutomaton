@@ -14,6 +14,10 @@
                 @foreach ($items as $item)
                     <p>
                         {{Auth::user()->name}}:
+
+
+                        <img src="{{ asset($item->thumbnail_image_path) }}">
+                        <img src="{{ asset($item->detail_image_path) }}">
                         <button type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
                         <button type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
                     </p>

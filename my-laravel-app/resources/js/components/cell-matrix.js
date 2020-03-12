@@ -13,17 +13,25 @@ function GetHexColor(octR = 0, octG = 0, octB = 0) {
 }
 
 function Cell(props) {
-    const btnstyle = {
+    const btnStyle = {
         height : '40px',
         width  : '40px',
         background : props.color,
     }
     return (
-        <button onClick={()=>props.onClick()} style={btnstyle} className={"btn btn-default"}/>
+        <button onClick={()=>props.onClick()} style={btnStyle} className={"btn btn-default"}/>
     )
 }
 
 function CellMatrix(props) {
+    function HandleClick(i, color) {
+        const newCellColor = props.cellColor.slice();
+        newCellColor[i] = color
+        props.setCellColor(newCellColor)
+        console.log(i)
+        console.log(color)
+    }
+
     const tempCells = Array(props.MAX_CELL_ROW_NUM).fill([])
     for(let i = 0; i < props.MAX_CELL_ROW_NUM; i++) {
         tempCells[i] = Array(props.MAX_CELL_COL_NUM).fill(0)
@@ -35,7 +43,7 @@ function CellMatrix(props) {
                 <Cell
                     key = {colI.toString()}
                     onClick = {
-                        ()=>props.HandleClick(
+                        ()=>HandleClick(
                             props.MAX_CELL_COL_NUM * rowI + colI
                             ,'#' + GetHexColor(props.colorR,props.colorG,props.colorB)
                         )
