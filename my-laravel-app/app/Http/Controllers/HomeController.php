@@ -36,7 +36,7 @@ class HomeController extends Controller
         $localCell = LocalCell::find($request->id);
         ;
         Storage::delete('public/' . $localCell->detail_filename);
-        Storage::delete('public/' .$localCell->thumbnail_filename);
+        Storage::delete('public/' . $localCell->thumbnail_filename);
         $localCell->delete();
 
         return redirect('home');
