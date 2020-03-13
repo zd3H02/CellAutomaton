@@ -5,13 +5,8 @@ use Illuminate\Support\Facades\Storage;
 
 class MyFunc
 {
-    public static function addStrageSaveFolderPath($filename)
-    {
-        return 'app/public/' . $filename;
-    }
-
     public static function createCellColorJpg($fileName, $height, $width, $cellColor){
-        Storage::delete(MyFunc::addStrageSaveFolderPath($fileName));
+        Storage::delete(config('CONST.SAVE_FOLDER_PATH') . $fileName);
         $fillRectX = $height / config('CONST.LOCAL.MAX_CELL_COL_NUM');
         $fillRextY = $width  / config('CONST.LOCAL.MAX_CELL_ROW_NUM');
 
@@ -39,7 +34,7 @@ class MyFunc
                 , $fillColor
             );
         }
-        imagejpeg($imgResource, storage_path(MyFunc::addStrageSaveFolderPath($fileName)));
+        imagejpeg($imgResource, storage_path(config('CONST.SAVE_FOLDER_PATH') . $fileName));
         imagedestroy($imgResource);
     }
 }

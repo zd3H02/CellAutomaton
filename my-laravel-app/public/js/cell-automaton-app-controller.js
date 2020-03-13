@@ -59437,8 +59437,9 @@ function CellAutomatonAppController(props) {
       body: sendData
     });
     response.then(function (result) {
-      console.log(result.cell_color);
+      console.log(result.cell_code);
       setCellColor(result.cell_color);
+      setCellCode(result.cell_code);
       SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM);
       SET_ONLY_FORST_USE_MAX_CELL_COL_NUM(result.MAX_CELL_COL_NUM);
       SET_ONLY_FORST_USE_MAX_CELL_NUM(result.MAX_CELL_NUM);
@@ -59458,8 +59459,7 @@ function CellAutomatonAppController(props) {
           'X-CSRF-TOKEN': G_CSRF_TOKEN
         },
         body: sendData
-      });
-      setCodeChangeState(codeChangeRequested);
+      }); // setCodeChangeState(codeChangeRequested)
     }
   }, [codeSaveButtonCounter]); // 初期セル色保存送信
 
@@ -59498,6 +59498,8 @@ function CellAutomatonAppController(props) {
       } else {
         var _sendData = new FormData();
 
+        _sendData.append('id', G_LOCAL_CELL_ID);
+
         _sendData.append('cell_color', JSON.stringify(cellColor));
 
         var _response = GetFetchData('../local/calc', {
@@ -59513,7 +59515,7 @@ function CellAutomatonAppController(props) {
         });
       }
     }
-  }, 1000);
+  }, 3000);
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_5__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,

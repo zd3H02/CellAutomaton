@@ -26,12 +26,12 @@ class LocalController extends Controller
             'MAX_CELL_COL_NUM'  => config('CONST.LOCAL.MAX_CELL_COL_NUM'),
             'MAX_CELL_NUM'      => config('CONST.LOCAL.MAX_CELL_NUM'),
         ];
-        // log::debug(config('CONST.LOCAL.MAX_CELL_NUM'));
+        // log::debug($localCell->cell_code);
         return $param;
     }
     public function calc(Request $request)
     {
-        exec("sudo docker exec -i 804028b02ec5 python tmp/hello.py", $output, $status);
+        // exec('sudo docker exec -i 804028b02ec5 python tmp/hello.py', $output, $status);
 
         $dummyCellColorData = [];
         for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
@@ -42,28 +42,50 @@ class LocalController extends Controller
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
                 ;
         }
-        // return $output;
+
+
+        $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        
+
+        $dockerRunCmd = 'sudo docker create -i dockerworkspace_dev';
+        $dockerContainerId = exec($dockerRunCmd, $dockerRunCmdOutput, $dockerRunCmdStatus);
+
+        // $dockerContainerId = '2ee960f89c40';
+        // log::debug(str_replace('"', '\"', $localCell->cell_code));
+        $codeExeCmd =
+            'sudo docker start -i'. $dockerContainerId . ";"
+            // 'sudo docker exec -i ' . $dockerContainerId . ' ls';
+            // .'sudo docker exec -i '. $dockerContainerId .' sh -c "'
+            .'sh -c "'
+            .'cd /tmp;'
+            .'rm work.py;'
+            .'touch work.py;'
+            // // .'echo "input_cell_color = ' . $request->cell_color . '.split(",")"'
+            // // .'echo "' . $localCell->cell_code . '" >> work.py;'
+            // // .'echo "print(",".join(output_cell_color))"'
+            // . 'echo \"print(12345)\" >> work.py;'
+            . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
+            . 'timeout 1 python work.py;'
+            .'" 2>&1';
+
+        $cellColor = exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+
+        $dockerRmCmd = 'sudo docker stop ' . $dockerContainerId . ';' . 'sudo docker rm ' . $dockerContainerId . ';';
+        exec($dockerRmCmd);
+
+        log::debug($cellColor);
+        log::debug($codeExeCmdOutput);
+        log::debug($codeExeCmdStatus);
+
         return $dummyCellColorData;
     }
     public function codesave(Request $request)
     {
         $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
-        // log::debug($localCell);
-        // log::debug($request->cell_code);
+        log::debug($localCell);
+        log::debug($request->cell_code);
         $localCell->cell_code = $request->cell_code;
         $localCell->save();
-        $cmd =
-            'sudo docker exec -i 804028b02ec5 sh -c "'
-            .'cd /tmp;'
-            .'rm work.py;'
-            .'touch work.py;'
-            .'echo \"' . $localCell->cell_code . '\" >> work.py;'
-            . 'python work.py;'
-            .'"';
-
-        $test1 = exec($cmd,$test2, $test3);
-        log::debug($cmd);
-        log::debug($test2);
         return ["cellCodeSaveSuccess"];
     }
 

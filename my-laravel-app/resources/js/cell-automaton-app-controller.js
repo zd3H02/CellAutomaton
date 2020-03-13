@@ -69,8 +69,9 @@ function CellAutomatonAppController(props) {
             )
             response.then(
                 result=>{
-                    console.log(result.cell_color)
+                    console.log(result.cell_code)
                     setCellColor(result.cell_color)
+                    setCellCode(result.cell_code)
                     SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM)
                     SET_ONLY_FORST_USE_MAX_CELL_COL_NUM(result.MAX_CELL_COL_NUM)
                     SET_ONLY_FORST_USE_MAX_CELL_NUM(result.MAX_CELL_NUM)
@@ -97,7 +98,7 @@ function CellAutomatonAppController(props) {
                         body: sendData
                     }
                 )
-                setCodeChangeState(codeChangeRequested)
+                // setCodeChangeState(codeChangeRequested)
             }
         },
         [codeSaveButtonCounter]
@@ -145,6 +146,7 @@ function CellAutomatonAppController(props) {
                 }
                 else {
                     const sendData = new FormData()
+                    sendData.append('id',G_LOCAL_CELL_ID)
                     sendData.append('cell_color',JSON.stringify(cellColor))
                     const response = GetFetchData(
                         '../local/calc',
@@ -164,7 +166,7 @@ function CellAutomatonAppController(props) {
 
             }
         },
-        1000
+        3000
     );
 
     return (
