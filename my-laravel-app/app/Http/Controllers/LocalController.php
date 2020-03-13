@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use MyFunc;
 
 class LocalController extends Controller
 {
@@ -16,16 +17,16 @@ class LocalController extends Controller
     }
     public function first(Request $request)
     {
-        $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
         $param = [
-            'cell_name'         => $item->cell_name,
-            'cell_code'         => $item->cell_code,
-            'cell_color_data'   => explode(',', $item->cell_color_data, config('CONST.LOCAL.MAX_CELL_NUM')),
+            'cell_name'         => $localCell->cell_name,
+            'cell_code'         => $localCell->cell_code,
+            'cell_color'        => explode(',', $localCell->cell_color, config('CONST.LOCAL.MAX_CELL_NUM')),
             'MAX_CELL_ROW_NUM'  => config('CONST.LOCAL.MAX_CELL_ROW_NUM'),
             'MAX_CELL_COL_NUM'  => config('CONST.LOCAL.MAX_CELL_COL_NUM'),
             'MAX_CELL_NUM'      => config('CONST.LOCAL.MAX_CELL_NUM'),
         ];
-        log::debug(config('CONST.LOCAL.MAX_CELL_NUM'));
+        // log::debug(config('CONST.LOCAL.MAX_CELL_NUM'));
         return $param;
     }
     public function calc(Request $request)
@@ -46,17 +47,17 @@ class LocalController extends Controller
     }
     public function codesave(Request $request)
     {
-        $item =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
-        // log::debug($item);
+        $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        // log::debug($localCell);
         // log::debug($request->cell_code);
-        $item->cell_code = $request->cell_code;
-        $item->save();
+        $localCell->cell_code = $request->cell_code;
+        $localCell->save();
         $cmd =
             'sudo docker exec -i 804028b02ec5 sh -c "'
             .'cd /tmp;'
             .'rm work.py;'
             .'touch work.py;'
-            .'echo \"' . $item->cell_code . '\" >> work.py;'
+            .'echo \"' . $localCell->cell_code . '\" >> work.py;'
             . 'python work.py;'
             .'"';
 
@@ -68,48 +69,33 @@ class LocalController extends Controller
 
     public function cellcolorsave(Request $request)
     {
-        $createJpg = function($fileName, $height, $width, $cellColor){
-            Storage::delete($fileName);
-            $fillRectX = $height / config('CONST.LOCAL.MAX_CELL_COL_NUM');
-            $fillRextY = $width  / config('CONST.LOCAL.MAX_CELL_ROW_NUM');
-            $imgResource = imagecreatetruecolor($height, $width);
-            foreach($cellColor as $i => $color) {
 
-                $col = $i % config('CONST.LOCAL.MAX_CELL_COL_NUM');
-                $row = intval($i / config('CONST.LOCAL.MAX_CELL_ROW_NUM'));
 
-                $beginX = $fillRectX * $col;
-                $beginY = $fillRextY * $row;
-                $endX   = $beginX + $fillRectX;
-                $endY   = $beginY + $fillRextY;
-                // log::debug($col . "   :   " . $row);
-  
-                $colorR = hexdec(substr($color, 1, 2));
-                $colorG = hexdec(substr($color, 3, 2));
-                $colorB = hexdec(substr($color, 5, 2));
+        $thumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
+        $detailsFileName      = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
 
-                $fillColor = imagecolorallocate($imgResource, $colorR, $colorG, $colorB);
+        // $requestCellCollor = explode(',', $request->cell_color);
 
-                imagefilledrectangle(
-                    $imgResource
-                    , $beginX
-                    , $beginY
-                    , $endX
-                    , $endY
-                    , $fillColor
-                );
-            }
-            imagejpeg($imgResource, storage_path($fileName));
-            imagedestroy($imgResource);
-        } ;
+        MyFunc::createCellColorJpg(
+            $thumbnailFileName,
+            config('CONST.LOCAL.THUMBNAIL_HEIGHT'),
+            config('CONST.LOCAL.THUMBNAIL_WIDTH'),
+            $request->cell_color
+        );
+        MyFunc::createCellColorJpg(
+            $detailsFileName,
+            config('CONST.LOCAL.DETAILS_HEIGHT'),
+            config('CONST.LOCAL.DETAILS_WIDTH'),
+            $request->cell_color
+        );
 
-        $thumbnailFileName  = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
-        $detailsFileName    = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
 
-        $cellCollor = explode(',', $request->cell_color);
-
-        $createJpg($thumbnailFileName, 80, 80, $cellCollor);
-        $createJpg($detailsFileName, 400, 400, $cellCollor);
+        $localCell = LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        // log::debug($request->cell_color);
+        $localCell->cell_color = $request->cell_color;
+        $localCell->thumbnail_filename = $thumbnailFileName;
+        $localCell->detail_filename    = $detailsFileName;
+        $localCell->save();
 
         return ["cellColorSaveSuccess"];
     }
