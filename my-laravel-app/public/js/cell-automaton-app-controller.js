@@ -59422,9 +59422,20 @@ function CellAutomatonAppController(props) {
       setCellColorSaveButtonCounter = _useState24[1];
 
   var isFirstCodeSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
-  var isFirstCellColorSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+  var isFirstCellColorSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
+
+  var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState26 = _slicedToArray(_useState25, 2),
+      codeExecCmdOutput = _useState26[0],
+      setCodeExecCmdOutput = _useState26[1];
+
+  var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
+      _useState28 = _slicedToArray(_useState27, 2),
+      codeExecCmdStatus = _useState28[0],
+      setCodeExecCmdStatus = _useState28[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     var sendData = new FormData();
@@ -59437,7 +59448,7 @@ function CellAutomatonAppController(props) {
       body: sendData
     });
     response.then(function (result) {
-      console.log(result.cell_code);
+      // console.log(result.cell_code)
       setCellColor(result.cell_color);
       setCellCode(result.cell_code);
       SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM);
@@ -59511,7 +59522,9 @@ function CellAutomatonAppController(props) {
         });
 
         _response.then(function (result) {
-          setCellColor(result); // console.log(cellColor)
+          setCellColor(result.cell_color);
+          setCodeExecCmdOutput(result.code_exec_cmd_output);
+          setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColor)
         });
       }
     }
@@ -59581,9 +59594,9 @@ function CellAutomatonAppController(props) {
     mode: "python",
     theme: "github",
     name: "aceCodeEditor",
-    value: cellCode,
+    value: cellCode !== null ? cellCode : '',
     onChange: setCellCode
-  })));
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, "\u51FA\u529B\uFF1A", codeExecCmdOutput), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, "\u30B9\u30C6\u30FC\u30BF\u30B9\uFF1A", codeExecCmdStatus));
 }
 
 function Slider(props) {

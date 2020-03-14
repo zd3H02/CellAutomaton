@@ -48,9 +48,12 @@ function CellAutomatonAppController(props) {
 
     const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
     const [cellColorSaveButtonCounter, setCellColorSaveButtonCounter]   = useState(0)
-    
+
     const isFirstCodeSaveSend = useRef(true)
     const isFirstCellColorSaveSend = useRef(true)
+
+    const [codeExecCmdOutput, setCodeExecCmdOutput] = useState('')
+    const [codeExecCmdStatus, setCodeExecCmdStatus] = useState('')
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -69,7 +72,7 @@ function CellAutomatonAppController(props) {
             )
             response.then(
                 result=>{
-                    console.log(result.cell_code)
+                    // console.log(result.cell_code)
                     setCellColor(result.cell_color)
                     setCellCode(result.cell_code)
                     SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM)
@@ -158,7 +161,9 @@ function CellAutomatonAppController(props) {
                     )
                     response.then(
                         result=>{
-                            setCellColor(result)
+                            setCellColor(result.cell_color)
+                            setCodeExecCmdOutput(result.code_exec_cmd_output)
+                            setCodeExecCmdStatus(result.code_exec_cmd_status)
                             // console.log(cellColor)
                         }
                     )
@@ -195,9 +200,15 @@ function CellAutomatonAppController(props) {
                     mode="python"
                     theme="github"
                     name="aceCodeEditor"
-                    value={cellCode}
+                    value={cellCode !== null ? cellCode : ''}
                     onChange={setCellCode}
                 />
+            </div>
+            <div>
+                出力：{codeExecCmdOutput}
+            </div>
+            <div>
+                ステータス：{codeExecCmdStatus}
             </div>
         </div>
     )

@@ -1,18 +1,14 @@
-import React, { useRef } from 'react'
+
+import React from 'react'
 
 function CellCodeTextarea(props) {
-    const selectRef = useRef(null)
 
     function handleChange(event) {
         props.onChange(event.target.value)
-        console.log(event.target.value)
-    }
-    const tstyle ={
-        opacity: 0
+        // console.log(event.target.value)
     }
     return (
         <textarea
-            ref={selectRef}
             onChange={handleChange}
             value={props.value}
             name="code"
@@ -80,3 +76,31 @@ export { CellCodeTextarea }
 // }
 
 // export { ColorSelector }
+
+
+
+
+// import React from 'react'
+
+// function CellCodeTextarea(props) {
+//     // const selectRef = useRef(null)
+
+//     function handleChange(event) {
+//         props.onChange(event.target.value)
+//         // console.log(event.target.value)
+//     }
+//     return (
+//         <textarea
+//             // ref={selectRef}
+//             onChange={handleChange}
+//             value={props.value}
+//             name="code"
+//             id="code"
+//             cols="30"
+//             rows="10"
+//         >
+//         </textarea>
+//     )
+// }
+
+// export { CellCodeTextarea }
