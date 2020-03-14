@@ -25,9 +25,9 @@ function Cell(props) {
 
 function CellMatrix(props) {
     function HandleClick(i, color) {
-        const newCellColor = props.cellColor.slice();
-        newCellColor[i] = color
-        props.setCellColor(newCellColor)
+        const newCellColors = props.cellColors.slice();
+        newCellColors[i] = color
+        props.setCellColors(newCellColors)
         console.log(i)
         console.log(color)
     }
@@ -48,7 +48,7 @@ function CellMatrix(props) {
                             ,'#' + GetHexColor(props.colorR,props.colorG,props.colorB)
                         )
                     }
-                    color = {props.cellColor[props.MAX_CELL_COL_NUM * rowI + colI]}
+                    color = {props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]}
                 />
             )}
         </div>

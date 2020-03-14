@@ -5,15 +5,15 @@ use Illuminate\Support\Facades\Storage;
 
 class MyFunc
 {
-    public static function createCellColorJpg($fileName, $height, $width, $cellColor){
+    public static function createCellColorsJpg($fileName, $height, $width, $cellColors){
         Storage::delete(config('CONST.SAVE_FOLDER_PATH') . $fileName);
         $fillRectX = $height / config('CONST.LOCAL.MAX_CELL_COL_NUM');
         $fillRextY = $width  / config('CONST.LOCAL.MAX_CELL_ROW_NUM');
 
-        $arrayedCellColor = explode(',', $cellColor);
+        $arrayedCellColors = explode(',', $cellColors);
 
         $imgResource = imagecreatetruecolor($height, $width);
-        foreach($arrayedCellColor as $i => $color) {
+        foreach($arrayedCellColors as $i => $color) {
             $col = $i % config('CONST.LOCAL.MAX_CELL_COL_NUM');
             $row = intval($i / config('CONST.LOCAL.MAX_CELL_ROW_NUM'));
             $beginX = $fillRectX * $col;

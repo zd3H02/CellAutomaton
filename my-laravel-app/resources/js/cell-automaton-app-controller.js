@@ -32,7 +32,7 @@ function CellAutomatonAppController(props) {
     const [MAX_CELL_COL_NUM,    SET_ONLY_FORST_USE_MAX_CELL_COL_NUM]    = useState(0)
     const [MAX_CELL_NUM,        SET_ONLY_FORST_USE_MAX_CELL_NUM]        = useState(0)
 
-    const [cellColor, setCellColor] = useState(Array(MAX_CELL_NUM).fill('#ffffff'))
+    const [cellColors, setCellColors] = useState(Array(MAX_CELL_NUM).fill('#ffffff'))
     const [cellCode, setCellCode]   = useState('')
     const [colorR, setColorR]       = useState(0)
     const [colorG, setColorG]       = useState(0)
@@ -47,10 +47,10 @@ function CellAutomatonAppController(props) {
     const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
 
     const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
-    const [cellColorSaveButtonCounter, setCellColorSaveButtonCounter]   = useState(0)
+    const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter]   = useState(0)
 
     const isFirstCodeSaveSend = useRef(true)
-    const isFirstCellColorSaveSend = useRef(true)
+    const isFirstCellColorsSaveSend = useRef(true)
 
     const [codeExecCmdOutput, setCodeExecCmdOutput] = useState('')
     const [codeExecCmdStatus, setCodeExecCmdStatus] = useState('')
@@ -73,7 +73,7 @@ function CellAutomatonAppController(props) {
             response.then(
                 result=>{
                     // console.log(result.cell_code)
-                    setCellColor(result.cell_color)
+                    setCellColors(result.cell_colors)
                     setCellCode(result.cell_code)
                     SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM)
                     SET_ONLY_FORST_USE_MAX_CELL_COL_NUM(result.MAX_CELL_COL_NUM)
@@ -109,13 +109,13 @@ function CellAutomatonAppController(props) {
     // 初期セル色保存送信
     useEffect(
         () =>{
-            if(isFirstCellColorSaveSend.current) {
-                isFirstCellColorSaveSend.current = false
+            if(isFirstCellColorsSaveSend.current) {
+                isFirstCellColorsSaveSend.current = false
             }
             else {
                 const sendData = new FormData()
                 sendData.append('id',G_LOCAL_CELL_ID)
-                sendData.append('cell_color', cellColor)
+                sendData.append('cell_colors', cellColors)
                 const response = GetFetchData(
                     '../local/cellcolorsave',
                     {
@@ -126,7 +126,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [cellColorSaveButtonCounter]
+        [cellColorsSaveButtonCounter]
     )
     // 実行中の送信
     useInterval(
@@ -136,7 +136,7 @@ function CellAutomatonAppController(props) {
                     const sendData = new FormData()
                     sendData.append('id',G_LOCAL_CELL_ID)
                     sendData.append('cell_code',cellCode)
-                    sendData.append('cell_color',JSON.stringify(cellColor))
+                    sendData.append('cell_colors',JSON.stringify(cellColors))
                     const response = GetFetchData(
                         '../local/change',
                         {
@@ -150,7 +150,7 @@ function CellAutomatonAppController(props) {
                 else {
                     const sendData = new FormData()
                     sendData.append('id',G_LOCAL_CELL_ID)
-                    sendData.append('cell_color',JSON.stringify(cellColor))
+                    sendData.append('cell_colors',JSON.stringify(cellColors))
                     const response = GetFetchData(
                         '../local/calc',
                         {
@@ -161,10 +161,10 @@ function CellAutomatonAppController(props) {
                     )
                     response.then(
                         result=>{
-                            setCellColor(result.cell_color)
+                            setCellColors(result.cell_colors)
                             setCodeExecCmdOutput(result.code_exec_cmd_output)
                             setCodeExecCmdStatus(result.code_exec_cmd_status)
-                            // console.log(cellColor)
+                            // console.log(cellColors)
                         }
                     )
                 }
@@ -179,8 +179,8 @@ function CellAutomatonAppController(props) {
             <CellMatrix
                 MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                 MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
-                setCellColor={setCellColor}
-                cellColor={cellColor}
+                setCellColors={setCellColors}
+                cellColors={cellColors}
                 colorR={colorR}
                 colorG={colorG}
                 colorB={colorB}
@@ -189,7 +189,7 @@ function CellAutomatonAppController(props) {
             <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={"実行"}/>
             <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={"停止"}/>
             <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}} content={"コード保存"}/>
-            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1)}} content={"初期セル色保存"}/>
+            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}} content={"初期セル色保存"}/>
 
             <p>R:<input type="text" value={colorR} onChange={(event)=>setColorR(event.target.value)}/>:<Slider value={colorR} onChange={setColorR} min="0" max="255"/></p>
             <p>G:<input type="text" value={colorG} onChange={(event)=>setColorG(event.target.value)}/>:<Slider value={colorG} onChange={setColorG} min="0" max="255"/></p>

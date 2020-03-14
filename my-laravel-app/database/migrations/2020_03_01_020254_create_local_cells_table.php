@@ -18,7 +18,7 @@ class CreateLocalCellsTable extends Migration
             $table->string('creator');
             $table->string('cell_name')->nullable();
             $table->string('cell_code')->nullable();
-            $table->text('cell_color');
+            $table->text('cell_colors');
             $table->string('thumbnail_filename')->nullable();
             $table->string('detail_filename')->nullable();
             $table->boolean('publish')->default(false);

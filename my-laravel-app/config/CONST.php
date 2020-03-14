@@ -4,7 +4,7 @@ return [
         'MAX_CELL_ROW_NUM'      => 20,
         'MAX_CELL_COL_NUM'      => 20,
         'MAX_CELL_NUM'          => 400,
-        'INIT_CELL_COLOR'       => implode(',', array_fill(0, 400, '#dcdcdc')),
+        'INIT_CELL_COLORS'      => implode(',', array_fill(0, 400, '#dcdcdc')),
         'THUMBNAIL_HEIGHT'      => 80,
         'THUMBNAIL_WIDTH'       => 80,
         'DETAILS_HEIGHT'        => 400,

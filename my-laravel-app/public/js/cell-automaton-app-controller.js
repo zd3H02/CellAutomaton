@@ -59372,8 +59372,8 @@ function CellAutomatonAppController(props) {
 
   var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(Array(MAX_CELL_NUM).fill('#ffffff')),
       _useState8 = _slicedToArray(_useState7, 2),
-      cellColor = _useState8[0],
-      setCellColor = _useState8[1];
+      cellColors = _useState8[0],
+      setCellColors = _useState8[1];
 
   var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
       _useState10 = _slicedToArray(_useState9, 2),
@@ -59418,11 +59418,11 @@ function CellAutomatonAppController(props) {
 
   var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
       _useState24 = _slicedToArray(_useState23, 2),
-      cellColorSaveButtonCounter = _useState24[0],
-      setCellColorSaveButtonCounter = _useState24[1];
+      cellColorsSaveButtonCounter = _useState24[0],
+      setCellColorsSaveButtonCounter = _useState24[1];
 
   var isFirstCodeSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
-  var isFirstCellColorSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
+  var isFirstCellColorsSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])(true);
 
   var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(''),
       _useState26 = _slicedToArray(_useState25, 2),
@@ -59449,7 +59449,7 @@ function CellAutomatonAppController(props) {
     });
     response.then(function (result) {
       // console.log(result.cell_code)
-      setCellColor(result.cell_color);
+      setCellColors(result.cell_colors);
       setCellCode(result.cell_code);
       SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM);
       SET_ONLY_FORST_USE_MAX_CELL_COL_NUM(result.MAX_CELL_COL_NUM);
@@ -59475,12 +59475,12 @@ function CellAutomatonAppController(props) {
   }, [codeSaveButtonCounter]); // 初期セル色保存送信
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    if (isFirstCellColorSaveSend.current) {
-      isFirstCellColorSaveSend.current = false;
+    if (isFirstCellColorsSaveSend.current) {
+      isFirstCellColorsSaveSend.current = false;
     } else {
       var sendData = new FormData();
       sendData.append('id', G_LOCAL_CELL_ID);
-      sendData.append('cell_color', cellColor);
+      sendData.append('cell_colors', cellColors);
       var response = GetFetchData('../local/cellcolorsave', {
         method: 'POST',
         headers: {
@@ -59489,7 +59489,7 @@ function CellAutomatonAppController(props) {
         body: sendData
       });
     }
-  }, [cellColorSaveButtonCounter]); // 実行中の送信
+  }, [cellColorsSaveButtonCounter]); // 実行中の送信
 
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_3__["useInterval"])(function () {
     if (cellCalcState === cellCalcStateIsRun) {
@@ -59497,7 +59497,7 @@ function CellAutomatonAppController(props) {
         var sendData = new FormData();
         sendData.append('id', G_LOCAL_CELL_ID);
         sendData.append('cell_code', cellCode);
-        sendData.append('cell_color', JSON.stringify(cellColor));
+        sendData.append('cell_colors', JSON.stringify(cellColors));
         var response = GetFetchData('../local/change', {
           method: 'POST',
           headers: {
@@ -59511,7 +59511,7 @@ function CellAutomatonAppController(props) {
 
         _sendData.append('id', G_LOCAL_CELL_ID);
 
-        _sendData.append('cell_color', JSON.stringify(cellColor));
+        _sendData.append('cell_colors', JSON.stringify(cellColors));
 
         var _response = GetFetchData('../local/calc', {
           method: 'POST',
@@ -59522,9 +59522,9 @@ function CellAutomatonAppController(props) {
         });
 
         _response.then(function (result) {
-          setCellColor(result.cell_color);
+          setCellColors(result.cell_colors);
           setCodeExecCmdOutput(result.code_exec_cmd_output);
-          setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColor)
+          setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
         });
       }
     }
@@ -59532,8 +59532,8 @@ function CellAutomatonAppController(props) {
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_5__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
-    setCellColor: setCellColor,
-    cellColor: cellColor,
+    setCellColors: setCellColors,
+    cellColors: cellColors,
     colorR: colorR,
     colorG: colorG,
     colorB: colorB
@@ -59554,7 +59554,7 @@ function CellAutomatonAppController(props) {
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_cell_control_button__WEBPACK_IMPORTED_MODULE_4__["CellControlButton"], {
     value: codeSaveButtonCounter,
     onChange: function onChange() {
-      setCellColorSaveButtonCounter(cellColorSaveButtonCounter + 1);
+      setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1);
     },
     content: "初期セル色保存"
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
@@ -59698,9 +59698,9 @@ function Cell(props) {
 
 function CellMatrix(props) {
   function HandleClick(i, color) {
-    var newCellColor = props.cellColor.slice();
-    newCellColor[i] = color;
-    props.setCellColor(newCellColor);
+    var newCellColors = props.cellColors.slice();
+    newCellColors[i] = color;
+    props.setCellColors(newCellColors);
     console.log(i);
     console.log(color);
   }
@@ -59720,7 +59720,7 @@ function CellMatrix(props) {
         onClick: function onClick() {
           return HandleClick(props.MAX_CELL_COL_NUM * rowI + colI, '#' + GetHexColor(props.colorR, props.colorG, props.colorB));
         },
-        color: props.cellColor[props.MAX_CELL_COL_NUM * rowI + colI]
+        color: props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]
       });
     }));
   }); // console.log(cells)

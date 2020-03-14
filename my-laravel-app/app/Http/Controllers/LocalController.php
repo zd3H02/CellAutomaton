@@ -21,7 +21,7 @@ class LocalController extends Controller
         $param = [
             'cell_name'         => $localCell->cell_name,
             'cell_code'         => $localCell->cell_code,
-            'cell_color'        => explode(',', $localCell->cell_color, config('CONST.LOCAL.MAX_CELL_NUM')),
+            'cell_colors'        => explode(',', $localCell->cell_colors, config('CONST.LOCAL.MAX_CELL_NUM')),
             'MAX_CELL_ROW_NUM'  => config('CONST.LOCAL.MAX_CELL_ROW_NUM'),
             'MAX_CELL_COL_NUM'  => config('CONST.LOCAL.MAX_CELL_COL_NUM'),
             'MAX_CELL_NUM'      => config('CONST.LOCAL.MAX_CELL_NUM'),
@@ -33,20 +33,20 @@ class LocalController extends Controller
     {
         // exec('sudo docker exec -i 804028b02ec5 python tmp/hello.py', $output, $status);
 
-        $dummyCellColorData = [];
-        for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
-            $dummyCellColorData[$i] =
-                 '#'
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-                ;
-        }
+        // $dummyCellColorsData = [];
+        // for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
+        //     $dummyCellColorsData[$i] =
+        //          '#'
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         ;
+        // }
 
         $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
 
-        Storage::delete(Auth::user()->name . '/code.py');
-        Storage::put(Auth::user()->name . '/code.py', $localCell->cell_code);
+        Storage::delete(Auth::user()->name . '/code/code.py');
+        Storage::put(Auth::user()->name . '/code/code.py', $localCell->cell_code);
 
         // $dockerRunCmd =
         //     'sudo docker create -i '.
@@ -58,72 +58,74 @@ class LocalController extends Controller
         //     'dockerworkspace_dev';
         // $dockerContainerId = exec($dockerRunCmd, $dockerRunCmdOutput, $dockerRunCmdStatus);
         $dockerContainerId ='d1ade3c7b764';
-        // $dockerContainerId  = '80c08a8a6dd8c22f4d8cd3765a8b8d7b136357f8d3d2af8d2021a6504b033f28';
 
-        $dockerCpCmd =
-            'sudo docker cp ' . storage_path('app/' . Auth::user()->name . '/code.py ') . $dockerContainerId . ':/tmp';
+
+
+
+        $cdCmd = 'cd /tmp';
+        $rmCmd = 'rm -Rf '. Auth::user()->name;
+        $mkdirCmd = 'mkdir -p ' . Auth::user()->name . '/code';
+        $dockerExecRmAndMkdirCmd =
+            'sudo docker exec '. $dockerContainerId .
+            ' bash -c "' . $cdCmd . ' && ' . $rmCmd .  ' && '. $mkdirCmd . '"';
+        exec($dockerExecRmAndMkdirCmd, $dockerExecRmAndMkdirCmdOutput, $dockerExecRmAndMkdirCmdStatus);
+
+        log::debug($dockerExecRmAndMkdirCmd);
+
+        $storagePath = storage_path('app/' . Auth::user()->name . '/code/code.py ');
+        $devConteinerPath = ':/tmp/'. Auth::user()->name . '/code';
+        $dockerCpCmd = 'sudo docker cp ' . $storagePath . $dockerContainerId .$devConteinerPath;
         exec($dockerCpCmd, $dockerCpCmdOutput, $dockerCpCmdStatus);
-        log::debug($dockerCpCmdOutput);
-        log::debug($dockerCpCmdStatus);
+
         log::debug($dockerCpCmd);
 
-        $testCmd =
-        // 'sudo docker start '. $dockerContainerId . ';' .
-        // 'ls'
-        'sudo docker exec '. $dockerContainerId . ' bash -c "cd /tmp && ls"'
-        ;
+        $codeExeCmd =
+            'sudo docker exec '. $dockerContainerId . ' bash -c "cd /tmp/' . Auth::user()->name .'/code && timeout 1 python code.py" 2>&1';
+        exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+  
+        log::debug($codeExeCmd);
+        log::debug($codeExeCmdOutput);
+        log::debug($codeExeCmdStatus);
+
+        if(is_array($codeExeCmdOutput)) {
+            $cellColorsCount = count($codeExeCmdOutput);
+        }
+        else {
+            $cellColorsCount = 0;
+        }
         
-        
-        exec($testCmd, $testCmdOutput, $testCmdStatus);
-        
-        log::debug($dockerContainerId);
-        log::debug($testCmdOutput);
-        log::debug($testCmdStatus);
+        $isCellColorsCountOk =  $cellColorsCount === config('CONST.LOCAL.MAX_CELL_COL_NUM');
+        $isCellColorsContentsOk = true;
+        if($isCellColorsCountOk) {
+            foreach($codeExeCmdOutput as $cellColor) {
+                $isColorCode = preg_match('/^#[\da-fA-F]{6}$/', $cellColor);
+                if($isColorCode) {
+                    //正常。何もしない。
+                }
+                else {
+                    $isCellColorsContentsOk = false;
+                    break;
+                }
+            }
+        }
 
-            // $codeExeCmd =
-            //     'sudo docker start -i'. $dockerContainerId . ";"
-            //     .'sh -c "'
-            //     .'cd /tmp;'
-            //     . 'timeout 1 python code.py;'
-            //     .'" 2>&1';
-            // exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+        $isUpdateCellColors = $isCellColorsCountOk && $isCellColorsContentsOk;
+        if($isUpdateCellColors) {
+            $sendCellColors = $codeExeCmdOutput;
+        }
+        else {
+            $sendCellColors = $request->cell_colors;
+        }
 
-
-            // // log::debug($request->cell_color);
-            // log::debug($codeExeCmdOutput);
-            // log::debug($codeExeCmdStatus);
-
-        // $codeExeCmd =
-        //     'sudo docker start -i'. $dockerContainerId . ";"
-        //     .'sh -c "'
-        //     .'cd /tmp;'
-        //     .'rm work.py;'
-        //     .'touch work.py;'
-        //     . 'echo \"' . 'cell_colors = \'' . $request->cell_color . '\'.strip(\'[\'\']\').split(\',\')\" >> work.py;'
-        //     // . 'echo \"' . 'cell_colors =  ' . str_replace('"', '\'\'', $request->cell_color) . '\" >> work.py;'
-        //     . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
-        //     . 'timeout 1 python work.py;'
-        //     .'" 2>&1';
-        // exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
-
-            // $dockerRmCmd = 'sudo docker stop ' . $dockerContainerId . ';' . 'sudo docker rm ' . $dockerContainerId . ';';
-            // exec($dockerRmCmd);
-
-        // log::debug($request->cell_color);
-        // log::debug($codeExeCmdOutput);
-        // log::debug($codeExeCmdStatus);
-
-        // $param = [
-        //     'cell_color'            => $codeExeCmdOutput,
-        //     'code_exec_cmd_output'  => $codeExeCmdOutput,
-        //     'code_exec_cmd_status'  => $codeExeCmdStatus,
-        // ];
-
+        log::debug('$isCellColorsCountOk:' . $isCellColorsCountOk);
+        log::debug('$isCellColorsContentsOk:' . $isCellColorsContentsOk);
+        log::debug($isUpdateCellColors);
+        log::debug($sendCellColors);
 
         $param = [
-            'cell_color'            => $dummyCellColorData,
-            'code_exec_cmd_output'  => 'tanuki',
-            'code_exec_cmd_status'  => 'kitune',
+            'cell_colors'           => $sendCellColors,
+            'code_exec_cmd_output'  => $codeExeCmdOutput,
+            'code_exec_cmd_status'  => $codeExeCmdStatus,
         ];
 
         return $param;
@@ -146,36 +148,40 @@ class LocalController extends Controller
         $thumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
         $detailsFileName      = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
 
-        // $requestCellCollor = explode(',', $request->cell_color);
+        // $requestCellCollor = explode(',', $request->cell_colors);
 
-        MyFunc::createCellColorJpg(
+        MyFunc::createCellColorsJpg(
             $thumbnailFileName,
             config('CONST.LOCAL.THUMBNAIL_HEIGHT'),
             config('CONST.LOCAL.THUMBNAIL_WIDTH'),
-            $request->cell_color
+            $request->cell_colors
         );
-        MyFunc::createCellColorJpg(
+        MyFunc::createCellColorsJpg(
             $detailsFileName,
             config('CONST.LOCAL.DETAILS_HEIGHT'),
             config('CONST.LOCAL.DETAILS_WIDTH'),
-            $request->cell_color
+            $request->cell_colors
         );
 
 
         $localCell = LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
-        // log::debug($request->cell_color);
-        $localCell->cell_color = $request->cell_color;
+        // log::debug($request->cell_colors);
+        $localCell->cell_colors = $request->cell_colors;
         $localCell->thumbnail_filename = $thumbnailFileName;
         $localCell->detail_filename    = $detailsFileName;
         $localCell->save();
 
-        return ["cellColorSaveSuccess"];
+        return ["cellColorsSaveSuccess"];
     }
     public function change(Request $request)
     {
         return ["cellCodeChangeSuccess"];
     }
 }
+
+
+
+
 
 
 // public function get(Request $request)
@@ -229,9 +235,9 @@ class LocalController extends Controller
 // .'cd /tmp;'
 // .'rm work.py;'
 // .'touch work.py;'
-// // // .'echo "input_cell_color = ' . $request->cell_color . '.split(",")"'
+// // // .'echo "input_cell_colors = ' . $request->cell_colors . '.split(",")"'
 // // // .'echo "' . $localCell->cell_code . '" >> work.py;'
-// // // .'echo "print(",".join(output_cell_color))"'
+// // // .'echo "print(",".join(output_cell_colors))"'
 // // . 'echo \"print(12345)\" >> work.py;'
 // . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
 // . 'timeout 1 python work.py;'
@@ -253,9 +259,9 @@ class LocalController extends Controller
 
         // // exec('sudo docker exec -i 804028b02ec5 python tmp/hello.py', $output, $status);
 
-        // // $dummyCellColorData = [];
+        // // $dummyCellColorsData = [];
         // // for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
-        // //     $dummyCellColorData[$i] =
+        // //     $dummyCellColorsData[$i] =
         // //          '#'
         // //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
         // //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
@@ -281,8 +287,8 @@ class LocalController extends Controller
         //     .'cd /tmp;'
         //     .'rm work.py;'
         //     .'touch work.py;'
-        //     . 'echo \"' . 'cell_colors = \'' . $request->cell_color . '\'.strip(\'[\'\']\').split(\',\')\" >> work.py;'
-        //     // . 'echo \"' . 'cell_colors =  ' . str_replace('"', '\'\'', $request->cell_color) . '\" >> work.py;'
+        //     . 'echo \"' . 'cell_colorss = \'' . $request->cell_colors . '\'.strip(\'[\'\']\').split(\',\')\" >> work.py;'
+        //     // . 'echo \"' . 'cell_colorss =  ' . str_replace('"', '\'\'', $request->cell_colors) . '\" >> work.py;'
         //     . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
         //     . 'timeout 1 python work.py;'
         //     .'" 2>&1';
@@ -291,14 +297,110 @@ class LocalController extends Controller
         // $dockerRmCmd = 'sudo docker stop ' . $dockerContainerId . ';' . 'sudo docker rm ' . $dockerContainerId . ';';
         // exec($dockerRmCmd);
 
-        // log::debug($request->cell_color);
+        // log::debug($request->cell_colors);
         // log::debug($codeExeCmdOutput);
         // log::debug($codeExeCmdStatus);
 
         // $param = [
-        //     'cell_color'            => $codeExeCmdOutput,
+        //     'cell_colors'            => $codeExeCmdOutput,
         //     'code_exec_cmd_output'  => $codeExeCmdOutput,
         //     'code_exec_cmd_status'  => $codeExeCmdStatus,
         // ];
 
         // return $param;
+
+
+
+
+
+
+
+
+
+
+
+        
+            // $codeExeCmd =
+            //     'sudo docker start -i'. $dockerContainerId . ";"
+            //     .'sh -c "'
+            //     .'cd /tmp;'
+            //     . 'timeout 1 python code.py;'
+            //     .'" 2>&1';
+            // exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+
+
+            // // log::debug($request->cell_colors);
+            // log::debug($codeExeCmdOutput);
+            // log::debug($codeExeCmdStatus);
+
+        // $codeExeCmd =
+        //     'sudo docker start -i'. $dockerContainerId . ";"
+        //     .'sh -c "'
+        //     .'cd /tmp;'
+        //     .'rm work.py;'
+        //     .'touch work.py;'
+        //     . 'echo \"' . 'cell_colorss = \'' . $request->cell_colors . '\'.strip(\'[\'\']\').split(\',\')\" >> work.py;'
+        //     // . 'echo \"' . 'cell_colorss =  ' . str_replace('"', '\'\'', $request->cell_colors) . '\" >> work.py;'
+        //     . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
+        //     . 'timeout 1 python work.py;'
+        //     .'" 2>&1';
+        // exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+
+            // $dockerRmCmd = 'sudo docker stop ' . $dockerContainerId . ';' . 'sudo docker rm ' . $dockerContainerId . ';';
+            // exec($dockerRmCmd);
+
+        // log::debug($request->cell_colors);
+        // log::debug($codeExeCmdOutput);
+        // log::debug($codeExeCmdStatus);
+
+        // $param = [
+        //     'cell_colors'            => $codeExeCmdOutput,
+        //     'code_exec_cmd_output'  => $codeExeCmdOutput,
+        //     'code_exec_cmd_status'  => $codeExeCmdStatus,
+        // ];
+
+
+
+
+
+
+
+
+
+                // $codeExeCmd =
+        //     'sudo docker start -i'. $dockerContainerId . ";"
+        //     .'sh -c "'
+        //     .'cd /tmp;'
+        //     .'rm work.py;'
+        //     .'touch work.py;'
+        //     . 'echo \"' . 'cell_colorss = \'' . $request->cell_colors . '\'.strip(\'[\'\']\').split(\',\')\" >> work.py;'
+        //     // . 'echo \"' . 'cell_colorss =  ' . str_replace('"', '\'\'', $request->cell_colors) . '\" >> work.py;'
+        //     . 'echo \"' . str_replace('"', '\'', $localCell->cell_code) . '\" >> work.py;'
+        //     . 'timeout 1 python work.py;'
+        //     .'" 2>&1';
+        // exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
+
+            // $dockerRmCmd = 'sudo docker stop ' . $dockerContainerId . ';' . 'sudo docker rm ' . $dockerContainerId . ';';
+            // exec($dockerRmCmd);
+
+        // log::debug($request->cell_colors);
+        // log::debug($codeExeCmdOutput);
+        // log::debug($codeExeCmdStatus);
+
+
+
+                // $testCmd =
+        // // 'sudo docker start '. $dockerContainerId . ';' .
+        // 'sudo docker exec '. $dockerContainerId . ' bash -c "cd /tmp && timeout 1 python code.py" 2>&1'
+        // ;
+        // exec($testCmd, $testCmdOutput, $testCmdStatus);
+        
+        // log::debug($dockerContainerId);
+        // log::debug($testCmdOutput);
+        // log::debug($testCmdStatus);
+
+
+
+                    // $dockerCpCmd =
+            // 'sudo docker exec '. $dockerContainerId . ' bash -c "cd /tmp && rm -Rf '. Auth::user()->name . ' && mkdir    ";'.
+            // 'sudo docker cp ' . storage_path('app/' . Auth::user()->name . '/code ') . $dockerContainerId . ':/tmp/'. Auth::user()->name . '/code';

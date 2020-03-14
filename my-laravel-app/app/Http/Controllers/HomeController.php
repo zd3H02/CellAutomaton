@@ -48,7 +48,7 @@ class HomeController extends Controller
         $localCell->creator    = Auth::user()->name;
         $localCell->cell_name  = 'test';
         $localCell->cell_code  = '';
-        $localCell->cell_color = config('CONST.LOCAL.INIT_CELL_COLOR');
+        $localCell->cell_colors = config('CONST.LOCAL.INIT_CELL_COLORS');
         $localCell->publish    = false;
 
         $localCell->save();
@@ -56,17 +56,17 @@ class HomeController extends Controller
         $thumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $localCell->id . '.jpg';
         $detailsFileName      = 'details_'    . Auth::user()->name . '_'. $localCell->id . '.jpg';
 
-        MyFunc::createCellColorJpg(
+        MyFunc::createCellColorsJpg(
             $thumbnailFileName,
             config('CONST.LOCAL.THUMBNAIL_HEIGHT'),
             config('CONST.LOCAL.THUMBNAIL_WIDTH'),
-            config('CONST.LOCAL.INIT_CELL_COLOR')
+            config('CONST.LOCAL.INIT_CELL_COLORS')
         );
-        MyFunc::createCellColorJpg(
+        MyFunc::createCellColorsJpg(
             $detailsFileName,
             config('CONST.LOCAL.DETAILS_HEIGHT'),
             config('CONST.LOCAL.DETAILS_WIDTH'),
-            config('CONST.LOCAL.INIT_CELL_COLOR')
+            config('CONST.LOCAL.INIT_CELL_COLORS')
         );
 
         $localCell->thumbnail_filename  = $thumbnailFileName;
