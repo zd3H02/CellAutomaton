@@ -1,16 +1,5 @@
 import React from 'react'
-
-function GetHexColor(octR = 0, octG = 0, octB = 0) {
-    const hexR = Number(octR).toString(16)
-    const hexG = Number(octG).toString(16)
-    const hexB = Number(octB).toString(16)
-
-    const paddedHexR = ('00' + hexR).slice(-2)
-    const paddedHexG = ('00' + hexG).slice(-2)
-    const paddedHexB = ('00' + hexB).slice(-2)
-
-    return paddedHexR + paddedHexG + paddedHexB
-}
+// import { GetHexColor, GetFetchData} from './utility'
 
 function Cell(props) {
     const btnStyle = {
@@ -44,8 +33,8 @@ function CellMatrix(props) {
                     key = {colI.toString()}
                     onClick = {
                         ()=>HandleClick(
-                            props.MAX_CELL_COL_NUM * rowI + colI
-                            ,'#' + GetHexColor(props.colorR,props.colorG,props.colorB)
+                            props.MAX_CELL_COL_NUM * rowI + colI,
+                            props.acceptedColorCode
                         )
                     }
                     color = {props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]}

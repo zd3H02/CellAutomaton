@@ -2,29 +2,15 @@ import React, { useState, useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import {useInterval} from './components/custom-useinterval'
 
-// import {ColorSelector} from './components/color-selector'
-// import {CellCodeTextarea} from './components/cell-code-textarea'
-import {CellControlButton} from './components/cell-control-button'
 import {CellMatrix, cell} from './components/cell-matrix'
-
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 
+import {GetHexColor, GetFetchData} from './components/utility'
+import {InputValidation} from './components/input-color-validation'
 
-
-
-function GetFetchData(url, init={}) {
-    async function fetchData() {
-        const response = await fetch(url,init)
-        const json = await response.json()
-        //const json = await response
-        //console.log(json)
-        return json
-    }
-    return fetchData()
-}
 
 
 function CellAutomatonAppController(props) {
@@ -34,9 +20,16 @@ function CellAutomatonAppController(props) {
 
     const [cellColors, setCellColors] = useState(Array(MAX_CELL_NUM).fill('#ffffff'))
     const [cellCode, setCellCode]   = useState('')
-    const [colorR, setColorR]       = useState(0)
-    const [colorG, setColorG]       = useState(0)
-    const [colorB, setColorB]       = useState(0)
+
+    const [acceptedColorCode, setAcceptedColorCode] = useState('#000000')
+    const [inputColorCode, setInputColorCode]     = useState('#000000')
+    const colorValidationStateIsInputted = 'Inputted'
+    const colorValidationStateIsAccepted = 'Accepted'
+    const colorValidationStateIsError    = 'Error'
+    const [colorValidationState, setColorValidationState] = useState(colorValidationStateIsAccepted)
+    const [inputColorR, setInputColorR] = useState(0)
+    const [inputColorG, setInputColorG] = useState(0)
+    const [inputColorB, setInputColorB] = useState(0)
 
     const cellCalcStateIsRun    = 'Run'
     const cellCalcStateIsStop   = 'Stop'
@@ -47,13 +40,15 @@ function CellAutomatonAppController(props) {
     const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
 
     const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
-    const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter]   = useState(0)
+    const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
 
     const isFirstCodeSaveSend = useRef(true)
     const isFirstCellColorsSaveSend = useRef(true)
 
     const [codeExecCmdOutput, setCodeExecCmdOutput] = useState('')
     const [codeExecCmdStatus, setCodeExecCmdStatus] = useState('')
+
+    const [cellName, setCellName] = useState('')
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -174,26 +169,179 @@ function CellAutomatonAppController(props) {
         3000
     );
 
+    // カラーコードバリデーション
+    InputValidation(
+        inputColorCode,
+        /^#[\da-fA-F]{6}$/,
+        colorValidationState === colorValidationStateIsInputted,
+        ()=>setColorValidationState(colorValidationStateIsAccepted),
+        ()=>setColorValidationState(colorValidationStateIsError),
+        ()=>{
+            setColorValidationState(colorValidationStateIsAccepted)
+            setAcceptedColorCode(inputColorCode)
+            setInputColorR(parseInt(inputColorCode.slice(1,3),16))
+            setInputColorG(parseInt(inputColorCode.slice(3,5),16))
+            setInputColorB(parseInt(inputColorCode.slice(5,7),16))
+        }
+    )
+
+    InputValidation(
+        Number(inputColorR).toString(16),
+        /^[\da-fA-F]{1,2}$/,
+        colorValidationState === colorValidationStateIsInputted,
+        ()=>setColorValidationState(colorValidationStateIsAccepted),
+        ()=>setColorValidationState(colorValidationStateIsError),
+        ()=>{
+            const left  = acceptedColorCode.slice(0,1)
+            const right = acceptedColorCode.slice(3)
+            const paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2)
+            const neewColorCode = left + paddedHex + right
+            setAcceptedColorCode(neewColorCode)
+            setInputColorCode(neewColorCode)
+        }
+    )
+    InputValidation(
+        Number(inputColorG).toString(16),
+        /^[\da-fA-F]{1,2}$/,
+        colorValidationState === colorValidationStateIsInputted,
+        ()=>setColorValidationState(colorValidationStateIsAccepted),
+        ()=>setColorValidationState(colorValidationStateIsError),
+        ()=>{
+            const left  = acceptedColorCode.slice(0,3)
+            const right = acceptedColorCode.slice(5)
+            const paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2)
+            const neewColorCode = left + paddedHex + right
+            setAcceptedColorCode(neewColorCode)
+            setInputColorCode(neewColorCode)
+        }
+    )
+    InputValidation(
+        Number(inputColorB).toString(16),
+        /^[\da-fA-F]{1,2}$/,
+        colorValidationState === colorValidationStateIsInputted,
+        ()=>setColorValidationState(colorValidationStateIsAccepted),
+        ()=>setColorValidationState(colorValidationStateIsError),
+        ()=>{
+            const left  = acceptedColorCode.slice(0,5)
+            const right = ''
+            const paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2)
+            const neewColorCode = left + paddedHex + right
+            setAcceptedColorCode(neewColorCode)
+            setInputColorCode(neewColorCode)
+        }
+    )
+    // <input type="text" value={inputColorR} onChange={(event)=>setInputColorR(event.target.value)}/>
     return (
         <div>
+            <input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/>
             <CellMatrix
                 MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                 MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
                 setCellColors={setCellColors}
                 cellColors={cellColors}
-                colorR={colorR}
-                colorG={colorG}
-                colorB={colorB}
+                acceptedColorCode = {acceptedColorCode}
             />
-            {/* <CellCodeTextarea value={cellCode} onChange={setCellCode}/> */}
-            <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={"実行"}/>
-            <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={"停止"}/>
-            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}} content={"コード保存"}/>
-            <CellControlButton value={codeSaveButtonCounter} onChange={()=>{setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}} content={"初期セル色保存"}/>
+            <button value={cellCalcStateIsRun} onClick={(event)=>setCellCalcState(event.target.value)}>
+                実行
+            </button>
+            <button value={cellCalcStateIsStop} onClick={(event)=>setCellCalcState(event.target.value)}>
+                停止
+            </button>
+            <button value={codeSaveButtonCounter} onClick={()=>setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}>
+                コード保存
+            </button>
+            <button value={codeSaveButtonCounter} onClick={()=>setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}>
+                初期セル色保存
+            </button>
 
-            <p>R:<input type="text" value={colorR} onChange={(event)=>setColorR(event.target.value)}/>:<Slider value={colorR} onChange={setColorR} min="0" max="255"/></p>
-            <p>G:<input type="text" value={colorG} onChange={(event)=>setColorG(event.target.value)}/>:<Slider value={colorG} onChange={setColorG} min="0" max="255"/></p>
-            <p>B:<input type="text" value={colorB} onChange={(event)=>setColorB(event.target.value)}/>:<Slider value={colorB} onChange={setColorB} min="0" max="255"/></p>
+            <p>
+                #:
+                <input
+                    type="text"
+                    value={inputColorCode}
+                    onChange={
+                        (event)=>{
+                            setInputColorCode(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                />
+            </p>
+            <p>
+                R:
+                <input
+                    type="text"
+                    value={inputColorR}
+                    onChange={
+                        (event)=>{
+                            setInputColorR(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                />
+                :
+                <input
+                    type="range"
+                    value={inputColorR}
+                    onChange={
+                        (event)=>{
+                            setInputColorR(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                    min="0"
+                    max="255"/>
+            </p>
+            <p>
+                G:
+                <input
+                    type="text"
+                    value={inputColorG}
+                    onChange={
+                        (event)=>{
+                            setInputColorG(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                />
+                :
+                <input
+                    type="range"
+                    value={inputColorG}
+                    onChange={
+                        (event)=>{
+                            setInputColorG(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                    min="0"
+                    max="255"/>
+            </p>
+            <p>
+                B:
+                <input
+                    type="text"
+                    value={inputColorB}
+                    onChange={
+                        (event)=>{
+                            setInputColorB(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                />
+                :
+                <input
+                    type="range"
+                    value={inputColorB}
+                    onChange={
+                        (event)=>{
+                            setInputColorB(event.target.value)
+                            setColorValidationState(colorValidationStateIsInputted)
+                        }
+                    }
+                    min="0"
+                    max="255"/>
+            </p>
 
             <div>
                 <AceEditor
@@ -217,15 +365,6 @@ function CellAutomatonAppController(props) {
 
 
 
-function Slider(props) {
-    function handleChange(event) {
-        props.onChange(event.target.value)
-        //console.log(event.target.value)
-    }
-    return (
-        <input type="range" value={props.value} min={props.min} max={props.max} onChange={handleChange}/>
-    )
-}
 
 
 
@@ -240,3 +379,59 @@ ReactDOM.render(<CellAutomatonAppController/>, localApp)
 
 
 /* R:<ColorSelector value={colorR} onChange={setColorR}/> */
+
+/* <CellCodeTextarea value={cellCode} onChange={setCellCode}/> */
+/* <CellControlButton value={codeSaveButtonCounter}  content={"コード保存"}/> */
+/* <CellControlButton value={cellCalcStateIsRun} onChange={setCellCalcState} content={"実行"}/> */
+/* <CellControlButton value={cellCalcStateIsStop} onChange={setCellCalcState} content={"停止"}/> */
+/* <CellControlButton value={codeSaveButtonCounter}  content={"初期セル色保存"}/> */
+
+/* :<Slider value={colorR} onChange={setColorR} min="0" max="255"/> */
+/* :<Slider value={colorG} onChange={setColorG} min="0" max="255"/></p> */
+/* :<Slider value={colorB} onChange={setColorB} min="0" max="255"/> */
+
+
+
+// function Slider(props) {
+//     function handleChange(event) {
+//         props.onChange(event.target.value)
+//         //console.log(event.target.value)
+//     }
+//     return (
+//         <input type="range" value={props.value} min={props.min} max={props.max} onChange={handleChange}/>
+//     )
+// }
+
+
+// import {ColorSelector} from './components/color-selector'
+// import {CellCodeTextarea} from './components/cell-code-textarea'
+// import {CellControlButton} from './components/cell-control-button'
+
+
+
+    // useEffect(
+    //     () => {
+    //         const regex = /^#[\da-fA-F]{6}$/;
+    //         const isValidationOk = inputColorCode.match(regex)
+    //         const isCheckExecute = colorValidationState === colorValidationStateIsInputted
+    //         if(isCheckExecute) {
+    //             if(isValidationOk) {
+    //                 setColorValidationState(colorValidationStateIsAccepted)
+    //                 setAcceptedColorCode(inputColorCode)
+    //                 setInputColorR(parseInt(inputColorCode.slice(1,3),16))
+    //                 setInputColorG(parseInt(inputColorCode.slice(3,5),16))
+    //                 setInputColorB(parseInt(inputColorCode.slice(5,7),16))
+    //             }
+    //             else {
+    //                 setColorValidationState(colorValidationStateIsError)
+    //             }
+    //         }
+    //     },
+    //     [inputColorCode]
+    // )
+
+    // const [acceptedcolorCode, setAcceptedColorCode] = useState('000000')
+    // const [inputColorCode, setInputColorCode]     = useState('000000')
+    // const colorValidationStateIsAccepted = 'Accepted'
+    // const colorValidationStateIsError    = 'Error'
+    // const [colorValidationState, setColorValidationState] = useState(colorValidationStateIsAccepted)

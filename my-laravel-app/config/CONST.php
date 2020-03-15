@@ -12,4 +12,5 @@ return [
     ],
     'SAVE_FOLDER_PATH'      => 'app/public/',
     'DELETE_FOLDER_PATH'    => 'public/',
+    'DOCKER_DEV_IMAGE_NAME' => 'dockerworkspace_dev',
 ];

@@ -31,18 +31,6 @@ class LocalController extends Controller
     }
     public function calc(Request $request)
     {
-        // exec('sudo docker exec -i 804028b02ec5 python tmp/hello.py', $output, $status);
-
-        // $dummyCellColorsData = [];
-        // for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
-        //     $dummyCellColorsData[$i] =
-        //          '#'
-        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-        //         ;
-        // }
-
         $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
 
         Storage::delete(Auth::user()->name . '/code/code.py');
@@ -57,48 +45,79 @@ class LocalController extends Controller
         //     '--ulimit fsize=1000000 '.
         //     'dockerworkspace_dev';
         // $dockerContainerId = exec($dockerRunCmd, $dockerRunCmdOutput, $dockerRunCmdStatus);
-        $dockerContainerId ='d1ade3c7b764';
 
+        $dockerGetConteinerIdCmd =
+            'sudo docker ps -f ancestor=' . config('CONST.DOCKER_DEV_IMAGE_NAME') . ' -q';
 
+        $dockerContainerId =
+            exec(
+                $dockerGetConteinerIdCmd,
+                $dockerGetConteinerIdCmdOutput,
+                $dockerGetConteinerIdCmdStatus
+            );
+
+        // log::debug($dockerGetConteinerIdCmd);
+        // log::debug($dockerGetConteinerIdCmdOutput);
+        // log::debug($dockerGetConteinerIdCmdStatus);
 
 
         $cdCmd = 'cd /tmp';
         $rmCmd = 'rm -Rf '. Auth::user()->name;
         $mkdirCmd = 'mkdir -p ' . Auth::user()->name . '/code';
-        $dockerExecRmAndMkdirCmd =
+        $dockerExecCdAndRmAndMkdirCmd =
             'sudo docker exec '. $dockerContainerId .
             ' bash -c "' . $cdCmd . ' && ' . $rmCmd .  ' && '. $mkdirCmd . '"';
-        exec($dockerExecRmAndMkdirCmd, $dockerExecRmAndMkdirCmdOutput, $dockerExecRmAndMkdirCmdStatus);
 
-        log::debug($dockerExecRmAndMkdirCmd);
+        exec(
+            $dockerExecCdAndRmAndMkdirCmd,
+            $dockerExecCdAndRmAndMkdirCmdOutput,
+            $dockerExecCdAndRmAndMkdirCmdStatus
+        );
+
+        // log::debug($dockerExecCdAndRmAndMkdirCmd);
+        // log::debug($dockerExecCdAndRmAndMkdirCmdOutput);
+        // log::debug($dockerExecCdAndRmAndMkdirCmdStatus);
+
 
         $storagePath = storage_path('app/' . Auth::user()->name . '/code/code.py ');
         $devConteinerPath = ':/tmp/'. Auth::user()->name . '/code';
         $dockerCpCmd = 'sudo docker cp ' . $storagePath . $dockerContainerId .$devConteinerPath;
-        exec($dockerCpCmd, $dockerCpCmdOutput, $dockerCpCmdStatus);
+        exec(
+            $dockerCpCmd,
+            $dockerCpCmdOutput,
+            $dockerCpCmdStatus
+        );
 
-        log::debug($dockerCpCmd);
+        // log::debug($dockerCpCmd);
+        // log::debug($dockerCpCmdOutput);
+        // log::debug($dockerCpCmdStatus);
 
         $codeExeCmd =
-            'sudo docker exec '. $dockerContainerId . ' bash -c "cd /tmp/' . Auth::user()->name .'/code && timeout 1 python code.py" 2>&1';
-        exec($codeExeCmd, $codeExeCmdOutput, $codeExeCmdStatus);
-  
-        log::debug($codeExeCmd);
-        log::debug($codeExeCmdOutput);
-        log::debug($codeExeCmdStatus);
+            'sudo docker exec '.
+            $dockerContainerId .
+            ' bash -c "cd /tmp/' .
+            Auth::user()->name .
+            '/code && timeout 1 python code.py" 2>&1';
 
-        if(is_array($codeExeCmdOutput)) {
-            $cellColorsCount = count($codeExeCmdOutput);
-        }
-        else {
-            $cellColorsCount = 0;
-        }
-        
-        $isCellColorsCountOk =  $cellColorsCount === config('CONST.LOCAL.MAX_CELL_COL_NUM');
-        $isCellColorsContentsOk = true;
+        exec(
+            $codeExeCmd,
+            $codeExeCmdOutput,
+            $codeExeCmdStatus
+        );
+
+        // log::debug($codeExeCmd);
+        // log::debug($codeExeCmdOutput);
+        // log::debug($codeExeCmdStatus);
+
+        $clacCellColors = explode(',', implode($codeExeCmdOutput));
+        $clacCellColorsCount = count($clacCellColors);
+
+        $isCellColorsCountOk =  $clacCellColorsCount === config('CONST.LOCAL.MAX_CELL_NUM');
         if($isCellColorsCountOk) {
-            foreach($codeExeCmdOutput as $cellColor) {
-                $isColorCode = preg_match('/^#[\da-fA-F]{6}$/', $cellColor);
+            $isCellColorsContentsOk = true;
+            foreach($clacCellColors as $calcCellColor) {
+                $isColorCode = preg_match('/^#[\da-fA-F]{6}$/', $calcCellColor);
+                log::debug($calcCellColor);
                 if($isColorCode) {
                     //正常。何もしない。
                 }
@@ -108,19 +127,37 @@ class LocalController extends Controller
                 }
             }
         }
+        else {
+            $isCellColorsContentsOk = false;
+        }
 
         $isUpdateCellColors = $isCellColorsCountOk && $isCellColorsContentsOk;
         if($isUpdateCellColors) {
-            $sendCellColors = $codeExeCmdOutput;
+            $sendCellColors = $clacCellColors;
         }
         else {
-            $sendCellColors = $request->cell_colors;
+            $sendCellColors = json_decode($request->cell_colors);
         }
 
-        log::debug('$isCellColorsCountOk:' . $isCellColorsCountOk);
-        log::debug('$isCellColorsContentsOk:' . $isCellColorsContentsOk);
-        log::debug($isUpdateCellColors);
-        log::debug($sendCellColors);
+        // log::debug($clacCellColorsCount);
+        // log::debug('$isCellColorsCountOk:' . $isCellColorsCountOk);
+        // log::debug('$isCellColorsContentsOk:' . $isCellColorsContentsOk);
+        // log::debug($isUpdateCellColors);
+        // log::debug($sendCellColors);
+
+        // $tmpCellColors =  rtrim(ltrim($request->cell_colors));
+        // log::debug($sendCellColors);
+        // log::debug($request->cell_colors);
+
+        // $dummyCellColorsData = [];
+        // for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
+        //     $dummyCellColorsData[$i] =
+        //          '#'
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+        //         ;
+        // }
 
         $param = [
             'cell_colors'           => $sendCellColors,
