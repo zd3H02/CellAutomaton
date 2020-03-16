@@ -7,27 +7,29 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div>
-                    セルオートマトン一覧
+                    {{Auth::user()->name}}:セルオートマトン一覧
                     <button type="submit" formaction="{{ url('home')}}">新規作成</button>
                 </div>
                 @if (isset($items))
                 @foreach ($items as $item)
-                    <p>
-                        {{Auth::user()->name}}:
-
-
-                        <img src="{{ asset($item->thumbnail_image_path) }}">
-                        <img src="{{ asset($item->detail_image_path) }}">
+                    <div>
+                        <p><a href="{{ url('/home') . '?id=' . $item->id}}">{{$item->cell_name}}</a></p>
+                         <img src="{{ asset('storage/' . $item->thumbnail_filename) }}">
                         <button type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
                         <button type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
-                    </p>
+                    </div>
                 @endforeach
             @endif
             </div>
             <div class="col-md-6">
-                <div>
-                    詳細
-                </div>
+                <p>詳細</p>
+                @if (isset($detailDisplayItem))
+                    <p>{{$detailDisplayItem->cell_name}}</p>
+                    <p>{{$detailDisplayItem->created_at}}</p>
+                    <p>{{$detailDisplayItem->updated_at}}</p>
+                    <img src="{{ asset('storage/' . $detailDisplayItem->detail_filename) }}">
+                    <p>{{$detailDisplayItem->cell_code}}</p>
+                @endif
             </div>
         </div>
     </div>

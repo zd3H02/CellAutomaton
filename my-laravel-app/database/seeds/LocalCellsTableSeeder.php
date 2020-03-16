@@ -12,22 +12,22 @@ class LocalCellsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tmpDummyCellColorData = [];
+        $tmpDummyCellColors = [];
         for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
-            $tmpDummyCellColorData[$i] = 
+            $tmpDummyCellColors[$i] = 
                  '#'
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
                 .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
                 ;
         }
-        $dummyCellColorData = implode( ",",$tmpDummyCellColorData);
+        $dummyCellColors = implode( ",",$tmpDummyCellColors);
         $param = [
-            'creator'           => 'zd3H02',
-            'cell_name'         => 'tanuki',
-            'cell_code'         => 'test',
-            'cell_color_data'   => $dummyCellColorData,
-            'created_at'        => now(),
+            'creator'       => 'zd3H02',
+            'cell_name'     => 'tanuki',
+            'cell_code'     => 'test',
+            'cell_colors'    => $dummyCellColors,
+            'created_at'    => now(),
         ];
         DB::table('local_cells')->insert($param);
     }

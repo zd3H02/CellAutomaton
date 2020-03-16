@@ -1,2 +1,7 @@
 /node_modules
 /docker/mysql/data
+docker/mysql/data/sample/failed_jobs.ibd
+docker/mysql/data/sample/local_cells.ibd
+docker/mysql/data/sample/password_resets.ibd
+docker/mysql/data/sample/users.ibd
+docker/mysql/data/sample/world_cells.ibd

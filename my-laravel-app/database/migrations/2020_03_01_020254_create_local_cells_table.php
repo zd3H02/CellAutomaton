@@ -17,10 +17,10 @@ class CreateLocalCellsTable extends Migration
             $table->bigIncrements('id');
             $table->string('creator');
             $table->string('cell_name')->nullable();
-            $table->string('cell_code')->nullable();
-            $table->text('cell_color_data');
-            $table->string('thumbnail_image_path')->nullable();
-            $table->string('detail_image_path')->nullable();
+            $table->text('cell_code')->nullable();
+            $table->text('cell_colors');
+            $table->string('thumbnail_filename')->nullable();
+            $table->string('detail_filename')->nullable();
             $table->boolean('publish')->default(false);
             $table->softDeletes();
             $table->timestamps();

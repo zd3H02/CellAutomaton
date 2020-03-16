@@ -102,6 +102,8 @@
                 </div>
             </div>
         </div>
+        {{phpinfo()}}
+        {{ get_magic_quotes_gpc()}}
     </body>
 </html>
 
