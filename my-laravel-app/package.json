@@ -27,6 +27,7 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "react-ace": "^8.0.0"
+        "react-ace": "^8.0.0",
+        "react-hotkeys-hook": "^1.6.0"
     }
 }

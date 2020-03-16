@@ -11,6 +11,7 @@ import "ace-builds/src-noconflict/theme-github";
 import {GetHexColor, GetFetchData} from './components/utility'
 import {InputValidation} from './components/input-color-validation'
 
+import { useHotkeys } from 'react-hotkeys-hook';
 
 
 function CellAutomatonAppController(props) {
@@ -49,6 +50,12 @@ function CellAutomatonAppController(props) {
     const [codeExecCmdStatus, setCodeExecCmdStatus] = useState('')
 
     const [cellName, setCellName] = useState('')
+
+    const [shrotCutCtrlEnterCounter, setShrotCutCtrlEnterCounter] = useState(0);
+    useHotkeys('ctrl+enter', () => setShrotCutCtrlEnterCounter(prevCount => prevCount + 1));
+
+    const [shrotCutShiftEnterCounter, setShrotCutShiftEnterCounter] = useState(0);
+    useHotkeys('shift+enter', () => setShrotCutShiftEnterCounter(prevCount => prevCount + 1));
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -101,7 +108,7 @@ function CellAutomatonAppController(props) {
                 // setCodeChangeState(codeChangeRequested)
             }
         },
-        [codeSaveButtonCounter]
+        [codeSaveButtonCounter,shrotCutCtrlEnterCounter]
     )
     // 初期セル色保存送信
     useEffect(
@@ -123,7 +130,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [cellColorsSaveButtonCounter]
+        [cellColorsSaveButtonCounter,shrotCutShiftEnterCounter]
     )
     // 実行中の送信
     useInterval(
@@ -168,7 +175,7 @@ function CellAutomatonAppController(props) {
 
             }
         },
-        3000
+        2000
     );
 
     // カラーコードバリデーション
@@ -370,7 +377,6 @@ function CellAutomatonAppController(props) {
         </div>
     )
 }
-
 
 
 

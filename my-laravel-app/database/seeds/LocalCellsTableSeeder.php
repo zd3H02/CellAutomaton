@@ -16,9 +16,9 @@ class LocalCellsTableSeeder extends Seeder
         for ($i = 0; $i < config('CONST.LOCAL.MAX_CELL_NUM'); $i++) {
             $tmpDummyCellColors[$i] = 
                  '#'
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
-                .str_pad(dechex(mt_rand(0, 255)),0,2,STR_PAD_LEFT)
+                .str_pad(dechex(mt_rand(0, 255)),2,'0',STR_PAD_LEFT)
+                .str_pad(dechex(mt_rand(0, 255)),2,'0',STR_PAD_LEFT)
+                .str_pad(dechex(mt_rand(0, 255)),2,'0',STR_PAD_LEFT)
                 ;
         }
         $dummyCellColors = implode( ",",$tmpDummyCellColors);
