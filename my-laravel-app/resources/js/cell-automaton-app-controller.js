@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 
 import {GetHexColor, GetFetchData} from './components/utility'
-import {InputValidation} from './components/input-color-validation'
+
 
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -22,12 +22,11 @@ function CellAutomatonAppController(props) {
     const [cellColors, setCellColors] = useState(Array(MAX_CELL_NUM).fill('#ffffff'))
     const [cellCode, setCellCode]   = useState('')
 
-    const [acceptedColorCode, setAcceptedColorCode] = useState('#000000')
-    const [inputColorCode, setInputColorCode]     = useState('#000000')
-    const colorValidationStateIsInputted = 'Inputted'
     const colorValidationStateIsAccepted = 'Accepted'
     const colorValidationStateIsError    = 'Error'
     const [colorValidationState, setColorValidationState] = useState(colorValidationStateIsAccepted)
+    const [acceptedColorCode, setAcceptedColorCode] = useState('#000000')
+    const [inputColorCode, setInputColorCode]       = useState('#000000')
     const [inputColorR, setInputColorR] = useState(0)
     const [inputColorG, setInputColorG] = useState(0)
     const [inputColorB, setInputColorB] = useState(0)
@@ -35,10 +34,6 @@ function CellAutomatonAppController(props) {
     const cellCalcStateIsRun    = 'Run'
     const cellCalcStateIsStop   = 'Stop'
     const [cellCalcState, setCellCalcState] = useState(cellCalcStateIsStop)
-
-    const codeChangeNotRequested    = 'NotRequested'
-    const codeChangeRequested       = 'Requested'
-    const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
 
     const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
     const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
@@ -51,11 +46,17 @@ function CellAutomatonAppController(props) {
 
     const [cellName, setCellName] = useState('')
 
-    const [shrotCutCtrlEnterCounter, setShrotCutCtrlEnterCounter] = useState(0);
-    useHotkeys('ctrl+enter', () => setShrotCutCtrlEnterCounter(prevCount => prevCount + 1));
+    const [shrotCut01, setShrotCut01] = useState(0);
+    useHotkeys('shift+d', () => setShrotCut01(prevCount => prevCount + 1));
 
-    const [shrotCutShiftEnterCounter, setShrotCutShiftEnterCounter] = useState(0);
-    useHotkeys('shift+enter', () => setShrotCutShiftEnterCounter(prevCount => prevCount + 1));
+    const [shrotCut02, setShrotCut02] = useState(0);
+    useHotkeys('shift+f', () => setShrotCut02(prevCount => prevCount + 1));
+
+    const [shrotCut03, setShrotCut03] = useState(0);
+    useHotkeys('shift+a', () => setShrotCut03(setCellCalcState(cellCalcStateIsRun)));
+
+    const [shrotCut04, setShrotCut04] = useState(0);
+    useHotkeys('shift+s', () => setShrotCut04(setCellCalcState(cellCalcStateIsStop)));
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -105,10 +106,9 @@ function CellAutomatonAppController(props) {
                         body: sendData
                     }
                 )
-                // setCodeChangeState(codeChangeRequested)
             }
         },
-        [codeSaveButtonCounter,shrotCutCtrlEnterCounter]
+        [codeSaveButtonCounter,shrotCut01]
     )
     // 初期セル色保存送信
     useEffect(
@@ -130,114 +130,111 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [cellColorsSaveButtonCounter,shrotCutShiftEnterCounter]
+        [cellColorsSaveButtonCounter,shrotCut02]
     )
     // 実行中の送信
     useInterval(
         () => {
             if(cellCalcState === cellCalcStateIsRun){
-                if(codeChangeState === codeChangeRequested) {
-                    const sendData = new FormData()
-                    sendData.append('id',G_LOCAL_CELL_ID)
-                    sendData.append('cell_code',cellCode)
-                    sendData.append('cell_colors',JSON.stringify(cellColors))
-                    const response = GetFetchData(
-                        '../local/change',
-                        {
-                            method: 'POST',
-                            headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
-                            body:sendData
-                        }
-                    )
-                    setCodeChangeState(codeChangeNotRequested)
-                }
-                else {
-                    const sendData = new FormData()
-                    sendData.append('id',G_LOCAL_CELL_ID)
-                    sendData.append('cell_colors',JSON.stringify(cellColors))
-                    const response = GetFetchData(
-                        '../local/calc',
-                        {
-                            method: 'POST',
-                            headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
-                            body:sendData
-                        }
-                    )
-                    response.then(
-                        result=>{
-                            setCellColors(result.cell_colors)
-                            setCodeExecCmdOutput(result.code_exec_cmd_output)
-                            setCodeExecCmdStatus(result.code_exec_cmd_status)
-                            // console.log(cellColors)
-                        }
-                    )
-                }
-
+                const sendData = new FormData()
+                sendData.append('id',G_LOCAL_CELL_ID)
+                sendData.append('cell_colors',JSON.stringify(cellColors))
+                const response = GetFetchData(
+                    '../local/calc',
+                    {
+                        method: 'POST',
+                        headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
+                        body:sendData
+                    }
+                )
+                response.then(
+                    result=>{
+                        setCellColors(result.cell_colors)
+                        setCodeExecCmdOutput(result.code_exec_cmd_output)
+                        setCodeExecCmdStatus(result.code_exec_cmd_status)
+                        // console.log(cellColors)
+                    }
+                )
             }
         },
         2000
     );
 
     // カラーコードバリデーション
-    InputValidation(
-        inputColorCode,
-        /^#[\da-fA-F]{6}$/,
-        colorValidationState === colorValidationStateIsInputted,
-        ()=>setColorValidationState(colorValidationStateIsAccepted),
-        ()=>setColorValidationState(colorValidationStateIsError),
-        ()=>{
-            setColorValidationState(colorValidationStateIsAccepted)
-            setAcceptedColorCode(inputColorCode)
-            setInputColorR(parseInt(inputColorCode.slice(1,3),16))
-            setInputColorG(parseInt(inputColorCode.slice(3,5),16))
-            setInputColorB(parseInt(inputColorCode.slice(5,7),16))
-        }
-    )
+    useEffect(
+        () => {
+            const isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/)
+            if(isValidationOk) {
+                setColorValidationState(colorValidationStateIsAccepted)
+                setAcceptedColorCode(inputColorCode)
+                setInputColorR(parseInt(inputColorCode.slice(1,3),16))
+                setInputColorG(parseInt(inputColorCode.slice(3,5),16))
+                setInputColorB(parseInt(inputColorCode.slice(5,7),16))
 
-    InputValidation(
-        Number(inputColorR).toString(16),
-        /^[\da-fA-F]{1,2}$/,
-        colorValidationState === colorValidationStateIsInputted,
-        ()=>setColorValidationState(colorValidationStateIsAccepted),
-        ()=>setColorValidationState(colorValidationStateIsError),
-        ()=>{
-            const left  = acceptedColorCode.slice(0,1)
-            const right = acceptedColorCode.slice(3)
-            const paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2)
-            const neewColorCode = left + paddedHex + right
-            setAcceptedColorCode(neewColorCode)
-            setInputColorCode(neewColorCode)
-        }
+                setColorValidationState(colorValidationStateIsAccepted)
+            }
+            else {
+                setColorValidationState(colorValidationStateIsError)
+            }
+        },
+        [inputColorCode]
     )
-    InputValidation(
-        Number(inputColorG).toString(16),
-        /^[\da-fA-F]{1,2}$/,
-        colorValidationState === colorValidationStateIsInputted,
-        ()=>setColorValidationState(colorValidationStateIsAccepted),
-        ()=>setColorValidationState(colorValidationStateIsError),
-        ()=>{
-            const left  = acceptedColorCode.slice(0,3)
-            const right = acceptedColorCode.slice(5)
-            const paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2)
-            const neewColorCode = left + paddedHex + right
-            setAcceptedColorCode(neewColorCode)
-            setInputColorCode(neewColorCode)
-        }
+    useEffect(
+        () => {
+            const isValidationOk = Number(inputColorR).toString(16).match(/^[\da-fA-F]{1,2}$/)
+            if(isValidationOk) {
+                const left  = acceptedColorCode.slice(0,1)
+                const right = acceptedColorCode.slice(3)
+                const paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2)
+                const neewColorCode = left + paddedHex + right
+                setAcceptedColorCode(neewColorCode)
+                setInputColorCode(neewColorCode)
+
+                setColorValidationState(colorValidationStateIsAccepted)
+            }
+            else {
+                setColorValidationState(colorValidationStateIsError)
+            }
+        },
+        [inputColorR]
     )
-    InputValidation(
-        Number(inputColorB).toString(16),
-        /^[\da-fA-F]{1,2}$/,
-        colorValidationState === colorValidationStateIsInputted,
-        ()=>setColorValidationState(colorValidationStateIsAccepted),
-        ()=>setColorValidationState(colorValidationStateIsError),
-        ()=>{
-            const left  = acceptedColorCode.slice(0,5)
-            const right = ''
-            const paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2)
-            const neewColorCode = left + paddedHex + right
-            setAcceptedColorCode(neewColorCode)
-            setInputColorCode(neewColorCode)
-        }
+    useEffect(
+        () => {
+            const isValidationOk = Number(inputColorG).toString(16).match(/^[\da-fA-F]{1,2}$/)
+            if(isValidationOk) {
+                const left  = acceptedColorCode.slice(0,3)
+                const right = acceptedColorCode.slice(5)
+                const paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2)
+                const neewColorCode = left + paddedHex + right
+                setAcceptedColorCode(neewColorCode)
+                setInputColorCode(neewColorCode)
+
+                setColorValidationState(colorValidationStateIsAccepted)
+            }
+            else {
+                setColorValidationState(colorValidationStateIsError)
+            }
+        },
+        [inputColorG]
+    )
+    useEffect(
+        () => {
+            const isValidationOk = Number(inputColorB).toString(16).match(/^[\da-fA-F]{1,2}$/)
+            if(isValidationOk) {
+                const left  = acceptedColorCode.slice(0,5)
+                const right = ''
+                const paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2)
+                const neewColorCode = left + paddedHex + right
+                setAcceptedColorCode(neewColorCode)
+                setInputColorCode(neewColorCode)
+
+                setColorValidationState(colorValidationStateIsAccepted)
+            }
+            else {
+                setColorValidationState(colorValidationStateIsError)
+            }
+        },
+        [inputColorB]
     )
 
     const style = {
@@ -253,14 +250,14 @@ function CellAutomatonAppController(props) {
             <CellMatrix
                 MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                 MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
-                setCellColors={setCellColors}
                 cellColors={cellColors}
-                acceptedColorCode = {acceptedColorCode}
+                setCellColors={setCellColors}
+                acceptedColorCode={acceptedColorCode}
             />
-            <button value={cellCalcStateIsRun} onClick={(event)=>setCellCalcState(event.target.value)}>
+            <button value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
                 実行
             </button>
-            <button value={cellCalcStateIsStop} onClick={(event)=>setCellCalcState(event.target.value)}>
+            <button value={cellCalcStateIsStop} onClick={event=>setCellCalcState(event.target.value)}>
                 停止
             </button>
             <button value={codeSaveButtonCounter} onClick={()=>setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}>
@@ -271,92 +268,19 @@ function CellAutomatonAppController(props) {
             </button>
 
             <p>
-                #:
-                <input
-                    type="text"
-                    value={inputColorCode}
-                    onChange={
-                        (event)=>{
-                            setInputColorCode(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                />
+                #:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
             </p>
             <p>
-                R:
-                <input
-                    type="text"
-                    value={inputColorR}
-                    onChange={
-                        (event)=>{
-                            setInputColorR(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                />
-                :
-                <input
-                    type="range"
-                    value={inputColorR}
-                    onChange={
-                        (event)=>{
-                            setInputColorR(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                    min="0"
-                    max="255"/>
+                R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
+                :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
             </p>
             <p>
-                G:
-                <input
-                    type="text"
-                    value={inputColorG}
-                    onChange={
-                        (event)=>{
-                            setInputColorG(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                />
-                :
-                <input
-                    type="range"
-                    value={inputColorG}
-                    onChange={
-                        (event)=>{
-                            setInputColorG(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                    min="0"
-                    max="255"/>
+                G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
+                :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
             </p>
             <p>
-                B:
-                <input
-                    type="text"
-                    value={inputColorB}
-                    onChange={
-                        (event)=>{
-                            setInputColorB(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                />
-                :
-                <input
-                    type="range"
-                    value={inputColorB}
-                    onChange={
-                        (event)=>{
-                            setInputColorB(event.target.value)
-                            setColorValidationState(colorValidationStateIsInputted)
-                        }
-                    }
-                    min="0"
-                    max="255"/>
+                B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
+                :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
             </p>
             <div style={style}>test</div>
             <div>
@@ -450,3 +374,41 @@ ReactDOM.render(<CellAutomatonAppController/>, localApp)
     // const colorValidationStateIsAccepted = 'Accepted'
     // const colorValidationStateIsError    = 'Error'
     // const [colorValidationState, setColorValidationState] = useState(colorValidationStateIsAccepted)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    // if(codeChangeState === codeChangeRequested) {
+                //     const sendData = new FormData()
+                //     sendData.append('id',G_LOCAL_CELL_ID)
+                //     sendData.append('cell_code',cellCode)
+                //     sendData.append('cell_colors',JSON.stringify(cellColors))
+                //     const response = GetFetchData(
+                //         '../local/change',
+                //         {
+                //             method: 'POST',
+                //             headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
+                //             body:sendData
+                //         }
+                //     )
+                //     setCodeChangeState(codeChangeNotRequested)
+                // }
+                // else {
+
+                                // }
+                                    // const codeChangeNotRequested    = 'NotRequested'
+    // const codeChangeRequested       = 'Requested'
+    // const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)

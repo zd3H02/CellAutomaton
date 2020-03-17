@@ -26,7 +26,7 @@ class LocalCellsTableSeeder extends Seeder
             'creator'       => 'zd3H02',
             'cell_name'     => 'tanuki',
             'cell_code'     => 'test',
-            'cell_colors'    => $dummyCellColors,
+            'cell_colors'   => $dummyCellColors,
             'created_at'    => now(),
         ];
         DB::table('local_cells')->insert($param);
