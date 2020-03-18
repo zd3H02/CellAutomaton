@@ -157,7 +157,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        2000
+        20000
     );
 
     // カラーコードバリデーション

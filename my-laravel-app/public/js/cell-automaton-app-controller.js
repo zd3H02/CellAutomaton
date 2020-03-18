@@ -60105,7 +60105,7 @@ function CellAutomatonAppController(props) {
         setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
       });
     }
-  }, 2000); // カラーコードバリデーション
+  }, 20000); // カラーコードバリデーション
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/);
@@ -60584,7 +60584,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

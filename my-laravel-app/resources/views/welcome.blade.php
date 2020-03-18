@@ -25,7 +25,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="#">ライフゲームとは<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">ライフゲームのルール<span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -50,23 +53,47 @@
             </div>
         </nav>
         <div class="content">
+
+            <div id="carouselExampleFade" class="carousel slide carousel-fade" data-interval="500" data-pause="false" data-ride="carousel">
+
+                <div class="carousel-inner">
+                    <div class="carousel-caption col-6 offset-3">
+                        <h1 class="display-1 text-muted">LifeEvo</h1>
+                        <p class="text-muted">
+                            ライフゲームは生命の誕生、進化、淘汰などのプロセスを簡易的なモデルで再現したシミュレーションゲームです。<br>
+                            LifeEvoは手軽にライフゲームが遊べるWebアプリです。<br>
+                            ルールの変更もできるのでオリジナルのライフゲームが楽しめます。<br>
+                            また、ほかのユーザーが作って投稿したライフゲームを遊ぶこともできます。
+                        </p>
+                    </div>
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_00.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_01.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_02.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_03.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_04.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_05.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_06.jpg') }}">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_07.jpg') }}">
+                    </div>
+                </div>
+            </div>
+
             <div class="container">
-                <div class="title m-b-md">
-                    LifeEvo
-                </div>
-                <div>
-                    ライフゲームを遊んでみよう
-                    ライフゲームは生命の誕生、進化、淘汰などのプロセスを
-                    簡易的なモデルで再現したシミュレーションゲームです。
-                </div>
-
-                <div>
-                    ライフノートとは
-                    ライフノートは手軽にライフゲームが遊べるWebアプリです。
-                    ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
-                    また、ほかの人が作って投稿したライフゲームを遊ぶこともできます。
-                </div>
-
                 <div>
                     ライフゲームとは
                     ライフゲームはセル・オートマトン（格子状のセルと単純な規則によって記述される離散計算モデル）の
@@ -97,7 +124,7 @@
 
                     たったこれだけのルールから複雑で神秘的な模様が生み出されるこがライフゲームの魅力です。
 
-                    ライフノートではセルの色、ルール、ルール判定に使用するセルの位置など自分好みにカスタマイズ可能です。
+                    LifeEvoではセルの色、ルール、ルール判定に使用するセルの位置など自分好みにカスタマイズ可能です。
                     ぜひ、自分だけのライフゲームを作ってみてください。
                 </div>
             </div>
@@ -123,7 +150,7 @@
 
 
 
-{{-- 
+{{--
 
 
 
