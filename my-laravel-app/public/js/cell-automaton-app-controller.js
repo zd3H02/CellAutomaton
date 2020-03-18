@@ -60584,7 +60584,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

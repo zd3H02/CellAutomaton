@@ -10886,3 +10886,7 @@ a.text-dark:focus {
   min-width: 400vw;
 }
 
+.table-hover tbody tr:hover td {
+  background: #17A2B8;
+}
+
