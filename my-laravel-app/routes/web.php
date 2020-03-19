@@ -20,7 +20,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home', 'HomeController@post');
+Route::post('/home/create', 'HomeController@create');
 Route::post('/home/del', 'HomeController@del');
+
+// Route::post('/garbagecan', 'HomeController@garbagecan');
 
 Route::get('/world', 'WorldController@index');
 

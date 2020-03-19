@@ -46,17 +46,18 @@ function CellAutomatonAppController(props) {
 
     const [cellName, setCellName] = useState('')
 
+    //ショートカットキー
     const [shrotCut01, setShrotCut01] = useState(0);
-    useHotkeys('shift+d', () => setShrotCut01(prevCount => prevCount + 1));
+    useHotkeys('shift+ctrl+d', () => setShrotCut01(prevCount => prevCount + 1));
 
     const [shrotCut02, setShrotCut02] = useState(0);
-    useHotkeys('shift+f', () => setShrotCut02(prevCount => prevCount + 1));
+    useHotkeys('shift+ctrl+f', () => setShrotCut02(prevCount => prevCount + 1));
 
     const [shrotCut03, setShrotCut03] = useState(0);
-    useHotkeys('shift+a', () => setShrotCut03(setCellCalcState(cellCalcStateIsRun)));
+    useHotkeys('shift+ctrl+a', () => setShrotCut03(setCellCalcState(cellCalcStateIsRun)));
 
     const [shrotCut04, setShrotCut04] = useState(0);
-    useHotkeys('shift+s', () => setShrotCut04(setCellCalcState(cellCalcStateIsStop)));
+    useHotkeys('shift+ctrl+s', () => setShrotCut04(setCellCalcState(cellCalcStateIsStop)));
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -157,7 +158,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        20000
+        2000
     );
 
     // カラーコードバリデーション
@@ -246,7 +247,7 @@ function CellAutomatonAppController(props) {
 
     return (
         <div>
-            <input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/>
+            <p>名称<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
             <CellMatrix
                 MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                 MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}

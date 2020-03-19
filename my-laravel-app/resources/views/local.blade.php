@@ -9,7 +9,5 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <div id="local-app" class="local-app"></div>
-    </div>
+    <div id="local-app" class="local-app"></div>
 @endsection

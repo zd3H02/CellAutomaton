@@ -453,7 +453,87 @@ log::debug($request->cell_colors);
 
 
 
+// import math
+// def get_neighborhood_sq_3x3(num):
+//     global input_colors
+//     MAX_COL_NUM = 20
+//     MAX_ROW_NUM = 20
+//     OUT_OF_RANGE = 'out_of_range'
 
+//     center_col = num % MAX_COL_NUM
+//     center_row = num / MAX_COL_NUM
+
+//     col_row_list = [
+//         [center_col-1,center_row-1],[center_col+0,center_row-1],[center_col+1,center_row-1],
+//         [center_col-1,center_row+0],[center_col+0,center_row+0],[center_col+1,center_row+0],
+//         [center_col-1,center_row+1],[center_col+0,center_row+1],[center_col+1,center_row+1],
+//     ]
+
+//     # print('row_list:' + str(col_row_list))
+//     index_list = []
+//     for col_row in col_row_list:
+//         col = col_row[0]
+//         row = col_row[1]
+
+//         if col < 0 or col >= MAX_COL_NUM:
+//             index_list.append(OUT_OF_RANGE)
+//         elif row < 0 or row >= MAX_ROW_NUM:
+//             index_list.append(OUT_OF_RANGE)
+//         else:
+//             index = MAX_ROW_NUM * row + col
+//             index_list.append(index)
+//     # print('index_list:' + str(index_list))
+
+//     color_list = []
+//     for index in index_list:
+//         if index == OUT_OF_RANGE:
+//             color_list.append('#000000')
+//         else:
+//             color_list.append(input_colors[index])
+
+//     #print('color_list:' + str(color_list))
+//     return color_list
+
+// # print("tanu")
+// # print(get_neighborhood_sq_3x3(5))
+
+// LIFE_COLOR  = '#FFFFFF'
+// DETH_COLOR = '#000000'
+// new_colors = []
+// for i, center_color in enumerate(input_colors):
+//     deth_count = 0
+//     life_count = 0
+//     neighborhood = get_neighborhood_sq_3x3(i)
+//     for color in neighborhood:
+//         if color == DETH_COLOR:
+//             deth_count += 1
+//         else:
+//             life_count += 1
+
+//     # print("tanu")
+//     # print(life_count)
+//     # print("buta")
+//     # print(deth_count)
+//     # print("buta")
+//     # print(neighborhood)
+
+//     if center_color == DETH_COLOR:
+//         if life_count == 3:
+//             new_colors.append(LIFE_COLOR)
+//         else:
+//             new_colors.append(center_color)
+//     else:
+//         life_count -= 1
+//         if life_count == 2 or life_count == 3:
+//             new_colors.append(center_color)
+//         elif life_count <= 1:
+//             new_colors.append(DETH_COLOR)
+//         elif life_count >= 4:
+//             new_colors.append(DETH_COLOR)
+
+// #print(life_count)
+// #print(deth_count)
+// print(new_colors)
 
 
 

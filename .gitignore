@@ -1,7 +1,13 @@
 /node_modules
-/docker/mysql/data
+docker/mysql/data
 docker/mysql/data/sample/failed_jobs.ibd
 docker/mysql/data/sample/local_cells.ibd
 docker/mysql/data/sample/password_resets.ibd
 docker/mysql/data/sample/users.ibd
 docker/mysql/data/sample/world_cells.ibd
+docker/mysql/data/ib_buffer_pool
+docker/mysql/data/ib_logfile0
+docker/mysql/data/ibdata1
+docker/mysql/data/mysql/innodb_index_stats.ibd
+docker/mysql/data/mysql/innodb_table_stats.ibd
+docker/mysql/data/sample/local_cells.ibd

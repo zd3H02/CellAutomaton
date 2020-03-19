@@ -39,6 +39,10 @@ class HomeController extends Controller
 
         return view('home', compact('items', 'detailDisplayItem'));
     }
+    public function post()
+    {
+        return redirect('home');
+    }
     public function del(Request $request)
     {
         $localCell = LocalCell::find($request->id);
@@ -48,7 +52,7 @@ class HomeController extends Controller
 
         return redirect('home');
     }
-    public function post(Request $request)
+    public function create(Request $request)
     {
 
         $localCell             = new LocalCell;

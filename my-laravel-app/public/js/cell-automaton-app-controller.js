@@ -59987,14 +59987,15 @@ function CellAutomatonAppController(props) {
   var _useState33 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState34 = _slicedToArray(_useState33, 2),
       cellName = _useState34[0],
-      setCellName = _useState34[1];
+      setCellName = _useState34[1]; //ショートカットキー
+
 
   var _useState35 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState36 = _slicedToArray(_useState35, 2),
       shrotCut01 = _useState36[0],
       setShrotCut01 = _useState36[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+d', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+d', function () {
     return setShrotCut01(function (prevCount) {
       return prevCount + 1;
     });
@@ -60005,7 +60006,7 @@ function CellAutomatonAppController(props) {
       shrotCut02 = _useState38[0],
       setShrotCut02 = _useState38[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+f', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+f', function () {
     return setShrotCut02(function (prevCount) {
       return prevCount + 1;
     });
@@ -60016,7 +60017,7 @@ function CellAutomatonAppController(props) {
       shrotCut03 = _useState40[0],
       setShrotCut03 = _useState40[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+a', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+a', function () {
     return setShrotCut03(setCellCalcState(cellCalcStateIsRun));
   });
 
@@ -60025,7 +60026,7 @@ function CellAutomatonAppController(props) {
       shrotCut04 = _useState42[0],
       setShrotCut04 = _useState42[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+s', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+s', function () {
     return setShrotCut04(setCellCalcState(cellCalcStateIsStop));
   }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -60105,7 +60106,7 @@ function CellAutomatonAppController(props) {
         setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
       });
     }
-  }, 20000); // カラーコードバリデーション
+  }, 2000); // カラーコードバリデーション
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/);
@@ -60172,13 +60173,13 @@ function CellAutomatonAppController(props) {
     background: acceptedColorCode // color: "#FF0000",
 
   };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u540D\u79F0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     value: cellName,
     onChange: function onChange(event) {
       return setCellName(event.target.value);
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
     cellColors: cellColors,
@@ -60584,7 +60585,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

@@ -20,3 +20,21 @@
 .table-hover tbody tr:hover td {
     background: #17A2B8;
 }
+
+.my-vh-100 {
+    //navbarの高さ分とpy-4のパディング分を引く
+    height: calc(100vh - 72px - 24px)
+}
+
+.my-card:hover {
+    background-color: #6c757d;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.my_btn_round {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
