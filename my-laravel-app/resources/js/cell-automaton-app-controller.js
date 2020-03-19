@@ -4,14 +4,22 @@ import {useInterval} from './components/custom-useinterval'
 
 import {CellMatrix, cell} from './components/cell-matrix'
 
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/theme-github";
+import AceEditor from "react-ace"
+import "ace-builds/src-noconflict/mode-python"
+import "ace-builds/src-noconflict/theme-github"
 
 import {GetHexColor, GetFetchData} from './components/utility'
 
 
-import { useHotkeys } from 'react-hotkeys-hook';
+import { useHotkeys } from 'react-hotkeys-hook'
+
+import {
+    Container,
+    Row,
+    Col,
+    Button,
+} from 'react-bootstrap'
+
 
 
 function CellAutomatonAppController(props) {
@@ -246,60 +254,66 @@ function CellAutomatonAppController(props) {
     }
 
     return (
-        <div>
-            <p>名称<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
-            <CellMatrix
-                MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
-                MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
-                cellColors={cellColors}
-                setCellColors={setCellColors}
-                acceptedColorCode={acceptedColorCode}
-            />
-            <button value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
-                実行
-            </button>
-            <button value={cellCalcStateIsStop} onClick={event=>setCellCalcState(event.target.value)}>
-                停止
-            </button>
-            <button value={codeSaveButtonCounter} onClick={()=>setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}>
-                コード保存
-            </button>
-            <button value={codeSaveButtonCounter} onClick={()=>setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}>
-                初期セル色保存
-            </button>
+        <Container fluid>
+            <Row>
+                <Col>
+                    <p>名称<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
+                    <CellMatrix
+                        MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
+                        MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
+                        cellColors={cellColors}
+                        setCellColors={setCellColors}
+                        acceptedColorCode={acceptedColorCode}
+                    />
+                </Col>
+                <Col>
+                    <Button value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
+                        実行
+                    </Button>
+                    <Button value={cellCalcStateIsStop} onClick={event=>setCellCalcState(event.target.value)}>
+                        停止
+                    </Button>
+                    <Button value={codeSaveButtonCounter} onClick={()=>setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}>
+                        コード保存
+                    </Button>
+                    <Button value={codeSaveButtonCounter} onClick={()=>setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}>
+                        初期セル色保存
+                    </Button>
 
-            <p>
-                #:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
-            </p>
-            <p>
-                R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
-                :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
-            </p>
-            <p>
-                G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
-                :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
-            </p>
-            <p>
-                B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
-                :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
-            </p>
-            <div style={style}>test</div>
-            <div>
-                <AceEditor
-                    mode="python"
-                    theme="github"
-                    name="aceCodeEditor"
-                    value={cellCode !== null ? cellCode : ''}
-                    onChange={setCellCode}
-                />
-            </div>
-            <div>
-                出力：{codeExecCmdOutput}
-            </div>
-            <div>
-                ステータス：{codeExecCmdStatus}
-            </div>
-        </div>
+                    <p>
+                        #:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
+                    </p>
+                    <p>
+                        R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
+                        :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
+                    </p>
+                    <p>
+                        G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
+                        :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
+                    </p>
+                    <p>
+                        B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
+                        :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
+                    </p>
+                    <div style={style}>test</div>
+                    <div>
+                        <AceEditor
+                            mode="python"
+                            theme="github"
+                            name="aceCodeEditor"
+                            value={cellCode !== null ? cellCode : ''}
+                            onChange={setCellCode}
+                        />
+                    </div>
+                    <div>
+                        出力：{codeExecCmdOutput}
+                    </div>
+                    <div>
+                        ステータス：{codeExecCmdStatus}
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

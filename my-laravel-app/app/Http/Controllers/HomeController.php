@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $items = LocalCell::where('creator',Auth::user()->name)->orderBy('created_at', 'desc')->get();
+        $items = LocalCell::where('creator',Auth::user()->name)->where('is_moved_to_trash', false)->orderBy('created_at', 'desc')->get();
 
         if(isset($request->id)) {
             $detailDisplayItem = LocalCell::find($request->id);
@@ -39,29 +39,21 @@ class HomeController extends Controller
 
         return view('home', compact('items', 'detailDisplayItem'));
     }
-    public function post()
-    {
-        return redirect('home');
-    }
     public function del(Request $request)
     {
         $localCell = LocalCell::find($request->id);
-        Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->detail_filename);
-        Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->thumbnail_filename);
-        $localCell->delete();
-
+        $localCell->is_moved_to_trash = true;
+        $localCell->save();
         return redirect('home');
     }
     public function create(Request $request)
     {
 
-        $localCell             = new LocalCell;
-        $localCell->creator    = Auth::user()->name;
-        $localCell->cell_name  = 'test';
-        $localCell->cell_code  = '';
+        $localCell              = new LocalCell;
+        $localCell->creator     = Auth::user()->name;
+        $localCell->cell_name   = 'test';
+        $localCell->cell_code   = '';
         $localCell->cell_colors = config('CONST.LOCAL.INIT_CELL_COLORS');
-        $localCell->publish    = false;
-
         $localCell->save();
 
         $thumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $localCell->id . '.jpg';
@@ -86,5 +78,28 @@ class HomeController extends Controller
         $localCell->save();
 
         return redirect('home');
+    }
+    public function trashcan(Request $request)
+    {
+        $isTrash = true;
+        $items = LocalCell::where('creator',Auth::user()->name)->where('is_moved_to_trash', true)->orderBy('created_at', 'desc')->get();
+        log::debug($items);
+        if(isset($request->id)) {
+            $detailDisplayItem = LocalCell::find($request->id);
+        }
+        else {
+            $detailDisplayItem = LocalCell::where('creator',Auth::user()->name)->orderBy('created_at', 'desc')->first();
+        }
+
+        return view('home', compact('isTrash', 'items', 'detailDisplayItem'));
+    }
+    public function forcedel(Request $request)
+    {
+        $localCell = LocalCell::find($request->id);
+        Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->detail_filename);
+        Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->thumbnail_filename);
+        $localCell->Delete();
+
+        return redirect('home/trashcan');
     }
 }

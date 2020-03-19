@@ -21,8 +21,8 @@ class CreateLocalCellsTable extends Migration
             $table->text('cell_colors');
             $table->string('thumbnail_filename')->nullable();
             $table->string('detail_filename')->nullable();
-            $table->boolean('publish')->default(false);
-            $table->softDeletes();
+            $table->boolean('is_publish')->default(false);
+            $table->boolean('is_moved_to_trash')->default(false);
             $table->timestamps();
         });
     }

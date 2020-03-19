@@ -28,6 +28,7 @@ class LocalCellsTableSeeder extends Seeder
             'cell_code'     => 'test',
             'cell_colors'   => $dummyCellColors,
             'created_at'    => now(),
+            'updated_at'    => now(),
         ];
         DB::table('local_cells')->insert($param);
     }

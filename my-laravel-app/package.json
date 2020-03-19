@@ -14,7 +14,7 @@
         "@babel/preset-env": "^7.8.6",
         "@babel/preset-react": "^7.0.0",
         "axios": "^0.19",
-        "bootstrap": "^4.0.0",
+        "bootstrap": "^4.4.1",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "react-ace": "^8.0.0",
+        "react-bootstrap": "^1.0.0-beta.17",
         "react-hotkeys-hook": "^1.6.0"
     }
 }

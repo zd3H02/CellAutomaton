@@ -1,23 +1,25 @@
 @extends('layouts.app')
 
-@section('js')
-<script defar>
-window.onload = function () {
-    $('#new-create').submit(function(){
-      var scroll_top = $('#list').scrollTop();
-      console.log(scroll_top)
-      console.log("tanuki")
-      window.localStorage.setItem('is_post', true);
-      window.localStorage.setItem('scrooll_top', scroll_top);
-    });
+@section('head')
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+@endsection
 
-    window.onload = function(){
-        if (indow.localStorage.getItem('is_post')) {
-            $(window).scrollTop(window.localStorage.getItem('scrooll_top'));
-            window.localStorage.removeItem('is_post');
-        }
+
+
+@section('js')
+<script>
+$('#list a').click(function(){
+    let scroll_top = $('#list').scrollTop()
+    window.localStorage.setItem('is_list_a_saved', true)
+    window.localStorage.setItem('scrooll_top', scroll_top)
+})
+
+window.addEventListener('DOMContentLoaded', function() {
+    if (window.localStorage.getItem('is_list_a_saved')) {
+        $('#list').scrollTop(window.localStorage.getItem('scrooll_top'));
+        window.localStorage.removeItem('is_list_a_saved')
     }
-}
+})
 </script>
 
 @endsection
@@ -31,32 +33,40 @@ window.onload = function () {
                 <h2 class="text-center">{{Auth::user()->name}}</h2>
                 <button class="btn btn-success w-100 mb-1" type="submit" formaction="{{ url('home/create')}}">新規作成</button>
                 <button #id="new-create" class="btn btn-primary w-100 mb-1" type="submit" formaction="{{ url('home') }}">ライフゲーム一覧</button>
-                <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="#">ゴミ箱</button>
+                <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="{{ url('home/trashcan')}}">ゴミ箱</button>
             </div>
-            <div class="my-vh-100 col-md-3 overflow-auto">
-                <h2 id="list" class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center">一覧</h2>
+            <div id="list" class="my-vh-100 col-md-3 overflow-auto">
+                <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center">一覧</h2>
                 @if (isset($items))
                     @foreach ($items as $item)
-                        <div class="card w-100 mb-2 mx-auto rounded">
-                            <div class="row no-gutters">
-                                <div class="position-relative my-card w-100">
-                                    <a class="stretched-link text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
-                                        <div class="d-flex flex-row align-items-center">
-                                            <div class="col-md-4">
-                                                <img class="border border-secondary m-1 rounded" src="{{ asset('storage/' . $item->thumbnail_filename) }}">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-title text-dark">{{$item->cell_name}}</h5>
-                                                </div>
+                    <div class="card w-100 mb-2 mx-auto rounded">
+                        <div class="row no-gutters">
+                            <div class="position-relative my-card w-100">
+                                @if (isset($isTrash))
+                                <a class="stretched-link text-decoration-none" href="{{ url('/home/trashcan') . '?id=' . $item->id}}">
+                                @else
+                                <a class="stretched-link text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
+                                @endif
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="col-md-4">
+                                            <img class="border border-secondary m-1 rounded" src="{{ asset('storage/' . $item->thumbnail_filename) }}">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-dark">{{$item->cell_name}}</h5>
                                             </div>
                                         </div>
-                                    </a>
-                                </div>
+                                    </div>
+                                </a>
                             </div>
-                            <button class="btn btn-primary rounded-0" type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
-                            <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
                         </div>
+                        @if (isset($isTrash))
+                        <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/forcedel')}}" name="id" value="{{$item->id}}">完全削除</button>
+                        @else
+                        <button class="btn btn-primary rounded-0" type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
+                        <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
+                        @endif
+                    </div>
                     @endforeach
                 @endif
             </div>
