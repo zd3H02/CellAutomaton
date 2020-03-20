@@ -10886,6 +10886,10 @@ a.text-dark:focus {
   min-width: 400vw;
 }
 
+body {
+  background-color: white;
+}
+
 .table-hover tbody tr:hover td {
   background: #17A2B8;
 }
@@ -10894,16 +10898,7 @@ a.text-dark:focus {
   height: calc(100vh - 72px - 24px);
 }
 
-.my-card:hover {
-  background-color: #6c757d;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
-}
-
-.my_btn_round {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+.my-z-index-m1 {
+  z-index: -1;
 }
 

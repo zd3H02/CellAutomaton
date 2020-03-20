@@ -1,11 +1,5 @@
 @extends('layouts.app')
 
-@section('head')
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-@endsection
-
-
-
 @section('js')
 <script>
 $('#list a').click(function(){
@@ -21,7 +15,6 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 })
 </script>
-
 @endsection
 
 @section('content')
@@ -39,46 +32,69 @@ window.addEventListener('DOMContentLoaded', function() {
                 <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center">一覧</h2>
                 @if (isset($items))
                     @foreach ($items as $item)
-                    <div class="card w-100 mb-2 mx-auto rounded">
+                    <div class="card w-100 mb-2 mx-auto rounded border-secondary">
+                        @if (isset($detailDisplayItem))
+                            @if ($detailDisplayItem->id === $item->id)
+                            <div class="card-header bg-info">
+                            @else
+                            <div class="card-header">
+                            @endif
+                        @else
+                        <div class="card-header">
+                        @endif
+                            <h5 class="card-title text-dark text-center m-0">{{$item->cell_name}}</h5>
+                        </div>
                         <div class="row no-gutters">
-                            <div class="position-relative my-card w-100">
-                                @if (isset($isTrash))
-                                <a class="stretched-link text-decoration-none" href="{{ url('/home/trashcan') . '?id=' . $item->id}}">
-                                @else
-                                <a class="stretched-link text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
-                                @endif
-                                    <div class="d-flex flex-row align-items-center">
-                                        <div class="col-md-4">
-                                            <img class="border border-secondary m-1 rounded" src="{{ asset('storage/' . $item->thumbnail_filename) }}">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-dark">{{$item->cell_name}}</h5>
-                                            </div>
+                            <div class="w-100">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="col-md-4">
+                                        @if (isset($isTrash))
+                                        <a class="text-decoration-none" href="{{ url('/home/trashcan') . '?id=' . $item->id}}">
+                                        @else
+                                        <a class="text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
+                                        @endif
+                                            <img class="border border-secondary m-1 rounded img-fluid" src="{{ asset('storage/' . $item->thumbnail_filename) }}">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <p class="card-title text-dark">{{$item->cell_comment}}</p>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
-                        @if (isset($isTrash))
-                        <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/forcedel')}}" name="id" value="{{$item->id}}">完全削除</button>
-                        @else
-                        <button class="btn btn-primary rounded-0" type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
-                        <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
-                        @endif
+                        <div class="container-fluid">
+                            <div class="row justify-content-md-center border-top p-1">
+                                @if (isset($isTrash))
+                                <button class="btn btn-primary col-md-5 m-1" type="submit" formaction="{{ url('home/restore')}}" name="id" value="{{$item->id}}">戻す</button>
+                                <button class="btn btn-danger col-md-5 m-1" type="submit" formaction="{{ url('home/forcedel')}}" name="id" value="{{$item->id}}">完全削除</button>
+                                @else
+                                <button class="btn btn-primary col-md-5 m-1" type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
+                                <button class="btn btn-secondary col-md-5 m-1" type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     @endforeach
                 @endif
             </div>
             <div class="my-vh-100 col-md-7 overflow-auto">
-                <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center">詳細</h2>
+                <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center my-z-index-m1">詳細</h2>
                 @if (isset($detailDisplayItem))
                     <pre>名称      ：{{$detailDisplayItem->cell_name}}</pre>
                     <pre>作成日    ：{{$detailDisplayItem->created_at}}</pre>
                     <pre>最終更新日：{{$detailDisplayItem->updated_at}}</pre>
-                    <img class="border border-secondary m-1 rounded" src="{{ asset('storage/' . $detailDisplayItem->detail_filename) }}">
-                    <p>コード：</p>
+                    <pre>セルカラー：</pre>
+                    <img class="border border-secondary m-1 rounded img-fluid" src="{{ asset('storage/' . $detailDisplayItem->detail_filename) }}">
+                    <pre>コード    ：</pre>
                     <pre>{{$detailDisplayItem->cell_code}}</pre>
+                @else
+                    <pre>名称      ：</pre>
+                    <pre>作成日    ：</pre>
+                    <pre>最終更新日：</pre>
+                    <pre>セルカラー：</pre>
+                    <pre>コード    ：</pre>
                 @endif
             </div>
         </div>
@@ -173,3 +189,11 @@ window.addEventListener('DOMContentLoaded', function() {
                     </table>
                 @endif
             </div> --}}
+
+
+            {{-- @if (isset($isTrash))
+            <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/forcedel')}}" name="id" value="{{$item->id}}">完全削除</button>
+            @else
+            <button class="btn btn-primary rounded-0" type="submit" formaction="{{ url('local')}}" name="id" value="{{$item->id}}">設定</button>
+            <button class="btn btn-secondary my_btn_round" type="submit" formaction="{{ url('home/del')}}" name="id" value="{{$item->id}}">削除</button>
+            @endif --}}

@@ -23,6 +23,7 @@ class CreateLocalCellsTable extends Migration
             $table->string('detail_filename')->nullable();
             $table->boolean('is_publish')->default(false);
             $table->boolean('is_moved_to_trash')->default(false);
+            $table->string('cell_comment')->nullable();
             $table->timestamps();
         });
     }

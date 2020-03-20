@@ -34,9 +34,8 @@ class HomeController extends Controller
             $detailDisplayItem = LocalCell::find($request->id);
         }
         else {
-            $detailDisplayItem = LocalCell::where('creator',Auth::user()->name)->orderBy('created_at', 'desc')->first();
+            $detailDisplayItem = LocalCell::where('creator',Auth::user()->name)->where('is_moved_to_trash', false)->orderBy('created_at', 'desc')->first();
         }
-
         return view('home', compact('items', 'detailDisplayItem'));
     }
     public function del(Request $request)
@@ -44,6 +43,7 @@ class HomeController extends Controller
         $localCell = LocalCell::find($request->id);
         $localCell->is_moved_to_trash = true;
         $localCell->save();
+
         return redirect('home');
     }
     public function create(Request $request)
@@ -83,12 +83,11 @@ class HomeController extends Controller
     {
         $isTrash = true;
         $items = LocalCell::where('creator',Auth::user()->name)->where('is_moved_to_trash', true)->orderBy('created_at', 'desc')->get();
-        log::debug($items);
         if(isset($request->id)) {
             $detailDisplayItem = LocalCell::find($request->id);
         }
         else {
-            $detailDisplayItem = LocalCell::where('creator',Auth::user()->name)->orderBy('created_at', 'desc')->first();
+            $detailDisplayItem = LocalCell::where('creator',Auth::user()->name)->where('is_moved_to_trash', true)->orderBy('created_at', 'desc')->first();
         }
 
         return view('home', compact('isTrash', 'items', 'detailDisplayItem'));
@@ -99,6 +98,14 @@ class HomeController extends Controller
         Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->detail_filename);
         Storage::delete(config('CONST.DELETE_FOLDER_PATH') . $localCell->thumbnail_filename);
         $localCell->Delete();
+
+        return redirect('home/trashcan');
+    }
+    public function restore(Request $request)
+    {
+        $localCell = LocalCell::find($request->id);
+        $localCell->is_moved_to_trash = false;
+        $localCell->save();
 
         return redirect('home/trashcan');
     }

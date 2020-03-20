@@ -22,9 +22,11 @@ Route::get(' /home'             , 'HomeController@index')->name('home');
 Route::post('/home'             , 'HomeController@index');
 Route::post('/home/create'      , 'HomeController@create');
 Route::post('/home/del'         , 'HomeController@del');
-Route::get('/home/trashcan'    , 'HomeController@forcedel');
+Route::get('/home/trashcan'     , 'HomeController@trashcan');
 Route::post('/home/trashcan'    , 'HomeController@trashcan');
 Route::post('/home/forcedel'    , 'HomeController@forcedel');
+Route::post('/home/restore'     , 'HomeController@restore');
+
 
 // Route::post('/garbagecan', 'HomeController@garbagecan');
 

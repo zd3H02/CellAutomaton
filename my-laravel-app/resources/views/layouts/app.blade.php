@@ -13,11 +13,15 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    @yield('head')
+    <!-- Styles -->
+    @section('style')
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @show
+
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm sticky-top">
             @auth
                 <a class="navbar-brand" href="{{ url('/home') }}">Home</a>
             @endauth
