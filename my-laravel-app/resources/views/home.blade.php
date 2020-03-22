@@ -22,14 +22,14 @@ window.addEventListener('DOMContentLoaded', function() {
     <form method="POST">
         @csrf
         <div class="row row-scrollable my-thumbnail-and-details">
-            <div class="my-vh-100 col-md-2 border-right border-secondary">
-                <h2 class="text-center">{{Auth::user()->name}}</h2>
+            <div class="col-md-2 border-right border-secondary">
+                <h2 class="border-bottom border-secondary text-center">{{Auth::user()->name}}</h2>
                 <button class="btn btn-success w-100 mb-1" type="submit" formaction="{{ url('home/create')}}">新規作成</button>
                 <button #id="new-create" class="btn btn-primary w-100 mb-1" type="submit" formaction="{{ url('home') }}">ライフゲーム一覧</button>
                 <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="{{ url('home/trashcan')}}">ゴミ箱</button>
             </div>
             <div id="list" class="my-vh-100 col-md-3 overflow-auto">
-                <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center">一覧</h2>
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2">一覧</h2>
                 @if (isset($items))
                     @foreach ($items as $item)
                     <div class="card w-100 mb-2 mx-auto rounded border-secondary">
@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 @endif
             </div>
             <div class="my-vh-100 col-md-7 overflow-auto">
-                <h2 class="border-bottom border-secondary sticky-top bg-light mx-n2 text-center my-z-index-m1">詳細</h2>
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 my-z-index-m1">詳細</h2>
                 @if (isset($detailDisplayItem))
                     <pre>名称      ：{{$detailDisplayItem->cell_name}}</pre>
                     <pre>作成日    ：{{$detailDisplayItem->created_at}}</pre>

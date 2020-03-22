@@ -74648,9 +74648,15 @@ function CellAutomatonAppController(props) {
     background: acceptedColorCode // color: "#FF0000",
 
   };
+  var cellMatrixStyle = {
+    minWidth: '850px'
+  };
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Container"], {
     fluid: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u540D\u79F0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], {
+    md: 6,
+    style: cellMatrixStyle
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u30E9\u30A4\u30D5\u30B2\u30FC\u30E0\u540D\uFF1A", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     value: cellName,
     onChange: function onChange(event) {
@@ -74662,7 +74668,59 @@ function CellAutomatonAppController(props) {
     cellColors: cellColors,
     setCellColors: setCellColors,
     acceptedColorCode: acceptedColorCode
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], {
+    md: 6
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: style
+  }, "test"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Hex:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorCode,
+    onChange: function onChange(event) {
+      return setInputColorCode(event.target.value);
+    }
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0R:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorR,
+    onChange: function onChange(event) {
+      return setInputColorR(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorR,
+    onChange: function onChange(event) {
+      return setInputColorR(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0G:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorG,
+    onChange: function onChange(event) {
+      return setInputColorG(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorG,
+    onChange: function onChange(event) {
+      return setInputColorG(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0B:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorB,
+    onChange: function onChange(event) {
+      return setInputColorB(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorB,
+    onChange: function onChange(event) {
+      return setInputColorB(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
     value: cellCalcStateIsRun,
     onClick: function onClick(event) {
       return setCellCalcState(event.target.value);
@@ -74682,63 +74740,18 @@ function CellAutomatonAppController(props) {
     onClick: function onClick() {
       return setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1);
     }
-  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "#:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorCode,
-    onChange: function onChange(event) {
-      return setInputColorCode(event.target.value);
-    }
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "R:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorR,
-    onChange: function onChange(event) {
-      return setInputColorR(event.target.value);
-    }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorR,
-    onChange: function onChange(event) {
-      return setInputColorR(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "G:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorG,
-    onChange: function onChange(event) {
-      return setInputColorG(event.target.value);
-    }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorG,
-    onChange: function onChange(event) {
-      return setInputColorG(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "B:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorB,
-    onChange: function onChange(event) {
-      return setInputColorB(event.target.value);
-    }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorB,
-    onChange: function onChange(event) {
-      return setInputColorB(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    style: style
-  }, "test"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_4___default.a, {
+  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_4___default.a, {
     mode: "python",
     theme: "github",
     name: "aceCodeEditor",
     value: cellCode !== null ? cellCode : '',
-    onChange: setCellCode
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "\u51FA\u529B\uFF1A", codeExecCmdOutput), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "\u30B9\u30C6\u30FC\u30BF\u30B9\uFF1A", codeExecCmdStatus))));
+    onChange: setCellCode,
+    className: "border border-secondary rounded p-1  my-1"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded p-1 my-1"
+  }, "\u51FA\u529B\uFF1A", codeExecCmdOutput, "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded p-1 my-1"
+  }, "\u30B9\u30C6\u30FC\u30BF\u30B9\uFF1A", codeExecCmdStatus))));
 }
 
 var localApp = document.getElementById('local-app');
@@ -74833,6 +74846,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CellMatrix", function() { return CellMatrix; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -74843,14 +74857,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
  // import { GetHexColor, GetFetchData} from './utility'
 
+
+
 function Cell(props) {
   var btnStyle = {
     height: '40px',
     width: '40px',
     background: props.color
   };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    // onClick={()=>props.onClick()}
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"] // onClick={()=>props.onClick()}
+  , {
     onMouseOver: function onMouseOver() {
       return props.onMouseOver();
     },
@@ -74861,7 +74877,7 @@ function Cell(props) {
       return props.onMouseUp();
     },
     style: btnStyle,
-    className: "btn btn-default"
+    className: "btn btn-default p-0 border border-0"
   });
 }
 
@@ -74907,8 +74923,9 @@ function CellMatrix(props) {
   }
 
   var cells = tempCells.map(function (rows, rowI) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      key: rowI.toString()
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+      key: rowI.toString(),
+      className: "m-0"
     }, rows.map(function (col, colI) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, {
         key: colI.toString() // onClick = {
@@ -74934,7 +74951,9 @@ function CellMatrix(props) {
     }));
   }); // console.log(cells)
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, cells);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded d-inline-block"
+  }, cells);
 }
 
 

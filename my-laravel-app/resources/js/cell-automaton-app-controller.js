@@ -252,12 +252,14 @@ function CellAutomatonAppController(props) {
         background: acceptedColorCode,
         // color: "#FF0000",
     }
-
+    const cellMatrixStyle = {
+        minWidth : '850px',
+    }
     return (
         <Container fluid>
             <Row>
-                <Col>
-                    <p>名称<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
+                <Col md={6} style={cellMatrixStyle}>
+                    <p>ライフゲーム名：<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
                     <CellMatrix
                         MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                         MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
@@ -266,7 +268,23 @@ function CellAutomatonAppController(props) {
                         acceptedColorCode={acceptedColorCode}
                     />
                 </Col>
-                <Col>
+                <Col md={6}>
+                    <div style={style}>test</div>
+                    <p>
+                        Hex:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
+                        :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
+                        :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
+                        :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
+                    </p>
                     <Button value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
                         実行
                     </Button>
@@ -279,23 +297,6 @@ function CellAutomatonAppController(props) {
                     <Button value={codeSaveButtonCounter} onClick={()=>setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}>
                         初期セル色保存
                     </Button>
-
-                    <p>
-                        #:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
-                    </p>
-                    <p>
-                        R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
-                        :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
-                    </p>
-                    <p>
-                        G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
-                        :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
-                    </p>
-                    <p>
-                        B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
-                        :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
-                    </p>
-                    <div style={style}>test</div>
                     <div>
                         <AceEditor
                             mode="python"
@@ -303,16 +304,27 @@ function CellAutomatonAppController(props) {
                             name="aceCodeEditor"
                             value={cellCode !== null ? cellCode : ''}
                             onChange={setCellCode}
+                            className="border border-secondary rounded p-1  my-1"
                         />
                     </div>
-                    <div>
+                    <div className="border border-secondary rounded p-1 my-1">
                         出力：{codeExecCmdOutput}
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
+
                     </div>
-                    <div>
+                    <div className="border border-secondary rounded p-1 my-1">
                         ステータス：{codeExecCmdStatus}
                     </div>
                 </Col>
             </Row>
+
         </Container>
     )
 }

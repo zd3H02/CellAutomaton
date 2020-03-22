@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 // import { GetHexColor, GetFetchData} from './utility'
 
+import {
+    Container,
+    Row,
+    Col,
+    Button,
+} from 'react-bootstrap'
+
 function Cell(props) {
     const btnStyle = {
         height : '40px',
@@ -8,13 +15,13 @@ function Cell(props) {
         background : props.color,
     }
     return (
-        <button
+        <Button
             // onClick={()=>props.onClick()}
             onMouseOver={()=>props.onMouseOver()}
             onMouseDown={()=>props.onMouseDown()}
             onMouseUp={()=>props.onMouseUp()}
             style={btnStyle}
-            className={"btn btn-default"}/>
+            className="btn btn-default p-0 border border-0"/>
     )
 }
 
@@ -56,40 +63,41 @@ function CellMatrix(props) {
     }
 
     const cells = tempCells.map((rows, rowI) =>
-        <div key = {rowI.toString()}>
-            {rows.map((col, colI) =>
-                <Cell
-                    key = {colI.toString()}
-                    // onClick = {
-                    //     ()=>HandleClick(
-                    //         props.MAX_CELL_COL_NUM * rowI + colI,
-                    //         props.acceptedColorCode
-                    //     )
-                    // }
-                    onMouseOver={
-                        ()=>HandleMouseOver(
-                            props.MAX_CELL_COL_NUM * rowI + colI,
-                            props.acceptedColorCode,
-                            // mouseState
-                        )
-                    }
-                    // onMouseDown={()=>setMouseState(mouseStateIsDown)}
-                    onMouseDown={
-                        ()=>HandleMouseDown(
-                            props.MAX_CELL_COL_NUM * rowI + colI,
-                            props.acceptedColorCode
-                        )
-                    }
-                    onMouseUp={()=>setMouseState(mouseStateIsUp)}
-                    color = {props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]}
-                />
-            )}
-        </div>
+            <p key = {rowI.toString()} className={"m-0"}>
+                {rows.map((col, colI) =>
+                    <Cell
+                        key = {colI.toString()}
+                        // onClick = {
+                        //     ()=>HandleClick(
+                        //         props.MAX_CELL_COL_NUM * rowI + colI,
+                        //         props.acceptedColorCode
+                        //     )
+                        // }
+                        onMouseOver={
+                            ()=>HandleMouseOver(
+                                props.MAX_CELL_COL_NUM * rowI + colI,
+                                props.acceptedColorCode,
+                                // mouseState
+                            )
+                        }
+                        // onMouseDown={()=>setMouseState(mouseStateIsDown)}
+                        onMouseDown={
+                            ()=>HandleMouseDown(
+                                props.MAX_CELL_COL_NUM * rowI + colI,
+                                props.acceptedColorCode
+                            )
+                        }
+                        onMouseUp={()=>setMouseState(mouseStateIsUp)}
+                        color = {props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]}
+                    />
+                )}
+            </p>
+
     )
     // console.log(cells)
 
     return (
-        <div>{cells}</div>
+        <div className="border border-secondary rounded d-inline-block">{cells}</div>
     )
 }
 
