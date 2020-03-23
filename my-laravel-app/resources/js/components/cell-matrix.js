@@ -97,7 +97,7 @@ function CellMatrix(props) {
     // console.log(cells)
 
     return (
-        <div className="border border-secondary rounded d-inline-block">{cells}</div>
+        <div className={props.className}>{cells}</div>
     )
 }
 

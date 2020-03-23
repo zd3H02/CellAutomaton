@@ -74341,15 +74341,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_custom_useinterval__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/custom-useinterval */ "./resources/js/components/custom-useinterval.js");
 /* harmony import */ var _components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/cell-matrix */ "./resources/js/components/cell-matrix.js");
-/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-ace */ "./node_modules/react-ace/lib/index.js");
-/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_ace__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ace-builds/src-noconflict/mode-python */ "./node_modules/ace-builds/src-noconflict/mode-python.js");
-/* harmony import */ var ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ace-builds/src-noconflict/theme-github */ "./node_modules/ace-builds/src-noconflict/theme-github.js");
-/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _components_utility__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/utility */ "./resources/js/components/utility.js");
-/* harmony import */ var react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-hotkeys-hook */ "./node_modules/react-hotkeys-hook/dist-web/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _components_color_validation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/color-validation */ "./resources/js/components/color-validation.js");
+/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-ace */ "./node_modules/react-ace/lib/index.js");
+/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_ace__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ace-builds/src-noconflict/mode-python */ "./node_modules/ace-builds/src-noconflict/mode-python.js");
+/* harmony import */ var ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_mode_python__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ace-builds/src-noconflict/theme-github */ "./node_modules/ace-builds/src-noconflict/theme-github.js");
+/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_utility__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/utility */ "./resources/js/components/utility.js");
+/* harmony import */ var react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-hotkeys-hook */ "./node_modules/react-hotkeys-hook/dist-web/index.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -74357,6 +74358,7 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -74393,101 +74395,83 @@ function CellAutomatonAppController(props) {
   var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState10 = _slicedToArray(_useState9, 2),
       cellCode = _useState10[0],
-      setCellCode = _useState10[1];
+      setCellCode = _useState10[1]; // const MAX_ACCEPTED_COLOR_CODE_SIZE = 2
+  // const acceptedColorCode = new Array(MAX_ACCEPTED_COLOR_CODE_SIZE)
+  // const setAcceptedColorCode = new Array(MAX_ACCEPTED_COLOR_CODE_SIZE)
+  // for (let i=0; i<MAX_ACCEPTED_COLOR_CODE_SIZE; i++) {
+  // }
 
-  var colorValidationStateIsAccepted = 'Accepted';
-  var colorValidationStateIsError = 'Error';
 
-  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(colorValidationStateIsAccepted),
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(Array(2).fill('#0000ff')),
       _useState12 = _slicedToArray(_useState11, 2),
-      colorValidationState = _useState12[0],
-      setColorValidationState = _useState12[1];
+      acceptedColorCodes = _useState12[0],
+      setAcceptedColorCodes = _useState12[1]; // const [acceptedColorCode00, setAcceptedColorCode00] = useState('#000000')
+  // const [acceptedColorCode01, setAcceptedColorCode01] = useState('#ffffff')
 
-  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('#000000'),
+
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState14 = _slicedToArray(_useState13, 2),
-      acceptedColorCode = _useState14[0],
-      setAcceptedColorCode = _useState14[1];
-
-  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('#000000'),
-      _useState16 = _slicedToArray(_useState15, 2),
-      inputColorCode = _useState16[0],
-      setInputColorCode = _useState16[1];
-
-  var _useState17 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState18 = _slicedToArray(_useState17, 2),
-      inputColorR = _useState18[0],
-      setInputColorR = _useState18[1];
-
-  var _useState19 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState20 = _slicedToArray(_useState19, 2),
-      inputColorG = _useState20[0],
-      setInputColorG = _useState20[1];
-
-  var _useState21 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState22 = _slicedToArray(_useState21, 2),
-      inputColorB = _useState22[0],
-      setInputColorB = _useState22[1];
+      inUseColor = _useState14[0],
+      setInUseColor = _useState14[1];
 
   var cellCalcStateIsRun = 'Run';
   var cellCalcStateIsStop = 'Stop';
 
-  var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellCalcStateIsStop),
-      _useState24 = _slicedToArray(_useState23, 2),
-      cellCalcState = _useState24[0],
-      setCellCalcState = _useState24[1]; // const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
-  // const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
-
+  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellCalcStateIsStop),
+      _useState16 = _slicedToArray(_useState15, 2),
+      cellCalcState = _useState16[0],
+      setCellCalcState = _useState16[1];
 
   var isFirstCodeSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
   var isFirstCellColorsSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
 
-  var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
-      _useState26 = _slicedToArray(_useState25, 2),
-      codeExecCmdOutput = _useState26[0],
-      setCodeExecCmdOutput = _useState26[1];
+  var _useState17 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState18 = _slicedToArray(_useState17, 2),
+      codeExecCmdOutput = _useState18[0],
+      setCodeExecCmdOutput = _useState18[1];
 
-  var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
-      _useState28 = _slicedToArray(_useState27, 2),
-      codeExecCmdStatus = _useState28[0],
-      setCodeExecCmdStatus = _useState28[1];
+  var _useState19 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState20 = _slicedToArray(_useState19, 2),
+      codeExecCmdStatus = _useState20[0],
+      setCodeExecCmdStatus = _useState20[1];
 
-  var _useState29 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
-      _useState30 = _slicedToArray(_useState29, 2),
-      cellName = _useState30[0],
-      setCellName = _useState30[1]; //ショートカットキー
+  var _useState21 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState22 = _slicedToArray(_useState21, 2),
+      cellName = _useState22[0],
+      setCellName = _useState22[1]; //ショートカットキー
 
 
-  var _useState31 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState32 = _slicedToArray(_useState31, 2),
-      shrotCut03ShiftCtrlA = _useState32[0],
-      setShrotCut03ShiftCtrlA = _useState32[1];
+  var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState24 = _slicedToArray(_useState23, 2),
+      shrotCut03ShiftCtrlA = _useState24[0],
+      setShrotCut03ShiftCtrlA = _useState24[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+a', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+a', function () {
     return setShrotCut03ShiftCtrlA(setCellCalcState(cellCalcStateIsRun));
   });
 
-  var _useState33 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState34 = _slicedToArray(_useState33, 2),
-      shrotCutShiftCtrlS = _useState34[0],
-      setShrotCutShiftCtrlS = _useState34[1];
+  var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState26 = _slicedToArray(_useState25, 2),
+      shrotCutShiftCtrlS = _useState26[0],
+      setShrotCutShiftCtrlS = _useState26[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+s', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+s', function () {
     return setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop));
   });
   var codeSaveStateIsSaving = 'Saving';
   var codeSaveStateIsSaved = 'Saved';
 
-  var _useState35 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(codeSaveStateIsSaved),
-      _useState36 = _slicedToArray(_useState35, 2),
-      codeSaveState = _useState36[0],
-      setcodeSaveState = _useState36[1];
+  var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(codeSaveStateIsSaved),
+      _useState28 = _slicedToArray(_useState27, 2),
+      codeSaveState = _useState28[0],
+      setcodeSaveState = _useState28[1];
 
-  var _useState37 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState38 = _slicedToArray(_useState37, 2),
-      shrotCutShiftCtrlD = _useState38[0],
-      setShrotCutShiftCtrlD = _useState38[1];
+  var _useState29 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState30 = _slicedToArray(_useState29, 2),
+      shrotCutShiftCtrlD = _useState30[0],
+      setShrotCutShiftCtrlD = _useState30[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+d', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+d', function () {
     return setShrotCutShiftCtrlD(function (prevCount) {
       return prevCount + 1;
     });
@@ -74495,28 +74479,39 @@ function CellAutomatonAppController(props) {
   var cellColorsSaveStateIsSaving = 'Saving';
   var cellColorsSaveStateIsSaved = 'Saved';
 
-  var _useState39 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellColorsSaveStateIsSaved),
-      _useState40 = _slicedToArray(_useState39, 2),
-      cellColorsSaveState = _useState40[0],
-      setCellColorsSaveState = _useState40[1];
+  var _useState31 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellColorsSaveStateIsSaved),
+      _useState32 = _slicedToArray(_useState31, 2),
+      cellColorsSaveState = _useState32[0],
+      setCellColorsSaveState = _useState32[1];
 
-  var _useState41 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState42 = _slicedToArray(_useState41, 2),
-      shrotCutShiftCtrlF = _useState42[0],
-      setShrotCutShiftCtrlF = _useState42[1];
+  var _useState33 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState34 = _slicedToArray(_useState33, 2),
+      shrotCutShiftCtrlF = _useState34[0],
+      setShrotCutShiftCtrlF = _useState34[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+f', function () {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+f', function () {
     return setShrotCutShiftCtrlF(function (prevCount) {
       return prevCount + 1;
     });
-  }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+  });
+
+  function getInUseColor() {
+    // if(inUseColor === 0) {
+    //     return acceptedColorCode00
+    // }
+    // if(inUseColor === 1) {
+    //     return acceptedColorCode01
+    // }
+    return acceptedColorCodes[inUseColor];
+  } // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var sendData = new FormData();
     sendData.append('id', G_LOCAL_CELL_ID);
-    var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_7__["GetFetchData"])('../local/first', {
+    var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/first', {
       method: 'POST',
       headers: {
         'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -74543,7 +74538,7 @@ function CellAutomatonAppController(props) {
       sendData.append('id', G_LOCAL_CELL_ID);
       sendData.append('cell_name', cellName);
       sendData.append('cell_code', cellCode);
-      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_7__["GetFetchData"])('../local/codesave', {
+      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/codesave', {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -74564,7 +74559,7 @@ function CellAutomatonAppController(props) {
       var sendData = new FormData();
       sendData.append('id', G_LOCAL_CELL_ID);
       sendData.append('cell_colors', cellColors);
-      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_7__["GetFetchData"])('../local/cellcolorsave', {
+      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/cellcolorsave', {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -74582,7 +74577,7 @@ function CellAutomatonAppController(props) {
       var sendData = new FormData();
       sendData.append('id', G_LOCAL_CELL_ID);
       sendData.append('cell_colors', JSON.stringify(cellColors));
-      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_7__["GetFetchData"])('../local/calc', {
+      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/calc', {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': G_CSRF_TOKEN
@@ -74595,180 +74590,104 @@ function CellAutomatonAppController(props) {
         setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
       });
     }
-  }, 2000); // カラーコードバリデーション
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/);
-
-    if (isValidationOk) {
-      setColorValidationState(colorValidationStateIsAccepted);
-      setAcceptedColorCode(inputColorCode);
-      setInputColorR(parseInt(inputColorCode.slice(1, 3), 16));
-      setInputColorG(parseInt(inputColorCode.slice(3, 5), 16));
-      setInputColorB(parseInt(inputColorCode.slice(5, 7), 16));
-      setColorValidationState(colorValidationStateIsAccepted);
-    } else {
-      setColorValidationState(colorValidationStateIsError);
-    }
-  }, [inputColorCode]);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var isValidationOk = Number(inputColorR).toString(16).match(/^[\da-fA-F]{1,2}$/);
-
-    if (isValidationOk) {
-      var left = acceptedColorCode.slice(0, 1);
-      var right = acceptedColorCode.slice(3);
-      var paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2);
-      var neewColorCode = left + paddedHex + right;
-      setAcceptedColorCode(neewColorCode);
-      setInputColorCode(neewColorCode);
-      setColorValidationState(colorValidationStateIsAccepted);
-    } else {
-      setColorValidationState(colorValidationStateIsError);
-    }
-  }, [inputColorR]);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var isValidationOk = Number(inputColorG).toString(16).match(/^[\da-fA-F]{1,2}$/);
-
-    if (isValidationOk) {
-      var left = acceptedColorCode.slice(0, 3);
-      var right = acceptedColorCode.slice(5);
-      var paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2);
-      var neewColorCode = left + paddedHex + right;
-      setAcceptedColorCode(neewColorCode);
-      setInputColorCode(neewColorCode);
-      setColorValidationState(colorValidationStateIsAccepted);
-    } else {
-      setColorValidationState(colorValidationStateIsError);
-    }
-  }, [inputColorG]);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    var isValidationOk = Number(inputColorB).toString(16).match(/^[\da-fA-F]{1,2}$/);
-
-    if (isValidationOk) {
-      var left = acceptedColorCode.slice(0, 5);
-      var right = '';
-      var paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2);
-      var neewColorCode = left + paddedHex + right;
-      setAcceptedColorCode(neewColorCode);
-      setInputColorCode(neewColorCode);
-      setColorValidationState(colorValidationStateIsAccepted);
-    } else {
-      setColorValidationState(colorValidationStateIsError);
-    }
-  }, [inputColorB]);
-  var style = {
+  }, 2000);
+  var inUseColorStyle = {
     height: "40px",
     width: "40px",
-    background: acceptedColorCode // color: "#FF0000",
-
+    background: getInUseColor()
   };
-  var cellMatrixStyle = {
+  var acceptedColorCode00Style = {
+    height: "40px",
+    width: "40px",
+    background: acceptedColorCodes[0]
+  };
+  var acceptedColorCode01Style = {
+    height: "40px",
+    width: "40px",
+    background: acceptedColorCodes[1]
+  };
+  var cellMatrixColStyle = {
     minWidth: '850px'
-  };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Container"], {
+  }; // function test(tanu, kitune) {
+  //     return (
+  //     <ColorValidation
+  //         acceptedColorCode={tanu}
+  //         setAcceptedColorCode={kitune}
+  //     />
+  //     )
+  // }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Container"], {
     fluid: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6,
-    style: cellMatrixStyle
+    style: cellMatrixColStyle
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u30E9\u30A4\u30D5\u30B2\u30FC\u30E0\u540D\uFF1A", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     value: cellName,
     onChange: function onChange(event) {
       return setCellName(event.target.value);
     }
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded",
+    style: inUseColorStyle
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
     cellColors: cellColors,
     setCellColors: setCellColors,
-    acceptedColorCode: acceptedColorCode
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Col"], {
+    acceptedColorCode: getInUseColor(),
+    className: "border border-secondary rounded d-inline-block"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    style: style
-  }, "test"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Hex:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorCode,
-    onChange: function onChange(event) {
-      return setInputColorCode(event.target.value);
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+    className: "border border-secondary rounded",
+    style: acceptedColorCode00Style,
+    onClick: function onClick() {
+      return setInUseColor(0);
     }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: parseInt(inputColorCode.slice(1), 16),
-    onChange: function onChange(event) {
-      return setInputColorCode('#' + ('000000' + Number(event.target.value).toString(16)).slice(-6));
-    },
-    min: "0",
-    max: "16777215"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0R:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorR,
-    onChange: function onChange(event) {
-      return setInputColorR(event.target.value);
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+    className: "border border-secondary rounded",
+    style: acceptedColorCode01Style,
+    onClick: function onClick() {
+      return setInUseColor(1);
     }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorR,
-    onChange: function onChange(event) {
-      return setInputColorR(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0G:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorG,
-    onChange: function onChange(event) {
-      return setInputColorG(event.target.value);
-    }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorG,
-    onChange: function onChange(event) {
-      return setInputColorG(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0B:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "text",
-    value: inputColorB,
-    onChange: function onChange(event) {
-      return setInputColorB(event.target.value);
-    }
-  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "range",
-    value: inputColorB,
-    onChange: function onChange(event) {
-      return setInputColorB(event.target.value);
-    },
-    min: "0",
-    max: "255"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+  }), acceptedColorCodes.map(function (acceptedColorCode, i) {
+    console.log(i);
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_color_validation__WEBPACK_IMPORTED_MODULE_4__["ColorValidation"], {
+      key: i,
+      i: i,
+      className: inUseColor === i ? "" : "d-none",
+      acceptedColorCode: acceptedColorCodes,
+      setAcceptedColorCode: setAcceptedColorCodes
+    });
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary",
     value: cellCalcStateIsRun,
     onClick: function onClick(event) {
       return setCellCalcState(event.target.value);
     }
-  }, "\u5B9F\u884C"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+  }, "\u5B9F\u884C"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary",
     value: cellCalcStateIsStop,
     onClick: function onClick(event) {
       return setCellCalcState(event.target.value);
     }
-  }, "\u505C\u6B62"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+  }, "\u505C\u6B62"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary",
     onClick: function onClick() {
       return setShrotCutShiftCtrlD(function (prevCount) {
         return prevCount + 1;
       });
     }
-  }, "\u30B3\u30FC\u30C9\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+  }, "\u30B3\u30FC\u30C9\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary",
     onClick: function onClick() {
       return setShrotCutShiftCtrlF(function (prevCount) {
         return prevCount + 1;
       });
     }
-  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_4___default.a, {
+  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_5___default.a, {
     mode: "python",
     theme: "github",
     name: "aceCodeEditor",
@@ -74858,6 +74777,116 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 // const codeChangeNotRequested    = 'NotRequested'
 // const codeChangeRequested       = 'Requested'
 // const [codeChangeState, setCodeChangeState] = useState(codeChangeNotRequested)
+//     {/* <p>
+//     Hex:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
+//     :<input type="range" value={parseInt(inputColorCode.slice(1),16)} onChange={event=>setInputColorCode('#'+('000000'+Number(event.target.value).toString(16)).slice(-6))} min="0" max="16777215"/>
+// </p>
+// <p>
+//     &nbsp;&nbsp;&nbsp;&nbsp;R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
+//     :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
+// </p>
+// <p>
+//     &nbsp;&nbsp;&nbsp;&nbsp;G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
+//     :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
+// </p>
+// <p>
+//     &nbsp;&nbsp;&nbsp;&nbsp;B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
+//     :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
+// </p> */}
+// const colorValidationStateIsAccepted = 'Accepted'
+// const colorValidationStateIsError    = 'Error'
+// const [colorValidationState, setColorValidationState] = useState(colorValidationStateIsAccepted)
+// const [inputColorCode, setInputColorCode]       = useState('#000000')
+// const [inputColorR, setInputColorR] = useState(0)
+// const [inputColorG, setInputColorG] = useState(0)
+// const [inputColorB, setInputColorB] = useState(0)
+// const [inputColorCode2, setInputColorCode2]       = useState('#000000')
+// const [inputColorR2, setInputColorR2] = useState(0)
+// const [inputColorG2, setInputColorG2] = useState(0)
+// const [inputColorB2, setInputColorB2] = useState(0)
+// const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
+// const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
+// カラーコードバリデーション
+// const colorValidation = ColorValidation(
+//      acceptedColorCode
+//     ,setAcceptedColorCode
+// )
+// const colorValidation2 = ColorValidation(
+//     acceptedColorCode2
+//    ,setAcceptedColorCode2
+// )
+// カラーコードバリデーション
+// useEffect(
+//     () => {
+//         const isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/)
+//         if(isValidationOk) {
+//             setColorValidationState(colorValidationStateIsAccepted)
+//             setAcceptedColorCode(inputColorCode)
+//             setInputColorR(parseInt(inputColorCode.slice(1,3),16))
+//             setInputColorG(parseInt(inputColorCode.slice(3,5),16))
+//             setInputColorB(parseInt(inputColorCode.slice(5,7),16))
+//             setColorValidationState(colorValidationStateIsAccepted)
+//         }
+//         else {
+//             setColorValidationState(colorValidationStateIsError)
+//         }
+//     },
+//     [inputColorCode]
+// )
+// useEffect(
+//     () => {
+//         const isValidationOk = Number(inputColorR).toString(16).match(/^[\da-fA-F]{1,2}$/)
+//         if(isValidationOk) {
+//             const left  = acceptedColorCode.slice(0,1)
+//             const right = acceptedColorCode.slice(3)
+//             const paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2)
+//             const neewColorCode = left + paddedHex + right
+//             setAcceptedColorCode(neewColorCode)
+//             setInputColorCode(neewColorCode)
+//             setColorValidationState(colorValidationStateIsAccepted)
+//         }
+//         else {
+//             setColorValidationState(colorValidationStateIsError)
+//         }
+//     },
+//     [inputColorR]
+// )
+// useEffect(
+//     () => {
+//         const isValidationOk = Number(inputColorG).toString(16).match(/^[\da-fA-F]{1,2}$/)
+//         if(isValidationOk) {
+//             const left  = acceptedColorCode.slice(0,3)
+//             const right = acceptedColorCode.slice(5)
+//             const paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2)
+//             const neewColorCode = left + paddedHex + right
+//             setAcceptedColorCode(neewColorCode)
+//             setInputColorCode(neewColorCode)
+//             setColorValidationState(colorValidationStateIsAccepted)
+//         }
+//         else {
+//             setColorValidationState(colorValidationStateIsError)
+//         }
+//     },
+//     [inputColorG]
+// )
+// useEffect(
+//     () => {
+//         const isValidationOk = Number(inputColorB).toString(16).match(/^[\da-fA-F]{1,2}$/)
+//         if(isValidationOk) {
+//             const left  = acceptedColorCode.slice(0,5)
+//             const right = ''
+//             const paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2)
+//             const neewColorCode = left + paddedHex + right
+//             setAcceptedColorCode(neewColorCode)
+//             setInputColorCode(neewColorCode)
+//             setColorValidationState(colorValidationStateIsAccepted)
+//         }
+//         else {
+//             setColorValidationState(colorValidationStateIsError)
+//         }
+//     },
+//     [inputColorB]
+// )
 
 /***/ }),
 
@@ -74980,8 +75009,187 @@ function CellMatrix(props) {
   }); // console.log(cells)
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "border border-secondary rounded d-inline-block"
+    className: props.className
   }, cells);
+}
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/color-validation.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/color-validation.js ***!
+  \*****************************************************/
+/*! exports provided: ColorValidation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ColorValidation", function() { return ColorValidation; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+function ColorValidation(props) {
+  // const [inputColorCode, setInputColorCode] = useState('#000000')
+  // const [inputColorR, setInputColorR] = useState(0)
+  // const [inputColorG, setInputColorG] = useState(0)
+  // const [inputColorB, setInputColorB] = useState(0)
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.acceptedColorCode),
+      _useState2 = _slicedToArray(_useState, 2),
+      inputColorCode = _useState2[0],
+      setInputColorCode = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.acceptedColorCode.slice(1, 3)),
+      _useState4 = _slicedToArray(_useState3, 2),
+      inputColorR = _useState4[0],
+      setInputColorR = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.acceptedColorCode.slice(3, 5)),
+      _useState6 = _slicedToArray(_useState5, 2),
+      inputColorG = _useState6[0],
+      setInputColorG = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.acceptedColorCode.slice(5, 7)),
+      _useState8 = _slicedToArray(_useState7, 2),
+      inputColorB = _useState8[0],
+      setInputColorB = _useState8[1];
+
+  var colorValidationStateIsAccepted = 'Accepted';
+  var colorValidationStateIsError = 'Error';
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(colorValidationStateIsAccepted),
+      _useState10 = _slicedToArray(_useState9, 2),
+      colorValidationState = _useState10[0],
+      setColorValidationState = _useState10[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var isValidationOk = inputColorCode.match(/^#[\da-fA-F]{6}$/);
+
+    if (isValidationOk) {
+      props.setAcceptedColorCode(inputColorCode);
+      setInputColorR(parseInt(inputColorCode.slice(1, 3), 16));
+      setInputColorG(parseInt(inputColorCode.slice(3, 5), 16));
+      setInputColorB(parseInt(inputColorCode.slice(5, 7), 16));
+      setColorValidationState(colorValidationStateIsAccepted);
+    } else {
+      setColorValidationState(colorValidationStateIsError);
+    }
+  }, [inputColorCode]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var isValidationOk = Number(inputColorR).toString(16).match(/^[\da-fA-F]{1,2}$/);
+
+    if (isValidationOk) {
+      var left = props.acceptedColorCode.slice(0, 1);
+      var right = props.acceptedColorCode.slice(3);
+      var paddedHex = ('00' + Number(inputColorR).toString(16)).slice(-2);
+      var newColorCode = left + paddedHex + right;
+      props.setAcceptedColorCode(newColorCode);
+      setInputColorCode(newColorCode);
+      setColorValidationState(colorValidationStateIsAccepted);
+    } else {
+      setColorValidationState(colorValidationStateIsError);
+    }
+  }, [inputColorR]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var isValidationOk = Number(inputColorG).toString(16).match(/^[\da-fA-F]{1,2}$/);
+
+    if (isValidationOk) {
+      var left = props.acceptedColorCode.slice(0, 3);
+      var right = props.acceptedColorCode.slice(5);
+      var paddedHex = ('00' + Number(inputColorG).toString(16)).slice(-2);
+      var newColorCode = left + paddedHex + right;
+      props.setAcceptedColorCode(newColorCode);
+      setInputColorCode(newColorCode);
+      setColorValidationState(colorValidationStateIsAccepted);
+    } else {
+      setColorValidationState(colorValidationStateIsError);
+    }
+  }, [inputColorG]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    var isValidationOk = Number(inputColorB).toString(16).match(/^[\da-fA-F]{1,2}$/);
+
+    if (isValidationOk) {
+      var left = props.acceptedColorCode.slice(0, 5);
+      var right = '';
+      var paddedHex = ('00' + Number(inputColorB).toString(16)).slice(-2);
+      var newColorCode = left + paddedHex + right;
+      props.setAcceptedColorCode(newColorCode);
+      setInputColorCode(newColorCode);
+      setColorValidationState(colorValidationStateIsAccepted);
+    } else {
+      setColorValidationState(colorValidationStateIsError);
+    }
+  }, [inputColorB]);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.className,
+    style: props.style
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Hex:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorCode,
+    onChange: function onChange(event) {
+      return setInputColorCode(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: parseInt(inputColorCode.slice(1), 16),
+    onChange: function onChange(event) {
+      return setInputColorCode('#' + ('000000' + Number(event.target.value).toString(16)).slice(-6));
+    },
+    min: "0",
+    max: "16777215"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0R:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorR,
+    onChange: function onChange(event) {
+      return setInputColorR(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorR,
+    onChange: function onChange(event) {
+      return setInputColorR(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0G:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorG,
+    onChange: function onChange(event) {
+      return setInputColorG(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorG,
+    onChange: function onChange(event) {
+      return setInputColorG(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0B:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "text",
+    value: inputColorB,
+    onChange: function onChange(event) {
+      return setInputColorB(event.target.value);
+    }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: inputColorB,
+    onChange: function onChange(event) {
+      return setInputColorB(event.target.value);
+    },
+    min: "0",
+    max: "255"
+  })));
 }
 
 
