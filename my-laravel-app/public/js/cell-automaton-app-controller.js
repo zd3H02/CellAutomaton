@@ -74434,75 +74434,81 @@ function CellAutomatonAppController(props) {
   var _useState23 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellCalcStateIsStop),
       _useState24 = _slicedToArray(_useState23, 2),
       cellCalcState = _useState24[0],
-      setCellCalcState = _useState24[1];
+      setCellCalcState = _useState24[1]; // const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
+  // const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
 
-  var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState26 = _slicedToArray(_useState25, 2),
-      codeSaveButtonCounter = _useState26[0],
-      setCodeSaveButtonCounter = _useState26[1];
-
-  var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState28 = _slicedToArray(_useState27, 2),
-      cellColorsSaveButtonCounter = _useState28[0],
-      setCellColorsSaveButtonCounter = _useState28[1];
 
   var isFirstCodeSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
   var isFirstCellColorsSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
 
+  var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState26 = _slicedToArray(_useState25, 2),
+      codeExecCmdOutput = _useState26[0],
+      setCodeExecCmdOutput = _useState26[1];
+
+  var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState28 = _slicedToArray(_useState27, 2),
+      codeExecCmdStatus = _useState28[0],
+      setCodeExecCmdStatus = _useState28[1];
+
   var _useState29 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState30 = _slicedToArray(_useState29, 2),
-      codeExecCmdOutput = _useState30[0],
-      setCodeExecCmdOutput = _useState30[1];
+      cellName = _useState30[0],
+      setCellName = _useState30[1]; //ショートカットキー
 
-  var _useState31 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+
+  var _useState31 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState32 = _slicedToArray(_useState31, 2),
-      codeExecCmdStatus = _useState32[0],
-      setCodeExecCmdStatus = _useState32[1];
+      shrotCut03ShiftCtrlA = _useState32[0],
+      setShrotCut03ShiftCtrlA = _useState32[1];
 
-  var _useState33 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
-      _useState34 = _slicedToArray(_useState33, 2),
-      cellName = _useState34[0],
-      setCellName = _useState34[1]; //ショートカットキー
-
-
-  var _useState35 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
-      _useState36 = _slicedToArray(_useState35, 2),
-      shrotCut01 = _useState36[0],
-      setShrotCut01 = _useState36[1];
-
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+d', function () {
-    return setShrotCut01(function (prevCount) {
-      return prevCount + 1;
-    });
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+a', function () {
+    return setShrotCut03ShiftCtrlA(setCellCalcState(cellCalcStateIsRun));
   });
+
+  var _useState33 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState34 = _slicedToArray(_useState33, 2),
+      shrotCutShiftCtrlS = _useState34[0],
+      setShrotCutShiftCtrlS = _useState34[1];
+
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+s', function () {
+    return setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop));
+  });
+  var codeSaveStateIsSaving = 'Saving';
+  var codeSaveStateIsSaved = 'Saved';
+
+  var _useState35 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(codeSaveStateIsSaved),
+      _useState36 = _slicedToArray(_useState35, 2),
+      codeSaveState = _useState36[0],
+      setcodeSaveState = _useState36[1];
 
   var _useState37 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState38 = _slicedToArray(_useState37, 2),
-      shrotCut02 = _useState38[0],
-      setShrotCut02 = _useState38[1];
+      shrotCutShiftCtrlD = _useState38[0],
+      setShrotCutShiftCtrlD = _useState38[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+f', function () {
-    return setShrotCut02(function (prevCount) {
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+d', function () {
+    return setShrotCutShiftCtrlD(function (prevCount) {
       return prevCount + 1;
     });
   });
+  var cellColorsSaveStateIsSaving = 'Saving';
+  var cellColorsSaveStateIsSaved = 'Saved';
 
-  var _useState39 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+  var _useState39 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(cellColorsSaveStateIsSaved),
       _useState40 = _slicedToArray(_useState39, 2),
-      shrotCut03 = _useState40[0],
-      setShrotCut03 = _useState40[1];
-
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+a', function () {
-    return setShrotCut03(setCellCalcState(cellCalcStateIsRun));
-  });
+      cellColorsSaveState = _useState40[0],
+      setCellColorsSaveState = _useState40[1];
 
   var _useState41 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState42 = _slicedToArray(_useState41, 2),
-      shrotCut04 = _useState42[0],
-      setShrotCut04 = _useState42[1];
+      shrotCutShiftCtrlF = _useState42[0],
+      setShrotCutShiftCtrlF = _useState42[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+s', function () {
-    return setShrotCut04(setCellCalcState(cellCalcStateIsStop));
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_8__["useHotkeys"])('shift+ctrl+f', function () {
+    return setShrotCutShiftCtrlF(function (prevCount) {
+      return prevCount + 1;
+    });
   }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
@@ -74531,7 +74537,8 @@ function CellAutomatonAppController(props) {
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (isFirstCodeSaveSend.current) {
       isFirstCodeSaveSend.current = false;
-    } else {
+    } else if (codeSaveState === codeSaveStateIsSaved) {
+      setcodeSaveState(codeSaveStateIsSaving);
       var sendData = new FormData();
       sendData.append('id', G_LOCAL_CELL_ID);
       sendData.append('cell_name', cellName);
@@ -74543,13 +74550,17 @@ function CellAutomatonAppController(props) {
         },
         body: sendData
       });
+      response.then(function (result) {
+        setcodeSaveState(codeSaveStateIsSaved);
+      });
     }
-  }, [codeSaveButtonCounter, shrotCut01]); // 初期セル色保存送信
+  }, [shrotCutShiftCtrlD]); // 初期セル色保存送信
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (isFirstCellColorsSaveSend.current) {
       isFirstCellColorsSaveSend.current = false;
-    } else {
+    } else if (cellColorsSaveState === cellColorsSaveStateIsSaved) {
+      setCellColorsSaveState(cellColorsSaveStateIsSaving);
       var sendData = new FormData();
       sendData.append('id', G_LOCAL_CELL_ID);
       sendData.append('cell_colors', cellColors);
@@ -74560,8 +74571,11 @@ function CellAutomatonAppController(props) {
         },
         body: sendData
       });
+      response.then(function (result) {
+        setCellColorsSaveState(cellColorsSaveStateIsSaved);
+      });
     }
-  }, [cellColorsSaveButtonCounter, shrotCut02]); // 実行中の送信
+  }, [shrotCutShiftCtrlF]); // 実行中の送信
 
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_2__["useInterval"])(function () {
     if (cellCalcState === cellCalcStateIsRun) {
@@ -74678,6 +74692,14 @@ function CellAutomatonAppController(props) {
     onChange: function onChange(event) {
       return setInputColorCode(event.target.value);
     }
+  }), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "range",
+    value: parseInt(inputColorCode.slice(1), 16),
+    onChange: function onChange(event) {
+      return setInputColorCode('#' + ('000000' + Number(event.target.value).toString(16)).slice(-6));
+    },
+    min: "0",
+    max: "16777215"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\xA0\xA0\xA0\xA0R:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     value: inputColorR,
@@ -74721,24 +74743,30 @@ function CellAutomatonAppController(props) {
     min: "0",
     max: "255"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+    className: cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary",
     value: cellCalcStateIsRun,
     onClick: function onClick(event) {
       return setCellCalcState(event.target.value);
     }
   }, "\u5B9F\u884C"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+    className: cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary",
     value: cellCalcStateIsStop,
     onClick: function onClick(event) {
       return setCellCalcState(event.target.value);
     }
   }, "\u505C\u6B62"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-    value: codeSaveButtonCounter,
+    className: codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary",
     onClick: function onClick() {
-      return setCodeSaveButtonCounter(codeSaveButtonCounter + 1);
+      return setShrotCutShiftCtrlD(function (prevCount) {
+        return prevCount + 1;
+      });
     }
   }, "\u30B3\u30FC\u30C9\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-    value: codeSaveButtonCounter,
+    className: cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary",
     onClick: function onClick() {
-      return setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1);
+      return setShrotCutShiftCtrlF(function (prevCount) {
+        return prevCount + 1;
+      });
     }
   }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_4___default.a, {
     mode: "python",

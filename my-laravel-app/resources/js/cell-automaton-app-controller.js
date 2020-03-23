@@ -43,8 +43,8 @@ function CellAutomatonAppController(props) {
     const cellCalcStateIsStop   = 'Stop'
     const [cellCalcState, setCellCalcState] = useState(cellCalcStateIsStop)
 
-    const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
-    const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
+    // const [codeSaveButtonCounter, setCodeSaveButtonCounter]             = useState(0)
+    // const [cellColorsSaveButtonCounter, setCellColorsSaveButtonCounter] = useState(0)
 
     const isFirstCodeSaveSend = useRef(true)
     const isFirstCellColorsSaveSend = useRef(true)
@@ -55,17 +55,26 @@ function CellAutomatonAppController(props) {
     const [cellName, setCellName] = useState('')
 
     //ショートカットキー
-    const [shrotCut01, setShrotCut01] = useState(0);
-    useHotkeys('shift+ctrl+d', () => setShrotCut01(prevCount => prevCount + 1));
+    const [shrotCut03ShiftCtrlA, setShrotCut03ShiftCtrlA] = useState(0)
+    useHotkeys('shift+ctrl+a', () => setShrotCut03ShiftCtrlA(setCellCalcState(cellCalcStateIsRun)))
 
-    const [shrotCut02, setShrotCut02] = useState(0);
-    useHotkeys('shift+ctrl+f', () => setShrotCut02(prevCount => prevCount + 1));
+    const [shrotCutShiftCtrlS, setShrotCutShiftCtrlS] = useState(0)
+    useHotkeys('shift+ctrl+s', () => setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop)))
 
-    const [shrotCut03, setShrotCut03] = useState(0);
-    useHotkeys('shift+ctrl+a', () => setShrotCut03(setCellCalcState(cellCalcStateIsRun)));
+    const codeSaveStateIsSaving = 'Saving'
+    const codeSaveStateIsSaved  = 'Saved'
+    const [codeSaveState, setcodeSaveState] = useState(codeSaveStateIsSaved)
+    const [shrotCutShiftCtrlD, setShrotCutShiftCtrlD] = useState(0)
+    useHotkeys('shift+ctrl+d', () => setShrotCutShiftCtrlD(prevCount => prevCount + 1))
 
-    const [shrotCut04, setShrotCut04] = useState(0);
-    useHotkeys('shift+ctrl+s', () => setShrotCut04(setCellCalcState(cellCalcStateIsStop)));
+    const cellColorsSaveStateIsSaving = 'Saving'
+    const cellColorsSaveStateIsSaved  = 'Saved'
+    const [cellColorsSaveState, setCellColorsSaveState] = useState(cellColorsSaveStateIsSaved)
+    const [shrotCutShiftCtrlF, setShrotCutShiftCtrlF] = useState(0)
+    useHotkeys('shift+ctrl+f', () => setShrotCutShiftCtrlF(prevCount => prevCount + 1))
+
+
+
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -102,7 +111,8 @@ function CellAutomatonAppController(props) {
             if(isFirstCodeSaveSend.current) {
                 isFirstCodeSaveSend.current = false
             }
-            else {
+            else if(codeSaveState === codeSaveStateIsSaved) {
+                setcodeSaveState(codeSaveStateIsSaving)
                 const sendData = new FormData()
                 sendData.append('id', G_LOCAL_CELL_ID)
                 sendData.append('cell_name', cellName)
@@ -115,9 +125,14 @@ function CellAutomatonAppController(props) {
                         body: sendData
                     }
                 )
+                response.then(
+                    result=>{
+                        setcodeSaveState(codeSaveStateIsSaved)
+                    }
+                )
             }
         },
-        [codeSaveButtonCounter,shrotCut01]
+        [shrotCutShiftCtrlD]
     )
     // 初期セル色保存送信
     useEffect(
@@ -125,7 +140,8 @@ function CellAutomatonAppController(props) {
             if(isFirstCellColorsSaveSend.current) {
                 isFirstCellColorsSaveSend.current = false
             }
-            else {
+            else if(cellColorsSaveState === cellColorsSaveStateIsSaved) {
+                setCellColorsSaveState(cellColorsSaveStateIsSaving)
                 const sendData = new FormData()
                 sendData.append('id',G_LOCAL_CELL_ID)
                 sendData.append('cell_colors', cellColors)
@@ -137,9 +153,14 @@ function CellAutomatonAppController(props) {
                         body: sendData
                     }
                 )
+                response.then(
+                    result=>{
+                        setCellColorsSaveState(cellColorsSaveStateIsSaved)
+                    }
+                )
             }
         },
-        [cellColorsSaveButtonCounter,shrotCut02]
+        [shrotCutShiftCtrlF]
     )
     // 実行中の送信
     useInterval(
@@ -272,6 +293,7 @@ function CellAutomatonAppController(props) {
                     <div style={style}>test</div>
                     <p>
                         Hex:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
+                        :<input type="range" value={parseInt(inputColorCode.slice(1),16)} onChange={event=>setInputColorCode('#'+('000000'+Number(event.target.value).toString(16)).slice(-6))} min="0" max="16777215"/>
                     </p>
                     <p>
                         &nbsp;&nbsp;&nbsp;&nbsp;R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
@@ -285,16 +307,16 @@ function CellAutomatonAppController(props) {
                         &nbsp;&nbsp;&nbsp;&nbsp;B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
                         :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
                     </p>
-                    <Button value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
+                    <Button className={cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary"} value={cellCalcStateIsRun} onClick={event=>setCellCalcState(event.target.value)}>
                         実行
                     </Button>
-                    <Button value={cellCalcStateIsStop} onClick={event=>setCellCalcState(event.target.value)}>
+                    <Button className={cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary"} value={cellCalcStateIsStop} onClick={event=>setCellCalcState(event.target.value)}>
                         停止
                     </Button>
-                    <Button value={codeSaveButtonCounter} onClick={()=>setCodeSaveButtonCounter(codeSaveButtonCounter + 1)}>
+                    <Button className={codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"} onClick={()=>setShrotCutShiftCtrlD(prevCount => prevCount + 1)}>
                         コード保存
                     </Button>
-                    <Button value={codeSaveButtonCounter} onClick={()=>setCellColorsSaveButtonCounter(cellColorsSaveButtonCounter + 1)}>
+                    <Button className={cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"} onClick={()=>setShrotCutShiftCtrlF(prevCount => prevCount + 1)}>
                         初期セル色保存
                     </Button>
                     <div>
