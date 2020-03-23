@@ -74653,13 +74653,18 @@ function CellAutomatonAppController(props) {
       return setInUseColor(1);
     }
   }), acceptedColorCodes.map(function (acceptedColorCode, i) {
-    console.log(i);
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_color_validation__WEBPACK_IMPORTED_MODULE_4__["ColorValidation"], {
       key: i,
-      i: i,
       className: inUseColor === i ? "" : "d-none",
-      acceptedColorCode: acceptedColorCodes,
-      setAcceptedColorCode: setAcceptedColorCodes
+      acceptedColorCode: acceptedColorCode,
+      setAcceptedColorCode: function setAcceptedColorCode(v) {
+        var test = acceptedColorCodes.slice();
+        test[i] = v;
+        setAcceptedColorCodes(test);
+      } // setAcceptedColorCode={(v)=>{
+      //     setAcceptedColorCodes(state => ({ ...state, i: v }))
+      // }}
+
     });
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary",

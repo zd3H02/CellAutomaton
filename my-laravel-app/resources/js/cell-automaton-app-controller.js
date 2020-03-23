@@ -248,14 +248,19 @@ function CellAutomatonAppController(props) {
                         <Button className="border border-secondary rounded" style={acceptedColorCode01Style} onClick={()=>setInUseColor(1)}></Button>
 
                         {acceptedColorCodes.map((acceptedColorCode, i) => {
-                            console.log(i)
                             return(
                                 <ColorValidation
                                     key = {i}
-                                    i={i}
                                     className={inUseColor === i ? "" : "d-none"}
-                                    acceptedColorCode={acceptedColorCodes}
-                                    setAcceptedColorCode={setAcceptedColorCodes}
+                                    acceptedColorCode={acceptedColorCode}
+                                    setAcceptedColorCode={(v)=>{
+                                        const test = acceptedColorCodes.slice()
+                                        test[i] = v
+                                        setAcceptedColorCodes(test)
+                                    }}
+                                    // setAcceptedColorCode={(v)=>{
+                                    //     setAcceptedColorCodes(state => ({ ...state, i: v }))
+                                    // }}
                                 />
                             )
                         })}
