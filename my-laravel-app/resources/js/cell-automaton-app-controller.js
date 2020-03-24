@@ -217,7 +217,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        2000
+        3000
     )
 
 
@@ -242,7 +242,7 @@ function CellAutomatonAppController(props) {
     return (
         <Container fluid>
             <Row>
-                <Col md={6} style={cellMatrixColStyle}  className="m-0 p-0">
+                <Col md={6} style={cellMatrixColStyle}>
                     <p>ライフゲーム名：<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
                     <CellMatrix
                         MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
@@ -331,7 +331,7 @@ function CellAutomatonAppController(props) {
                     </Button>
                     <div>
                         <AceEditor
-                            height= "400px"
+                            height="400px"
                             width="920px"
                             mode="python"
                             theme="github"
@@ -341,12 +341,12 @@ function CellAutomatonAppController(props) {
                             className="border border-secondary rounded p-1  my-1"
                         />
                     </div>
-                    <div className="border border-secondary rounded p-1 my-1 overflow-auto">
-                        <p>出力：</p>
+                    <p className="m-0">出力：</p>
+                    <div className={"border border-secondary rounded p-1 my-1 overflow-auto" + " " + (codeExecCmdOutput === "" ? "d-none" : "")}>
                         {codeExecCmdOutput}
                     </div>
-                    <div className="border border-secondary rounded p-1 my-1 overflow-auto">
-                        <p>ステータス：</p>
+                    <p className="m-0">ステータス：</p>
+                    <div className={"border border-secondary rounded p-1 my-1 overflow-auto" + " " + (codeExecCmdOutput === "" ? "d-none" : "")}>
                         {codeExecCmdStatus}
                     </div>
                 </Col>

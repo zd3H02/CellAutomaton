@@ -54,18 +54,28 @@
         </nav>
         <div class="content">
 
-            <div id="carouselExampleFade" class="carousel slide carousel-fade" data-interval="500" data-pause="false" data-ride="carousel">
-
-                <div class="carousel-inner">
-                    <div class="carousel-caption col-6 offset-3">
-                        <h1 class="display-1 text-muted">LifeEvo</h1>
-                        <p class="text-muted">
+            <div id="carouselExampleFade" class="carousel slide carousel-fade position-relative" data-interval="500" data-pause="false" data-ride="carousel">
+                <div class="d-none d-lg-block carousel-caption my-carousel-caption position-absolute">
+                    <h1 class="display-1 text-muted">LifeEvo</h1>
+                    <p class="text-muted">
+                        ライフゲームは生命の誕生、進化、淘汰などのプロセスを
+                        <br>簡易的なモデルで再現したシミュレーションゲームです。
+                        <br>LifeEvoは手軽にライフゲームが遊べるWebアプリです。
+                        <br>ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
+                    </p>
+                </div>
+                <div class="d-lg-none carousel-caption my-carousel-caption position-absolute">
+                    <h1 class="text-muted">LifeEvo</h1>
+                    <p class="text-muted">
+                        <small>
                             ライフゲームは生命の誕生、進化、淘汰などのプロセスを
                             <br>簡易的なモデルで再現したシミュレーションゲームです。
                             <br>LifeEvoは手軽にライフゲームが遊べるWebアプリです。
                             <br>ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
-                        </p>
-                    </div>
+                        </small>
+                    </p>
+                </div>
+                <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_00.jpg') }}">
                     </div>
@@ -92,6 +102,16 @@
                     </div>
                 </div>
             </div>
+
+            {{-- <div class="carousel-caption  d-none d-md-block">
+                <h1 class="display-1 text-muted">LifeEvo</h1>
+                <p class="text-muted">
+                    ライフゲームは生命の誕生、進化、淘汰などのプロセスを
+                    <br>簡易的なモデルで再現したシミュレーションゲームです。
+                    <br>LifeEvoは手軽にライフゲームが遊べるWebアプリです。
+                    <br>ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
+                </p>
+            </div> --}}
 
             <div class="container">
                 <div class="my-5 mx-auto w-50">

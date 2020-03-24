@@ -10935,7 +10935,7 @@ body {
 }
 
 body {
-  padding: 72px;
+  padding-top: 72px;
 }
 
 .my-anchor-pos-adj {
@@ -10943,7 +10943,9 @@ body {
   margin-top: -72px;
 }
 
-.carousel-caption {
-  top: 35%;
+.my-carousel-caption {
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
 }
 

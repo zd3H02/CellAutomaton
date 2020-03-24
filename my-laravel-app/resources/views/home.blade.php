@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 <button #id="new-create" class="btn btn-primary w-100 mb-1" type="submit" formaction="{{ url('home') }}">ライフゲーム一覧</button>
                 <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="{{ url('home/trashcan')}}">ゴミ箱</button>
             </div>
-            <div id="list" class="my-vh-100 col-md-3 overflow-auto">
+            <div id="list" class="my-vh-100 col-md-3 overflow-auto border-right border-secondary">
                 <h2 class="border-bottom border-secondary text-center sticky-top mx-n2">
                 @if (isset($isTrash))
                 ごみ箱一覧

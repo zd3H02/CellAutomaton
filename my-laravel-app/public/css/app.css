@@ -10895,7 +10895,7 @@ body {
 }
 
 .my-vh-100 {
-  height: calc(100vh - 72px- 24px);
+  height: calc(100vh - 72px - 24px);
 }
 
 .my-z-index-m1 {

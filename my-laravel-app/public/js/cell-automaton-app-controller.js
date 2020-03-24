@@ -74621,7 +74621,7 @@ function CellAutomatonAppController(props) {
         setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
       });
     }
-  }, 2000);
+  }, 3000);
 
   function getInUseColor() {
     return acceptedColorCodes[inUseColor];
@@ -74648,8 +74648,7 @@ function CellAutomatonAppController(props) {
     fluid: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6,
-    style: cellMatrixColStyle,
-    className: "m-0 p-0"
+    style: cellMatrixColStyle
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u30E9\u30A4\u30D5\u30B2\u30FC\u30E0\u540D\uFF1A", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     value: cellName,
@@ -74746,11 +74745,15 @@ function CellAutomatonAppController(props) {
     value: cellCode === null ? '' : cellCode,
     onChange: setCellCode,
     className: "border border-secondary rounded p-1  my-1"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "border border-secondary rounded p-1 my-1 overflow-auto"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u51FA\u529B\uFF1A"), codeExecCmdOutput), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "border border-secondary rounded p-1 my-1 overflow-auto"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u30B9\u30C6\u30FC\u30BF\u30B9\uFF1A"), codeExecCmdStatus))));
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "m-0"
+  }, "\u51FA\u529B\uFF1A"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded p-1 my-1 overflow-auto" + " " + (codeExecCmdOutput === "" ? "d-none" : "")
+  }, codeExecCmdOutput), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "m-0"
+  }, "\u30B9\u30C6\u30FC\u30BF\u30B9\uFF1A"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "border border-secondary rounded p-1 my-1 overflow-auto" + " " + (codeExecCmdOutput === "" ? "d-none" : "")
+  }, codeExecCmdStatus))));
 }
 
 var localApp = document.getElementById('local-app');
@@ -75409,7 +75412,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })
