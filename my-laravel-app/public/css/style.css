@@ -10934,6 +10934,15 @@ body {
   margin-bottom: 30px;
 }
 
+body {
+  padding: 72px;
+}
+
+.my-anchor-pos-adj {
+  padding-top: 72px;
+  margin-top: -72px;
+}
+
 .carousel-caption {
   top: 35%;
 }

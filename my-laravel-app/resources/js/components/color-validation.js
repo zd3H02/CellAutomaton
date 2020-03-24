@@ -87,24 +87,30 @@ function ColorValidation (props) {
     )
     return (
         <div className={props.className} style={props.style}>
-            <p>
-                Hex:<input type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
-                :<input type="range" value={parseInt(inputColorCode.slice(1),16)} onChange={event=>setInputColorCode('#'+('000000'+Number(event.target.value).toString(16)).slice(-6))} min="0" max="16777215"/>
+            <p className="p-0 m-0">
+                <label htmlFor="Hex">Hex:</label>
+                <input id={"Hex" + props.i} className="mr-1 align-middle" type="text" value={inputColorCode} onChange={event=>setInputColorCode(event.target.value)}/>
+                <input type="range" className="mr-1 align-middle" value={parseInt(inputColorCode.slice(1),16)} onChange={event=>setInputColorCode('#'+('000000'+Number(event.target.value).toString(16)).slice(-6))} min="0" max="16777215"/>
             </p>
-            <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;R:<input type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
-                :<input type="range" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
+            <p className="p-0 m-0">
+                <label htmlFor="R">&nbsp;&nbsp;&nbsp;&nbsp;R:</label>
+                <input id={"R" + props.i} className="mr-1 align-middle" type="text" value={inputColorR} onChange={event=>setInputColorR(event.target.value)}/>
+                <input type="range" className="mr-1 align-middle" value={inputColorR} onChange={event=>setInputColorR(event.target.value)} min="0" max="255"/>
             </p>
-            <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;G:<input type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
-                :<input type="range" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
+            <p className="p-0 m-0">
+                <label htmlFor="G">&nbsp;&nbsp;&nbsp;&nbsp;G:</label>
+                <input id={"G" + props.i} className="mr-1 align-middle" type="text" value={inputColorG} onChange={event=>setInputColorG(event.target.value)}/>
+                <input type="range" className="mr-1 align-middle" value={inputColorG} onChange={event=>setInputColorG(event.target.value)} min="0" max="255"/>
             </p>
-            <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;B:<input type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
-                :<input type="range" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
+            <p className="p-0 m-0">
+                <label htmlFor="B">&nbsp;&nbsp;&nbsp;&nbsp;B:</label>
+                <input id={"B" + props.i} className="mr-1 align-middle" type="text" value={inputColorB} onChange={event=>setInputColorB(event.target.value)}/>
+                <input type="range" className="mr-1 align-middle" value={inputColorB} onChange={event=>setInputColorB(event.target.value)} min="0" max="255"/>
             </p>
         </div>
     )
 }
+
+
 
 export { ColorValidation }

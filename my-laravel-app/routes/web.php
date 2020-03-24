@@ -38,7 +38,7 @@ Route::post('/local/first'          ,   'LocalController@first');
 Route::post('/local/calc'           ,   'LocalController@calc');
 Route::post('/local/codesave'       ,   'LocalController@codesave');
 Route::post('/local/cellcolorsave'  ,   'LocalController@cellcolorsave');
-Route::post('/local/change'         ,   'LocalController@save');
+Route::post('/local/allsave'        ,   'LocalController@allsave');
 
 
 // Route::post('/local', 'LocalController@index');

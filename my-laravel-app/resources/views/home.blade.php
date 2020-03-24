@@ -29,41 +29,51 @@ window.addEventListener('DOMContentLoaded', function() {
                 <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="{{ url('home/trashcan')}}">ゴミ箱</button>
             </div>
             <div id="list" class="my-vh-100 col-md-3 overflow-auto">
-                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2">一覧</h2>
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2">
+                @if (isset($isTrash))
+                ごみ箱一覧
+                @else
+                ライフゲーム一覧
+                @endif
+                </h2>
                 @if (isset($items))
                     @foreach ($items as $item)
                     <div class="card w-100 mb-2 mx-auto rounded border-secondary">
-                        @if (isset($detailDisplayItem))
-                            @if ($detailDisplayItem->id === $item->id)
-                            <div class="card-header bg-info">
+                        @if (isset($isTrash))
+                        <a class="text-decoration-none" href="{{ url('/home/trashcan') . '?id=' . $item->id}}">
+                        @else
+                        <a class="text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
+                        @endif
+                            @if (isset($detailDisplayItem))
+                                @if ($detailDisplayItem->id === $item->id)
+                                <div class="card-header bg-info">
+                                @else
+                                <div class="card-header">
+                                @endif
                             @else
                             <div class="card-header">
                             @endif
-                        @else
-                        <div class="card-header">
-                        @endif
-                            <h5 class="card-title text-dark text-center m-0">{{$item->cell_name}}</h5>
-                        </div>
-                        <div class="row no-gutters">
-                            <div class="w-100">
-                                <div class="d-flex flex-row align-items-center">
-                                    <div class="col-md-4">
-                                        @if (isset($isTrash))
-                                        <a class="text-decoration-none" href="{{ url('/home/trashcan') . '?id=' . $item->id}}">
-                                        @else
-                                        <a class="text-decoration-none" href="{{ url('/home') . '?id=' . $item->id}}">
-                                        @endif
+                                <h5 class="card-title text-dark text-center m-0">{{$item->cell_name}}</h5>
+                            </div>
+                            <div class="row no-gutters">
+                                <div class="w-100">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="col-md-4">
                                             <img class="border border-secondary m-1 rounded img-fluid" src="{{ asset('storage/' . $item->thumbnail_filename) }}">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <p class="card-title text-dark">{{$item->cell_comment}}</p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                @if (mb_strlen($item->cell_memo) < 30)
+                                                <p class="card-title text-dark">{{$item->cell_memo}}</p>
+                                                @else
+                                                <p class="card-title text-dark">{{mb_substr($item->cell_memo, 0, 30)}}</p>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="container-fluid">
                             <div class="row justify-content-md-center border-top p-1">
                                 @if (isset($isTrash))
@@ -83,6 +93,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 my-z-index-m1">詳細</h2>
                 @if (isset($detailDisplayItem))
                     <pre>名称      ：{{$detailDisplayItem->cell_name}}</pre>
+                    <pre>メモ      ：</pre>
+                    <pre>{{$detailDisplayItem->cell_memo}}</pre>
                     <pre>作成日    ：{{$detailDisplayItem->created_at}}</pre>
                     <pre>最終更新日：{{$detailDisplayItem->updated_at}}</pre>
                     <pre>セルカラー：</pre>
@@ -91,6 +103,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     <pre>{{$detailDisplayItem->cell_code}}</pre>
                 @else
                     <pre>名称      ：</pre>
+                    <pre>メモ      ：</pre>
                     <pre>作成日    ：</pre>
                     <pre>最終更新日：</pre>
                     <pre>セルカラー：</pre>

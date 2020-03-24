@@ -21,6 +21,7 @@ class LocalController extends Controller
         $param = [
             'cell_name'         => $localCell->cell_name,
             'cell_code'         => $localCell->cell_code,
+            'cell_memo'         => $localCell->cell_memo,
             'cell_colors'       => explode(',', $localCell->cell_colors, config('CONST.LOCAL.MAX_CELL_NUM')),
             'MAX_CELL_ROW_NUM'  => config('CONST.LOCAL.MAX_CELL_ROW_NUM'),
             'MAX_CELL_COL_NUM'  => config('CONST.LOCAL.MAX_CELL_COL_NUM'),
@@ -184,6 +185,7 @@ log::debug($request->cell_colors);
         // log::debug($request->cell_code);
         $localCell->cell_name = $request->cell_name;
         $localCell->cell_code = $request->cell_code;
+        $localCell->cell_memo = $request->cell_memo;
         $localCell->save();
         return ["cellCodeSaveSuccess"];
     }
@@ -219,9 +221,34 @@ log::debug($request->cell_colors);
 
         return ["cellColorsSaveSuccess"];
     }
-    public function change(Request $request)
+    public function allsave(Request $request)
     {
-        return ["cellCodeChangeSuccess"];
+        $thumbnailFileName    = 'thumbnail_'  . Auth::user()->name . '_'. $request->id . '.jpg';
+        $detailsFileName      = 'details_'    . Auth::user()->name . '_'. $request->id . '.jpg';
+
+        MyFunc::createCellColorsJpg(
+            $thumbnailFileName,
+            config('CONST.LOCAL.THUMBNAIL_HEIGHT'),
+            config('CONST.LOCAL.THUMBNAIL_WIDTH'),
+            $request->cell_colors
+        );
+        MyFunc::createCellColorsJpg(
+            $detailsFileName,
+            config('CONST.LOCAL.DETAILS_HEIGHT'),
+            config('CONST.LOCAL.DETAILS_WIDTH'),
+            $request->cell_colors
+        );
+
+        $localCell =  LocalCell::where('creator', Auth::user()->name)->where('id', $request->id)->first();
+        $localCell->cell_name           = $request->cell_name;
+        $localCell->cell_code           = $request->cell_code;
+        $localCell->cell_memo           = $request->cell_memo;
+        $localCell->cell_colors         = $request->cell_colors;
+        $localCell->thumbnail_filename  = $thumbnailFileName;
+        $localCell->detail_filename     = $detailsFileName;
+        $localCell->save();
+
+        return ["allSaveSuccess"];
     }
 }
 

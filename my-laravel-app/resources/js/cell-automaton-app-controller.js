@@ -32,29 +32,18 @@ function CellAutomatonAppController(props) {
     const [cellColors, setCellColors] = useState(Array(MAX_CELL_NUM).fill('#ffffff'))
     const [cellCode, setCellCode]   = useState('')
 
-    // const MAX_ACCEPTED_COLOR_CODE_SIZE = 2
-    // const acceptedColorCode = new Array(MAX_ACCEPTED_COLOR_CODE_SIZE)
-    // const setAcceptedColorCode = new Array(MAX_ACCEPTED_COLOR_CODE_SIZE)
-    // for (let i=0; i<MAX_ACCEPTED_COLOR_CODE_SIZE; i++) {
-
-    // }
-    const [acceptedColorCodes, setAcceptedColorCodes] = useState(Array(2).fill('#0000ff'))
-    // const [acceptedColorCode00, setAcceptedColorCode00] = useState('#000000')
-    // const [acceptedColorCode01, setAcceptedColorCode01] = useState('#ffffff')
+    const [acceptedColorCodes, setAcceptedColorCodes] = useState(Array('#000000','#ffffff','#ff0000','#00ff00','#0000ff'))
     const [inUseColor, setInUseColor] = useState(0)
 
     const cellCalcStateIsRun    = 'Run'
     const cellCalcStateIsStop   = 'Stop'
     const [cellCalcState, setCellCalcState] = useState(cellCalcStateIsStop)
 
-    const isFirstCodeSaveSend = useRef(true)
-    const isFirstCellColorsSaveSend = useRef(true)
-
     const [codeExecCmdOutput, setCodeExecCmdOutput] = useState('')
     const [codeExecCmdStatus, setCodeExecCmdStatus] = useState('')
 
     const [cellName, setCellName] = useState('')
-
+    const [cellMemo, setCellMemo] = useState('')
 
     //ショートカットキー
     const [shrotCut03ShiftCtrlA, setShrotCut03ShiftCtrlA] = useState(0)
@@ -63,29 +52,26 @@ function CellAutomatonAppController(props) {
     const [shrotCutShiftCtrlS, setShrotCutShiftCtrlS] = useState(0)
     useHotkeys('shift+ctrl+s', () => setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop)))
 
+    const isFirstCodeSaveSend = useRef(true)
     const codeSaveStateIsSaving = 'Saving'
     const codeSaveStateIsSaved  = 'Saved'
     const [codeSaveState, setcodeSaveState] = useState(codeSaveStateIsSaved)
     const [shrotCutShiftCtrlD, setShrotCutShiftCtrlD] = useState(0)
     useHotkeys('shift+ctrl+d', () => setShrotCutShiftCtrlD(prevCount => prevCount + 1))
 
+    const isFirstCellColorsSaveSend = useRef(true)
     const cellColorsSaveStateIsSaving = 'Saving'
     const cellColorsSaveStateIsSaved  = 'Saved'
     const [cellColorsSaveState, setCellColorsSaveState] = useState(cellColorsSaveStateIsSaved)
     const [shrotCutShiftCtrlF, setShrotCutShiftCtrlF] = useState(0)
     useHotkeys('shift+ctrl+f', () => setShrotCutShiftCtrlF(prevCount => prevCount + 1))
 
-
-    function getInUseColor() {
-        // if(inUseColor === 0) {
-        //     return acceptedColorCode00
-        // }
-        // if(inUseColor === 1) {
-        //     return acceptedColorCode01
-        // }
-        return acceptedColorCodes[inUseColor]
-    }
-
+    const isFirstAllSaveSend = useRef(true)
+    const allSaveStateIsSaving = 'Saving'
+    const allSaveStateIsSaved  = 'Saved'
+    const [allSaveState, setAllSaveState] = useState(allSaveStateIsSaved)
+    const [shrotCutShiftCtrlZ, setShrotCutShiftCtrlZ] = useState(0)
+    useHotkeys('shift+ctrl+z', () => setShrotCutShiftCtrlZ(prevCount => prevCount + 1))
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -108,6 +94,7 @@ function CellAutomatonAppController(props) {
                     setCellColors(result.cell_colors)
                     setCellName(result.cell_name)
                     setCellCode(result.cell_code)
+                    setCellMemo(result.cell_memo)
                     SET_ONLY_FORST_USE_MAX_CELL_ROW_NUM(result.MAX_CELL_ROW_NUM)
                     SET_ONLY_FORST_USE_MAX_CELL_COL_NUM(result.MAX_CELL_COL_NUM)
                     SET_ONLY_FORST_USE_MAX_CELL_NUM(result.MAX_CELL_NUM)
@@ -128,6 +115,7 @@ function CellAutomatonAppController(props) {
                 sendData.append('id', G_LOCAL_CELL_ID)
                 sendData.append('cell_name', cellName)
                 sendData.append('cell_code', cellCode)
+                sendData.append('cell_memo', cellMemo)
                 const response = GetFetchData(
                     '../local/codesave',
                     {
@@ -173,6 +161,37 @@ function CellAutomatonAppController(props) {
         },
         [shrotCutShiftCtrlF]
     )
+    // 全て保存送信
+    useEffect(
+        () =>{
+            if(isFirstAllSaveSend.current) {
+                isFirstAllSaveSend.current = false
+            }
+            else if(allSaveState === allSaveStateIsSaved) {
+                setAllSaveState(allSaveStateIsSaving)
+                const sendData = new FormData()
+                sendData.append('id',G_LOCAL_CELL_ID)
+                sendData.append('cell_name', cellName)
+                sendData.append('cell_code', cellCode)
+                sendData.append('cell_memo', cellMemo)
+                sendData.append('cell_colors', cellColors)
+                const response = GetFetchData(
+                    '../local/allsave',
+                    {
+                        method: 'POST',
+                        headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN},
+                        body: sendData
+                    }
+                )
+                response.then(
+                    result=>{
+                        setAllSaveState(allSaveStateIsSaved)
+                    }
+                )
+            }
+        },
+        [shrotCutShiftCtrlZ]
+    )
     // 実行中の送信
     useInterval(
         () => {
@@ -201,38 +220,30 @@ function CellAutomatonAppController(props) {
         2000
     )
 
+
+    function getInUseColor() {
+        return acceptedColorCodes[inUseColor]
+    }
     const inUseColorStyle = {
         height: "40px",
         width: "40px",
         background: getInUseColor(),
     }
-    const acceptedColorCode00Style = {
-        height: "40px",
-        width: "40px",
-        background: acceptedColorCodes[0],
-    }
-    const acceptedColorCode01Style = {
-        height: "40px",
-        width: "40px",
-        background: acceptedColorCodes[1],
+    function getAcceptedColorCodesStyle(i) {
+        return {
+            height: "40px",
+            width: "40px",
+            background: acceptedColorCodes[i],
+        }
     }
     const cellMatrixColStyle = {
         minWidth : '850px',
     }
-    // function test(tanu, kitune) {
-    //     return (
-    //     <ColorValidation
-    //         acceptedColorCode={tanu}
-    //         setAcceptedColorCode={kitune}
-    //     />
-    //     )
-    // }
     return (
         <Container fluid>
             <Row>
-                <Col md={6} style={cellMatrixColStyle}>
+                <Col md={6} style={cellMatrixColStyle}  className="m-0 p-0">
                     <p>ライフゲーム名：<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
-                    <div className="border border-secondary rounded" style={inUseColorStyle}></div>
                     <CellMatrix
                         MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                         MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
@@ -244,88 +255,99 @@ function CellAutomatonAppController(props) {
                 </Col>
                 <Col md={6}>
                     <Row>
-                        <Button className="border border-secondary rounded" style={acceptedColorCode00Style} onClick={()=>setInUseColor(0)}></Button>
-                        <Button className="border border-secondary rounded" style={acceptedColorCode01Style} onClick={()=>setInUseColor(1)}></Button>
-
+                        <Col md={6}>
+                        <div className="mt-1 border border-secondary rounded" style={inUseColorStyle}></div>
+                        {acceptedColorCodes.map((acceptedColorCode, i) => {
+                            return(
+                                <Button
+                                    key = {i}
+                                    className="mt-1 border border-secondary rounded"
+                                    style={getAcceptedColorCodesStyle(i)}
+                                    onClick={()=>setInUseColor(i)}
+                                >
+                                </Button>
+                            )
+                        })}
                         {acceptedColorCodes.map((acceptedColorCode, i) => {
                             return(
                                 <ColorValidation
                                     key = {i}
-                                    className={inUseColor === i ? "" : "d-none"}
+                                    i = {i}
+                                    className={"mt-1" + " " + (inUseColor === i ? "" : "d-none")}
                                     acceptedColorCode={acceptedColorCode}
-                                    setAcceptedColorCode={(v)=>{
-                                        const test = acceptedColorCodes.slice()
-                                        test[i] = v
-                                        setAcceptedColorCodes(test)
+                                    setAcceptedColorCode={(colorCode)=>{
+                                        const newColorCodes = acceptedColorCodes.slice()
+                                        newColorCodes[i] = colorCode
+                                        setAcceptedColorCodes(newColorCodes)
                                     }}
-                                    // setAcceptedColorCode={(v)=>{
-                                    //     setAcceptedColorCodes(state => ({ ...state, i: v }))
-                                    // }}
                                 />
                             )
                         })}
-
-                        {/* <ColorValidation
-                            className={inUseColor === 0 ? "" : "d-none"}
-                            acceptedColorCode={acceptedColorCode00}
-                            setAcceptedColorCode={setAcceptedColorCode00}
-                        />
-                        <ColorValidation
-                            className={inUseColor === 1 ? "" : "d-none" }
-                            acceptedColorCode={acceptedColorCode01}
-                            setAcceptedColorCode={setAcceptedColorCode01}
-                        /> */}
+                        </Col>
+                        <Col md={6}>
+                            <label htmlFor="cellMemo">メモ:</label>
+                            <textarea
+                                className="form-control"
+                                id="cellMemo"
+                                rows="8"
+                                cols="40"
+                                value={cellMemo === null ? '' : cellMemo}
+                                onChange={(event)=>setCellMemo(event.target.value)}
+                            >
+                            </textarea>
+                        </Col>
                     </Row>
                     <Button
-                        className={cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary"}
+                        className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary")}
                         value={cellCalcStateIsRun}
                         onClick={event=>setCellCalcState(event.target.value)}
                     >
-                        実行
+                        実行<small>(ctrl+chift+a)</small>
                     </Button>
                     <Button
-                        className={cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary"}
+                        className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary")}
                         value={cellCalcStateIsStop}
                         onClick={event=>setCellCalcState(event.target.value)}
                     >
-                        停止
+                        停止<small>(ctrl+chift+s)</small>
                     </Button>
                     <Button
-                        className={codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"}
+                        className={"mt-1 mx-1" + " " + (codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
                         onClick={()=>setShrotCutShiftCtrlD(prevCount => prevCount + 1)}
                     >
-                        コード保存
+                        コード保存<small>(ctrl+chift+d)</small>
                     </Button>
                     <Button
-                        className={cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"}
+                        className={"mt-1 mx-1" + " " + (cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
                         onClick={()=>setShrotCutShiftCtrlF(prevCount => prevCount + 1)}
                     >
-                        初期セル色保存
+                        初期セル色保存<small>(ctrl+chift+f)</small>
+                    </Button>
+                    <Button
+                        className={"mt-1 mx-1" + " " + (allSaveState === allSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
+                        onClick={()=>setShrotCutShiftCtrlZ(prevCount => prevCount + 1)}
+                    >
+                        全て保存<small>(ctrl+chift+g)</small>
                     </Button>
                     <div>
                         <AceEditor
+                            height= "400px"
+                            width="920px"
                             mode="python"
                             theme="github"
                             name="aceCodeEditor"
-                            value={cellCode !== null ? cellCode : ''}
+                            value={cellCode === null ? '' : cellCode}
                             onChange={setCellCode}
                             className="border border-secondary rounded p-1  my-1"
                         />
                     </div>
-                    <div className="border border-secondary rounded p-1 my-1">
-                        出力：{codeExecCmdOutput}
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti fugit pariatur quo dolor! Cumque ea vitae asperiores consequatur porro necessitatibus molestias, repellendus assumenda tempore architecto, facilis labore optio. Dolorum assumenda doloribus natus ipsam! Quaerat quia dolores eius harum, similique ut, accusantium perspiciatis sequi debitis rem ad id enim laudantium minima?
-
+                    <div className="border border-secondary rounded p-1 my-1 overflow-auto">
+                        <p>出力：</p>
+                        {codeExecCmdOutput}
                     </div>
-                    <div className="border border-secondary rounded p-1 my-1">
-                        ステータス：{codeExecCmdStatus}
+                    <div className="border border-secondary rounded p-1 my-1 overflow-auto">
+                        <p>ステータス：</p>
+                        {codeExecCmdStatus}
                     </div>
                 </Col>
             </Row>
@@ -338,7 +360,8 @@ ReactDOM.render(<CellAutomatonAppController/>, localApp)
 
 
 
-
+                        // <Button className="border border-secondary rounded" style={acceptedColorCode00Style} onClick={()=>setInUseColor(0)}></Button>
+                        // <Button className="border border-secondary rounded" style={acceptedColorCode01Style} onClick={()=>setInUseColor(1)}></Button>
 /* R:<ColorSelector value={colorR} onChange={setColorR}/> */
 
 /* <CellCodeTextarea value={cellCode} onChange={setCellCode}/> */
@@ -562,3 +585,18 @@ ReactDOM.render(<CellAutomatonAppController/>, localApp)
     //     },
     //     [inputColorB]
     // )
+
+
+
+
+
+                        //     { <ColorValidation
+                        //     className={inUseColor === 0 ? "" : "d-none"}
+                        //     acceptedColorCode={acceptedColorCode00}
+                        //     setAcceptedColorCode={setAcceptedColorCode00}
+                        // />
+                        // <ColorValidation
+                        //     className={inUseColor === 1 ? "" : "d-none" }
+                        //     acceptedColorCode={acceptedColorCode01}
+                        //     setAcceptedColorCode={setAcceptedColorCode01}
+                        // /> }
