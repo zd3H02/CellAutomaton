@@ -53,6 +53,7 @@ class HomeController extends Controller
         $localCell->creator     = Auth::user()->name;
         $localCell->cell_name   = 'test';
         $localCell->cell_code   = '';
+        $localCell->cell_memo   = '';
         $localCell->cell_colors = config('CONST.LOCAL.INIT_CELL_COLORS');
         $localCell->save();
 

@@ -75018,7 +75018,7 @@ function Cell(props) {
       return props.onMouseUp();
     },
     style: btnStyle,
-    className: "btn btn-default p-0 border-0"
+    className: "btn btn-default p-0 border"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", {
     className: "text-secondary" + " " + (props.isDisplayMatrix ? "" : "d-none")
   }, '(' + props.row + ',' + props.col + ')'));

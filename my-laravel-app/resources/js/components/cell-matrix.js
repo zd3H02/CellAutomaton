@@ -21,7 +21,7 @@ function Cell(props) {
             onMouseDown={()=>props.onMouseDown()}
             onMouseUp={()=>props.onMouseUp()}
             style={btnStyle}
-            className="btn btn-default p-0 border-0"
+            className="btn btn-default p-0 border"
         >
             <small className={"text-secondary" + " " + (props.isDisplayMatrix ? "" : "d-none")}>
                 { '(' + props.row + ',' + props.col + ')'}

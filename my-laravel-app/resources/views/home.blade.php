@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 <button class="btn btn-secondary w-100 mb-1" type="submit" formaction="{{ url('home/trashcan')}}">ゴミ箱</button>
             </div>
             <div id="list" class="my-vh-100 col-md-3 overflow-auto border-right border-secondary">
-                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2">
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 bg-white">
                 @if (isset($isTrash))
                 ごみ箱一覧
                 @else
@@ -90,7 +90,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 @endif
             </div>
             <div class="my-vh-100 col-md-7 overflow-auto">
-                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 my-z-index-m1">詳細</h2>
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 my-z-index-m1 bg-white">詳細</h2>
                 @if (isset($detailDisplayItem))
                     <pre>名称      ：{{$detailDisplayItem->cell_name}}</pre>
                     <pre>メモ      ：</pre>
