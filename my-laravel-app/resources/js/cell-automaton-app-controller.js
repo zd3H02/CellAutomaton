@@ -73,6 +73,8 @@ function CellAutomatonAppController(props) {
     const [shrotCutShiftCtrlZ, setShrotCutShiftCtrlZ] = useState(0)
     useHotkeys('shift+ctrl+z', () => setShrotCutShiftCtrlZ(prevCount => prevCount + 1))
 
+    const [isDisplayMatrix, setIsDisplayMatrix] = useState(false)
+
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
     // 初回送信
@@ -217,7 +219,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        3000
+        30000
     )
 
 
@@ -243,7 +245,15 @@ function CellAutomatonAppController(props) {
         <Container fluid>
             <Row>
                 <Col md={6} style={cellMatrixColStyle}>
-                    <p>ライフゲーム名：<input type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/></p>
+                    <p className="align-middle">
+                        ライフゲーム名：<input className="align-middle" type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/>
+                        <Button
+                            className="align-middle p-0 ml-1"
+                            onClick={()=>{isDisplayMatrix ? setIsDisplayMatrix(false) : setIsDisplayMatrix(true)}}
+                        >
+                        {isDisplayMatrix ? "行列成分非表示" : "行列成分表示"}
+                        </Button>
+                    </p>
                     <CellMatrix
                         MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
                         MAX_CELL_COL_NUM={MAX_CELL_COL_NUM}
@@ -251,6 +261,7 @@ function CellAutomatonAppController(props) {
                         setCellColors={setCellColors}
                         acceptedColorCode={getInUseColor()}
                         className="border border-secondary rounded d-inline-block"
+                        isDisplayMatrix={isDisplayMatrix}
                     />
                 </Col>
                 <Col md={6}>
@@ -299,15 +310,17 @@ function CellAutomatonAppController(props) {
                     </Row>
                     <Button
                         className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary")}
-                        value={cellCalcStateIsRun}
-                        onClick={event=>setCellCalcState(event.target.value)}
+                        // value={cellCalcStateIsRun}
+                        // onClick={()=>setCellCalcState(event.target.value)}
+                        onClick={()=>setCellCalcState(cellCalcStateIsRun)}
                     >
                         実行<small>(ctrl+chift+a)</small>
                     </Button>
                     <Button
                         className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary")}
-                        value={cellCalcStateIsStop}
-                        onClick={event=>setCellCalcState(event.target.value)}
+                        // value={cellCalcStateIsStop}
+                        // onClick={event=>setCellCalcState(event.target.value)}
+                        onClick={()=>setCellCalcState(cellCalcStateIsStop)}
                     >
                         停止<small>(ctrl+chift+s)</small>
                     </Button>

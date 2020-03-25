@@ -21,7 +21,12 @@ function Cell(props) {
             onMouseDown={()=>props.onMouseDown()}
             onMouseUp={()=>props.onMouseUp()}
             style={btnStyle}
-            className="btn btn-default p-0 border"/>
+            className="btn btn-default p-0 border-0"
+        >
+            <small className={"text-secondary" + " " + (props.isDisplayMatrix ? "" : "d-none")}>
+                { '(' + props.row + ',' + props.col + ')'}
+            </small>
+        </Button>
     )
 }
 
@@ -89,6 +94,9 @@ function CellMatrix(props) {
                         }
                         onMouseUp={()=>setMouseState(mouseStateIsUp)}
                         color = {props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]}
+                        col = {colI}
+                        row = {rowI}
+                        isDisplayMatrix = {props.isDisplayMatrix}
                     />
                 )}
             </p>

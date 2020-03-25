@@ -74509,9 +74509,15 @@ function CellAutomatonAppController(props) {
     return setShrotCutShiftCtrlZ(function (prevCount) {
       return prevCount + 1;
     });
-  }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+  });
+
+  var _useState41 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState42 = _slicedToArray(_useState41, 2),
+      isDisplayMatrix = _useState42[0],
+      setIsDisplayMatrix = _useState42[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var sendData = new FormData();
@@ -74621,7 +74627,7 @@ function CellAutomatonAppController(props) {
         setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
       });
     }
-  }, 3000);
+  }, 30000);
 
   function getInUseColor() {
     return acceptedColorCodes[inUseColor];
@@ -74649,19 +74655,28 @@ function CellAutomatonAppController(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6,
     style: cellMatrixColStyle
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u30E9\u30A4\u30D5\u30B2\u30FC\u30E0\u540D\uFF1A", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "align-middle"
+  }, "\u30E9\u30A4\u30D5\u30B2\u30FC\u30E0\u540D\uFF1A", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    className: "align-middle",
     type: "text",
     value: cellName,
     onChange: function onChange(event) {
       return setCellName(event.target.value);
     }
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+    className: "align-middle p-0 ml-1",
+    onClick: function onClick() {
+      isDisplayMatrix ? setIsDisplayMatrix(false) : setIsDisplayMatrix(true);
+    }
+  }, isDisplayMatrix ? "行列成分非表示" : "行列成分表示")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
     cellColors: cellColors,
     setCellColors: setCellColors,
     acceptedColorCode: getInUseColor(),
-    className: "border border-secondary rounded d-inline-block"
+    className: "border border-secondary rounded d-inline-block",
+    isDisplayMatrix: isDisplayMatrix
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
@@ -74704,16 +74719,18 @@ function CellAutomatonAppController(props) {
       return setCellMemo(event.target.value);
     }
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
-    className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary"),
-    value: cellCalcStateIsRun,
-    onClick: function onClick(event) {
-      return setCellCalcState(event.target.value);
+    className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary") // value={cellCalcStateIsRun}
+    // onClick={()=>setCellCalcState(event.target.value)}
+    ,
+    onClick: function onClick() {
+      return setCellCalcState(cellCalcStateIsRun);
     }
   }, "\u5B9F\u884C", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+a)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
-    className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary"),
-    value: cellCalcStateIsStop,
-    onClick: function onClick(event) {
-      return setCellCalcState(event.target.value);
+    className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary") // value={cellCalcStateIsStop}
+    // onClick={event=>setCellCalcState(event.target.value)}
+    ,
+    onClick: function onClick() {
+      return setCellCalcState(cellCalcStateIsStop);
     }
   }, "\u505C\u6B62", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+s)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"),
@@ -75001,8 +75018,10 @@ function Cell(props) {
       return props.onMouseUp();
     },
     style: btnStyle,
-    className: "btn btn-default p-0 border"
-  });
+    className: "btn btn-default p-0 border-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", {
+    className: "text-secondary" + " " + (props.isDisplayMatrix ? "" : "d-none")
+  }, '(' + props.row + ',' + props.col + ')'));
 }
 
 function CellMatrix(props) {
@@ -75070,7 +75089,10 @@ function CellMatrix(props) {
         onMouseUp: function onMouseUp() {
           return setMouseState(mouseStateIsUp);
         },
-        color: props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI]
+        color: props.cellColors[props.MAX_CELL_COL_NUM * rowI + colI],
+        col: colI,
+        row: rowI,
+        isDisplayMatrix: props.isDisplayMatrix
       });
     }));
   }); // console.log(cells)
@@ -75412,7 +75434,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

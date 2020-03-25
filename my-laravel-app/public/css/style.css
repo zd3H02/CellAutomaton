@@ -10943,9 +10943,41 @@ body {
   margin-top: -72px;
 }
 
-.my-carousel-caption {
+.my-carousel-caption-lg {
+  height: 225px;
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
+}
+
+.my-carousel-caption-md-lg {
+  top: 40%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.my-carousel-caption-sm-md {
+  top: 35%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.my-carousel-caption-xs {
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.my-triangle:after {
+  content: "";
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 20px 20px 0 20px;
+  border-color: #343a40 transparent transparent transparent;
 }
 
