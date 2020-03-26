@@ -93,6 +93,8 @@ function CellAutomatonAppController(props) {
     const shrotCutKeyFill = 'shift+ctrl+alt+w'
     useHotkeys(shrotCutKeyFill, () => setShrotCutFill(prevCount => prevCount + 1))
 
+    const [calcWaitingForReception, setCalcWaitingForReception] = useState(false)
+
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
     // 初回送信
@@ -216,6 +218,7 @@ function CellAutomatonAppController(props) {
     useInterval(
         cellCalcState === cellCalcStateIsRun ?
             () => {
+                setCalcWaitingForReception(true)
                 const sendData = new FormData()
                 sendData.append('id',G_LOCAL_CELL_ID)
                 sendData.append('cell_colors',JSON.stringify(cellColors))
@@ -229,6 +232,7 @@ function CellAutomatonAppController(props) {
                 )
                 response.then(
                     result=>{
+                        setCalcWaitingForReception(false)
                         setCellColors(result.cell_colors)
                         setCodeExecCmdOutput(result.code_exec_cmd_output)
                         setCodeExecCmdStatus(result.code_exec_cmd_status)
@@ -237,7 +241,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         :
-            ()=>{},
+            ()=>{setCalcWaitingForReception(false)},
         3000
     )
 
@@ -281,12 +285,28 @@ function CellAutomatonAppController(props) {
         }
     }
     const cellMatrixColStyle = {
-        minWidth : '850px',
+        minWidth: '850px',
+    }
+    const localCellStyle = {
+        maxWidth: '1920px',
+    }
+    const btnLikeStyle ={
+        margin: '4px 4px 0px 4px',
+        lineHeight: '1.5',
+        display: 'inline-block',
+        fontWeight: '400',
+        textAlign: 'center',
+        verticalAlign: 'middle',
+        border: '1px solid transparent',
+        padding: '.375rem .75rem',
+        fontSize: '1rem',
+        borderRadius: '.25rem'
     }
     return (
-        <Container fluid>
+        <Container fluid style={localCellStyle}>
             <Row>
                 <Col md={6} style={cellMatrixColStyle}>
+                    {/* <div className="float-right"> */}
                     <p className="align-middle">
                         ライフゲーム名：<input className="align-middle" type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/>
                     </p>
@@ -299,6 +319,7 @@ function CellAutomatonAppController(props) {
                         className="border border-secondary rounded d-inline-block"
                         isDisplayMatrix={isDisplayMatrix}
                     />
+                    {/* </div> */}
                 </Col>
                 <Col md={6}>
                     <Row>
@@ -360,6 +381,11 @@ function CellAutomatonAppController(props) {
                             </textarea>
                         </Col>
                     </Row>
+                    <p className="m-0 p-0">
+                    {calcWaitingForReception ?
+                            <span className="rounded bg-danger text-white align-middle" style={btnLikeStyle}>受信待ち</span>
+                        :   <span className="rounded bg-primary  text-white align-middle" style={btnLikeStyle}>送信準備</span>
+                    }
                     <Button
                         className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary")}
                         // value={cellCalcStateIsRun}
@@ -394,6 +420,7 @@ function CellAutomatonAppController(props) {
                     >
                         全て保存<small>({shrotCutKeyAllSave})</small>
                     </Button>
+                    </p>
                     <div>
                         <AceEditor
                             height="400px"

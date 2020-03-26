@@ -74550,9 +74550,15 @@ function CellAutomatonAppController(props) {
     return setShrotCutFill(function (prevCount) {
       return prevCount + 1;
     });
-  }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+  });
+
+  var _useState47 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState48 = _slicedToArray(_useState47, 2),
+      calcWaitingForReception = _useState48[0],
+      setCalcWaitingForReception = _useState48[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var sendData = new FormData();
@@ -74645,6 +74651,7 @@ function CellAutomatonAppController(props) {
   }, [shrotCutAllSave]); // 実行中の送信
 
   Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_2__["useInterval"])(cellCalcState === cellCalcStateIsRun ? function () {
+    setCalcWaitingForReception(true);
     var sendData = new FormData();
     sendData.append('id', G_LOCAL_CELL_ID);
     sendData.append('cell_colors', JSON.stringify(cellColors));
@@ -74656,11 +74663,14 @@ function CellAutomatonAppController(props) {
       body: sendData
     });
     response.then(function (result) {
+      setCalcWaitingForReception(false);
       setCellColors(result.cell_colors);
       setCodeExecCmdOutput(result.code_exec_cmd_output);
       setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
     });
-  } : function () {}, 3000);
+  } : function () {
+    setCalcWaitingForReception(false);
+  }, 3000);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (isFirstDisplayMatrix.current) {
       isFirstDisplayMatrix.current = false;
@@ -74692,8 +74702,24 @@ function CellAutomatonAppController(props) {
   var cellMatrixColStyle = {
     minWidth: '850px'
   };
+  var localCellStyle = {
+    maxWidth: '1920px'
+  };
+  var btnLikeStyle = {
+    margin: '4px 4px 0px 4px',
+    lineHeight: '1.5',
+    display: 'inline-block',
+    fontWeight: '400',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    border: '1px solid transparent',
+    padding: '.375rem .75rem',
+    fontSize: '1rem',
+    borderRadius: '.25rem'
+  };
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Container"], {
-    fluid: true
+    fluid: true,
+    style: localCellStyle
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6,
     style: cellMatrixColStyle
@@ -74769,7 +74795,15 @@ function CellAutomatonAppController(props) {
     onChange: function onChange(event) {
       return setCellMemo(event.target.value);
     }
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "m-0 p-0"
+  }, calcWaitingForReception ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "rounded bg-danger text-white align-middle",
+    style: btnLikeStyle
+  }, "\u53D7\u4FE1\u5F85\u3061") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "rounded bg-primary  text-white align-middle",
+    style: btnLikeStyle
+  }, "\u9001\u4FE1\u6E96\u5099"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsRun ? "bg-primary border-primary" : "bg-secondary border-secondary") // value={cellCalcStateIsRun}
     // onClick={()=>setCellCalcState(event.target.value)}
     ,
@@ -74804,7 +74838,7 @@ function CellAutomatonAppController(props) {
         return prevCount + 1;
       });
     }
-  }, "\u5168\u3066\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyAllSave, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_5___default.a, {
+  }, "\u5168\u3066\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyAllSave, ")"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_5___default.a, {
     height: "400px",
     width: "920px",
     mode: "python",
@@ -75485,7 +75519,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

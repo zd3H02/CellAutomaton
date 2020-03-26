@@ -90,17 +90,22 @@ window.addEventListener('DOMContentLoaded', function() {
                 @endif
             </div>
             <div class="my-vh-100 col-md-7 overflow-auto">
-                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 my-z-index-m1 bg-white">詳細</h2>
+                <h2 class="border-bottom border-secondary text-center sticky-top mx-n2 bg-white my-z-index-2">詳細</h2>
+                <div class="my-z-index-1">
                 @if (isset($detailDisplayItem))
                     <pre>名称      ：{{$detailDisplayItem->cell_name}}</pre>
                     <pre>メモ      ：</pre>
-                    <pre>{{$detailDisplayItem->cell_memo}}</pre>
+                    @if ($detailDisplayItem->cell_memo != "")
+                        <pre class="border border-secondary rounded">{{$detailDisplayItem->cell_memo}}</pre>
+                    @endif
                     <pre>作成日    ：{{$detailDisplayItem->created_at}}</pre>
                     <pre>最終更新日：{{$detailDisplayItem->updated_at}}</pre>
                     <pre>セルカラー：</pre>
-                    <img class="border border-secondary m-1 rounded img-fluid" src="{{ asset('storage/' . $detailDisplayItem->detail_filename) }}">
+                    <img class="border border-secondary rounded mb-5 img-fluid" src="{{ asset('storage/' . $detailDisplayItem->detail_filename) }}">
                     <pre>コード    ：</pre>
-                    <pre>{{$detailDisplayItem->cell_code}}</pre>
+                    @if ($detailDisplayItem->cell_code != "")
+                        <pre class="border border-secondary rounded">{{$detailDisplayItem->cell_code}}</pre>
+                    @endif
                 @else
                     <pre>名称      ：</pre>
                     <pre>メモ      ：</pre>
@@ -109,6 +114,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     <pre>セルカラー：</pre>
                     <pre>コード    ：</pre>
                 @endif
+                </div>
             </div>
         </div>
     </form>
