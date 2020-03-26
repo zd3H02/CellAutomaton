@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         $localCell              = new LocalCell;
         $localCell->creator     = Auth::user()->name;
-        $localCell->cell_name   = 'test';
+        $localCell->cell_name   = 'new cell';
         $localCell->cell_code   = <<<EOD
 import math
 
