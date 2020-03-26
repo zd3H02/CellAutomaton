@@ -16,11 +16,11 @@
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
         <!-- Favicon Generator-->
-        <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/image/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/image/favicon-16x16.png">
-        <link rel="manifest" href="/image/site.webmanifest">
-        <link rel="mask-icon" href="/image/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/image/fabicon/' . 'apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/image/fabicon/' . 'favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/image/fabicon/' . 'favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('/image/fabicon/' . 'site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ asset('/image/fabicon/' . 'safari-pinned-tab.svg') }}" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
@@ -65,60 +65,66 @@
         </nav>
         <div class="content">
             <div id="carouselExampleFade" class="carousel slide carousel-fade position-relative" data-interval="3000" data-pause="false" data-ride="carousel">
-                <div class="d-none d-lg-block carousel-caption position-absolute my-carousel-caption-lg my-triangle m-0 p-0">
-                    <h1 class="display-1 text-muted">LifeEvo</h1>
-                    <p class="text-muted">
-                        ライフゲームは生命の誕生、進化、淘汰などのプロセスを
-                        <br>簡易的なモデルで再現したシミュレーションゲームです。
-                        <br>LifeEvoは手軽にライフゲームが遊べるWebアプリです。
-                        <br>ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
-                    </p>
+                <div class="d-none d-lg-block carousel-caption position-absolute my-center my-triangle">
+                    <div class="position-absolute my-center w-100">
+                        <h1 class="display-1 text-muted">LifeEvo</h1>
+                        <p class="text-muted">
+                            ライフゲームは生命の誕生、進化、淘汰などのプロセスを
+                            <br>簡易的なモデルで再現したシミュレーションゲームです。
+                            <br>LifeEvoは手軽にライフゲームが遊べるWebアプリです。
+                            <br>ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
+                        </p>
+                    </div>
                 </div>
-                <div class="d-none d-md-block d-lg-none carousel-caption position-absolute my-carousel-caption-md-lg">
-                    <h1 class="display-3 text-muted">LifeEvo</h1>
-                    <p class="text-muted">
-                        ライフゲームは生命の誕生、進化、淘汰などのプロセスを
-                        簡易的なモデルで再現したシミュレーションゲームです。
-                        LifeEvoは手軽にライフゲームが遊べるWebアプリです。
-                        ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
-                    </p>
+                <div class="d-none d-md-block d-lg-none carousel-caption position-absolute my-center my-triangle">
+                    <div class="position-absolute my-center w-100">
+                        <h1 class="display-3 text-muted">LifeEvo</h1>
+                        <p class="text-muted">
+                            ライフゲームは生命の誕生、進化、淘汰などのプロセスを
+                            簡易的なモデルで再現したシミュレーションゲームです。
+                            LifeEvoは手軽にライフゲームが遊べるWebアプリです。
+                            ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
+                        </p>
+                    </div>
                 </div>
-                <div class="d-none d-sm-block d-md-none carousel-caption position-absolute my-carousel-caption-sm-md">
-                    <h1 class="display-4 text-muted">LifeEvo</h1>
-                    <p class="text-muted">
-                        ライフゲームは生命の誕生、進化、淘汰などのプロセスを
-                        簡易的なモデルで再現したシミュレーションゲームです。
-                        LifeEvoは手軽にライフゲームが遊べるWebアプリです。
-                        ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
-                    </p>
+                <div class="d-none d-sm-block d-md-none carousel-caption position-absolute my-center">
+                    <div class="position-absolute my-center w-100">
+                        <h1 class="display-4 text-muted">LifeEvo</h1>
+                        <p class="text-muted">
+                            ライフゲームは生命の誕生、進化、淘汰などのプロセスを
+                            簡易的なモデルで再現したシミュレーションゲームです。
+                            LifeEvoは手軽にライフゲームが遊べるWebアプリです。
+                            ルールの変更もできるのでオリジナルのライフゲームが楽しめます。
+                        </p>
+                    </div>
                 </div>
-                <div class="d-block d-sm-none carousel-caption position-absolute my-carousel-caption-xs">
+                <div class="d-block d-sm-none carousel-caption position-absolute my-center">
                     <h1 class="display-5 text-muted">LifeEvo</h1>
                 </div>
                 <div id="carousel-inner" class="carousel-inner">
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_00.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_00.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_01.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_01.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_02.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_02.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_03.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_03.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_04.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_04.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_05.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_05.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_06.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_06.jpg') }}">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="{{ asset('storage/main/' . 'ginga_07.jpg') }}">
+                        <img class="d-block w-100" src="{{ asset('/image/main/' . 'ginga_07.jpg') }}">
                     </div>
                 </div>
             </div>
@@ -174,28 +180,28 @@
                             <br>次の世代が誕生します。
                             <br>この場合は中央の灰色のセルが黒色になります。
                         </p>
-                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('storage/main/' . 'tanjyou.jpg') }}">
+                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('image/main/' . 'tanjyou.jpg') }}">
                         <h5  class="mt-5">生存</h5>
                         <p>
                             生きているセルに隣接する生きたセルが2つか3つならば、
                             <br>次の世代でも生存します。
                             <br>この場合はセルの色は変化しません。
                         </p>
-                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('storage/main/' . 'iji.jpg') }}">
+                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('image/main/' . 'iji.jpg') }}">
                         <h5 class="mt-5">過疎</h5>
                         <p>
                             生きているセルに隣接する生きたセルが1つ以下ならば、
                             <br>過疎により死滅します。
                             <br>この場合は中央の灰色のセルが白色になります。
                         </p>
-                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('storage/main/' . 'kaso.jpg') }}">
+                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('image/main/' . 'kaso.jpg') }}">
                         <h5 class="mt-5">過密</h5>
                         <p>
                             生きているセルに隣接する生きたセルが4つ以上ならば、
                             <br>過密により死滅します。
                             <br>この場合は中央の灰色のセルが白色になります。
                         </p>
-                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('storage/main/' . 'kamitsu.jpg') }}">
+                        <img class="d-block img-thumbnail mx-auto" src="{{ asset('image/main/' . 'kamitsu.jpg') }}">
                         <div class="mt-5 text-left">
                             <p>
                                 たったこれだけのルールから複雑で神秘的な模様が生み出されることがライフゲームの魅力です。
@@ -209,9 +215,9 @@
                 </div>
             </div>
         </div>
-        <footer class="text-center bg-dark">
-                <a class="text-decoration-none text-light" href="#">▲Top</a>
-                <p class="text-light p-0 m-0"><small>Copyright &copy; 2020 zd3H02. All Rights Reserved.</small></p>
+        <footer class="text-center bg-dark pt-4 pb-1">
+                <a class="text-decoration-none text-light pt-4" href="#">▲Top</a>
+                <p class="text-light pt-4"><small>Copyright &copy; 2020 zd3H02. All Rights Reserved.</small></p>
         </footer>
     </body>
 </html>

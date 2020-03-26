@@ -74407,6 +74407,10 @@ function CellAutomatonAppController(props) {
       inUseColor = _useState14[0],
       setInUseColor = _useState14[1];
 
+  function getInUseColor() {
+    return acceptedColorCodes[inUseColor];
+  }
+
   var cellCalcStateIsRun = 'Run';
   var cellCalcStateIsStop = 'Stop';
 
@@ -74438,20 +74442,22 @@ function CellAutomatonAppController(props) {
 
   var _useState25 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState26 = _slicedToArray(_useState25, 2),
-      shrotCut03ShiftCtrlA = _useState26[0],
-      setShrotCut03ShiftCtrlA = _useState26[1];
+      shrotCutRun = _useState26[0],
+      setShrotCutRun = _useState26[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+a', function () {
-    return setShrotCut03ShiftCtrlA(setCellCalcState(cellCalcStateIsRun));
+  var shrotCutKeyRun = 'shift+ctrl+alt+a';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyRun, function () {
+    return setShrotCutRun(setCellCalcState(cellCalcStateIsRun));
   });
 
   var _useState27 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState28 = _slicedToArray(_useState27, 2),
-      shrotCutShiftCtrlS = _useState28[0],
-      setShrotCutShiftCtrlS = _useState28[1];
+      shrotCutStop = _useState28[0],
+      setShrotCutStop = _useState28[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+s', function () {
-    return setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop));
+  var shrotCutKeyStop = 'shift+ctrl+alt+s';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyStop, function () {
+    return setShrotCutStop(setCellCalcState(cellCalcStateIsStop));
   });
   var isFirstCodeSaveSend = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
   var codeSaveStateIsSaving = 'Saving';
@@ -74464,11 +74470,12 @@ function CellAutomatonAppController(props) {
 
   var _useState31 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState32 = _slicedToArray(_useState31, 2),
-      shrotCutShiftCtrlD = _useState32[0],
-      setShrotCutShiftCtrlD = _useState32[1];
+      shrotCutCodeSave = _useState32[0],
+      setShrotCutCodeSave = _useState32[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+d', function () {
-    return setShrotCutShiftCtrlD(function (prevCount) {
+  var shrotCutKeyCodeSave = 'shift+ctrl+alt+d';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyCodeSave, function () {
+    return setShrotCutCodeSave(function (prevCount) {
       return prevCount + 1;
     });
   });
@@ -74483,11 +74490,12 @@ function CellAutomatonAppController(props) {
 
   var _useState35 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState36 = _slicedToArray(_useState35, 2),
-      shrotCutShiftCtrlF = _useState36[0],
-      setShrotCutShiftCtrlF = _useState36[1];
+      shrotCutColorsSave = _useState36[0],
+      setShrotCutColorsSave = _useState36[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+f', function () {
-    return setShrotCutShiftCtrlF(function (prevCount) {
+  var shrotCutKeyColorsSave = 'shift+ctrl+alt+z';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyColorsSave, function () {
+    return setShrotCutColorsSave(function (prevCount) {
       return prevCount + 1;
     });
   });
@@ -74502,11 +74510,12 @@ function CellAutomatonAppController(props) {
 
   var _useState39 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
       _useState40 = _slicedToArray(_useState39, 2),
-      shrotCutShiftCtrlZ = _useState40[0],
-      setShrotCutShiftCtrlZ = _useState40[1];
+      shrotCutAllSave = _useState40[0],
+      setShrotCutAllSave = _useState40[1];
 
-  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])('shift+ctrl+z', function () {
-    return setShrotCutShiftCtrlZ(function (prevCount) {
+  var shrotCutKeyAllSave = 'shift+ctrl+alt+x';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyAllSave, function () {
+    return setShrotCutAllSave(function (prevCount) {
       return prevCount + 1;
     });
   });
@@ -74514,10 +74523,36 @@ function CellAutomatonAppController(props) {
   var _useState41 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState42 = _slicedToArray(_useState41, 2),
       isDisplayMatrix = _useState42[0],
-      setIsDisplayMatrix = _useState42[1]; // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
+      setIsDisplayMatrix = _useState42[1];
+
+  var isFirstDisplayMatrix = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+
+  var _useState43 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState44 = _slicedToArray(_useState43, 2),
+      shrotCutDisplayMatrix = _useState44[0],
+      setShrotCutDisplayMatrix = _useState44[1];
+
+  var shrotCutKeyDisplayMatrix = 'shift+ctrl+alt+q';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyDisplayMatrix, function () {
+    return setShrotCutDisplayMatrix(function (prevCount) {
+      return prevCount + 1;
+    });
+  });
+  var isFirstShrotCutFill = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true);
+
+  var _useState45 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(0),
+      _useState46 = _slicedToArray(_useState45, 2),
+      shrotCutFill = _useState46[0],
+      setShrotCutFill = _useState46[1];
+
+  var shrotCutKeyFill = 'shift+ctrl+alt+w';
+  Object(react_hotkeys_hook__WEBPACK_IMPORTED_MODULE_9__["useHotkeys"])(shrotCutKeyFill, function () {
+    return setShrotCutFill(function (prevCount) {
+      return prevCount + 1;
+    });
+  }); // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
   // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
   // 初回送信
-
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     var sendData = new FormData();
@@ -74562,7 +74597,7 @@ function CellAutomatonAppController(props) {
         setcodeSaveState(codeSaveStateIsSaved);
       });
     }
-  }, [shrotCutShiftCtrlD]); // 初期セル色保存送信
+  }, [shrotCutCodeSave]); // 初期セル色保存送信
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (isFirstCellColorsSaveSend.current) {
@@ -74583,7 +74618,7 @@ function CellAutomatonAppController(props) {
         setCellColorsSaveState(cellColorsSaveStateIsSaved);
       });
     }
-  }, [shrotCutShiftCtrlF]); // 全て保存送信
+  }, [shrotCutColorsSave]); // 全て保存送信
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (isFirstAllSaveSend.current) {
@@ -74607,32 +74642,39 @@ function CellAutomatonAppController(props) {
         setAllSaveState(allSaveStateIsSaved);
       });
     }
-  }, [shrotCutShiftCtrlZ]); // 実行中の送信
+  }, [shrotCutAllSave]); // 実行中の送信
 
-  Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_2__["useInterval"])(function () {
-    if (cellCalcState === cellCalcStateIsRun) {
-      var sendData = new FormData();
-      sendData.append('id', G_LOCAL_CELL_ID);
-      sendData.append('cell_colors', JSON.stringify(cellColors));
-      var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/calc', {
-        method: 'POST',
-        headers: {
-          'X-CSRF-TOKEN': G_CSRF_TOKEN
-        },
-        body: sendData
-      });
-      response.then(function (result) {
-        setCellColors(result.cell_colors);
-        setCodeExecCmdOutput(result.code_exec_cmd_output);
-        setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
-      });
+  Object(_components_custom_useinterval__WEBPACK_IMPORTED_MODULE_2__["useInterval"])(cellCalcState === cellCalcStateIsRun ? function () {
+    var sendData = new FormData();
+    sendData.append('id', G_LOCAL_CELL_ID);
+    sendData.append('cell_colors', JSON.stringify(cellColors));
+    var response = Object(_components_utility__WEBPACK_IMPORTED_MODULE_8__["GetFetchData"])('../local/calc', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': G_CSRF_TOKEN
+      },
+      body: sendData
+    });
+    response.then(function (result) {
+      setCellColors(result.cell_colors);
+      setCodeExecCmdOutput(result.code_exec_cmd_output);
+      setCodeExecCmdStatus(result.code_exec_cmd_status); // console.log(cellColors)
+    });
+  } : function () {}, 3000);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (isFirstDisplayMatrix.current) {
+      isFirstDisplayMatrix.current = false;
+    } else {
+      setIsDisplayMatrix(!isDisplayMatrix);
     }
-  }, 30000);
-
-  function getInUseColor() {
-    return acceptedColorCodes[inUseColor];
-  }
-
+  }, [shrotCutDisplayMatrix]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (isFirstShrotCutFill.current) {
+      isFirstShrotCutFill.current = false;
+    } else {
+      setCellColors(Array(MAX_CELL_NUM).fill(getInUseColor()));
+    }
+  }, [shrotCutFill]);
   var inUseColorStyle = {
     height: "40px",
     width: "40px",
@@ -74664,12 +74706,7 @@ function CellAutomatonAppController(props) {
     onChange: function onChange(event) {
       return setCellName(event.target.value);
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
-    className: "align-middle p-0 ml-1",
-    onClick: function onClick() {
-      isDisplayMatrix ? setIsDisplayMatrix(false) : setIsDisplayMatrix(true);
-    }
-  }, isDisplayMatrix ? "行列成分非表示" : "行列成分表示")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cell_matrix__WEBPACK_IMPORTED_MODULE_3__["CellMatrix"], {
     MAX_CELL_ROW_NUM: MAX_CELL_ROW_NUM,
     MAX_CELL_COL_NUM: MAX_CELL_COL_NUM,
     cellColors: cellColors,
@@ -74681,7 +74718,21 @@ function CellAutomatonAppController(props) {
     md: 6
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Col"], {
     md: 6
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "mt-1 mb-0 p-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+    className: "border border-secondary rounded",
+    onClick: function onClick() {
+      return setIsDisplayMatrix(!isDisplayMatrix);
+    }
+  }, isDisplayMatrix ? "行列番号非表示" : "行列番号表示", "(", shrotCutKeyDisplayMatrix, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    className: "mt-1 mb-0 p-0"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+    className: "border border-secondary rounded",
+    onClick: function onClick() {
+      return setCellColors(Array(MAX_CELL_NUM).fill(getInUseColor()));
+    }
+  }, "\u5857\u308A\u3064\u3076\u3057(", shrotCutKeyFill, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "mt-1 border border-secondary rounded",
     style: inUseColorStyle
   }), acceptedColorCodes.map(function (acceptedColorCode, i) {
@@ -74714,7 +74765,7 @@ function CellAutomatonAppController(props) {
     id: "cellMemo",
     rows: "8",
     cols: "40",
-    value: cellMemo === null ? '' : cellMemo,
+    value: cellMemo,
     onChange: function onChange(event) {
       return setCellMemo(event.target.value);
     }
@@ -74725,35 +74776,35 @@ function CellAutomatonAppController(props) {
     onClick: function onClick() {
       return setCellCalcState(cellCalcStateIsRun);
     }
-  }, "\u5B9F\u884C", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+a)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+  }, "\u5B9F\u884C", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyRun, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary") // value={cellCalcStateIsStop}
     // onClick={event=>setCellCalcState(event.target.value)}
     ,
     onClick: function onClick() {
       return setCellCalcState(cellCalcStateIsStop);
     }
-  }, "\u505C\u6B62", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+s)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+  }, "\u505C\u6B62", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyStop, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"),
     onClick: function onClick() {
-      return setShrotCutShiftCtrlD(function (prevCount) {
+      return setShrotCutCodeSave(function (prevCount) {
         return prevCount + 1;
       });
     }
-  }, "\u30B3\u30FC\u30C9\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+d)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+  }, "\u30B3\u30FC\u30C9\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyCodeSave, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"),
     onClick: function onClick() {
-      return setShrotCutShiftCtrlF(function (prevCount) {
+      return setShrotCutColorsSave(function (prevCount) {
         return prevCount + 1;
       });
     }
-  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+f)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
+  }, "\u521D\u671F\u30BB\u30EB\u8272\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyColorsSave, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["Button"], {
     className: "mt-1 mx-1" + " " + (allSaveState === allSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary"),
     onClick: function onClick() {
-      return setShrotCutShiftCtrlZ(function (prevCount) {
+      return setShrotCutAllSave(function (prevCount) {
         return prevCount + 1;
       });
     }
-  }, "\u5168\u3066\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(ctrl+chift+g)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_5___default.a, {
+  }, "\u5168\u3066\u4FDD\u5B58", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, "(", shrotCutKeyAllSave, ")")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_ace__WEBPACK_IMPORTED_MODULE_5___default.a, {
     height: "400px",
     width: "920px",
     mode: "python",
@@ -75434,7 +75485,7 @@ function GetFetchData(url) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/my-laravel-app/resources/js/cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
+module.exports = __webpack_require__(/*! D:\Workspace\CellAutomaton\my-laravel-app\resources\js\cell-automaton-app-controller.js */"./resources/js/cell-automaton-app-controller.js");
 
 
 /***/ })

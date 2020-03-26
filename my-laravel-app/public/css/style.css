@@ -10943,26 +10943,7 @@ body {
   margin-top: -72px;
 }
 
-.my-carousel-caption-lg {
-  height: 225px;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-.my-carousel-caption-md-lg {
-  top: 40%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-.my-carousel-caption-sm-md {
-  top: 35%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-.my-carousel-caption-xs {
+.my-center {
   top: 50%;
   left: 50%;
   transform: translateY(-50%) translateX(-50%);

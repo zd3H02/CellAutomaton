@@ -34,6 +34,9 @@ function CellAutomatonAppController(props) {
 
     const [acceptedColorCodes, setAcceptedColorCodes] = useState(Array('#000000','#ffffff','#ff0000','#00ff00','#0000ff'))
     const [inUseColor, setInUseColor] = useState(0)
+    function getInUseColor() {
+        return acceptedColorCodes[inUseColor]
+    }
 
     const cellCalcStateIsRun    = 'Run'
     const cellCalcStateIsStop   = 'Stop'
@@ -46,34 +49,49 @@ function CellAutomatonAppController(props) {
     const [cellMemo, setCellMemo] = useState('')
 
     //ショートカットキー
-    const [shrotCut03ShiftCtrlA, setShrotCut03ShiftCtrlA] = useState(0)
-    useHotkeys('shift+ctrl+a', () => setShrotCut03ShiftCtrlA(setCellCalcState(cellCalcStateIsRun)))
+    const [shrotCutRun, setShrotCutRun] = useState(0)
+    const shrotCutKeyRun = 'shift+ctrl+alt+a'
+    useHotkeys(shrotCutKeyRun, () => setShrotCutRun(setCellCalcState(cellCalcStateIsRun)))
 
-    const [shrotCutShiftCtrlS, setShrotCutShiftCtrlS] = useState(0)
-    useHotkeys('shift+ctrl+s', () => setShrotCutShiftCtrlS(setCellCalcState(cellCalcStateIsStop)))
+    const [shrotCutStop, setShrotCutStop] = useState(0)
+    const shrotCutKeyStop = 'shift+ctrl+alt+s'
+    useHotkeys(shrotCutKeyStop, () => setShrotCutStop(setCellCalcState(cellCalcStateIsStop)))
 
     const isFirstCodeSaveSend = useRef(true)
     const codeSaveStateIsSaving = 'Saving'
     const codeSaveStateIsSaved  = 'Saved'
     const [codeSaveState, setcodeSaveState] = useState(codeSaveStateIsSaved)
-    const [shrotCutShiftCtrlD, setShrotCutShiftCtrlD] = useState(0)
-    useHotkeys('shift+ctrl+d', () => setShrotCutShiftCtrlD(prevCount => prevCount + 1))
+    const [shrotCutCodeSave, setShrotCutCodeSave] = useState(0)
+    const shrotCutKeyCodeSave = 'shift+ctrl+alt+d'
+    useHotkeys(shrotCutKeyCodeSave, () => setShrotCutCodeSave(prevCount => prevCount + 1))
 
     const isFirstCellColorsSaveSend = useRef(true)
     const cellColorsSaveStateIsSaving = 'Saving'
     const cellColorsSaveStateIsSaved  = 'Saved'
     const [cellColorsSaveState, setCellColorsSaveState] = useState(cellColorsSaveStateIsSaved)
-    const [shrotCutShiftCtrlF, setShrotCutShiftCtrlF] = useState(0)
-    useHotkeys('shift+ctrl+f', () => setShrotCutShiftCtrlF(prevCount => prevCount + 1))
+    const [shrotCutColorsSave, setShrotCutColorsSave] = useState(0)
+    const shrotCutKeyColorsSave = 'shift+ctrl+alt+z'
+    useHotkeys(shrotCutKeyColorsSave, () => setShrotCutColorsSave(prevCount => prevCount + 1))
 
     const isFirstAllSaveSend = useRef(true)
     const allSaveStateIsSaving = 'Saving'
     const allSaveStateIsSaved  = 'Saved'
     const [allSaveState, setAllSaveState] = useState(allSaveStateIsSaved)
-    const [shrotCutShiftCtrlZ, setShrotCutShiftCtrlZ] = useState(0)
-    useHotkeys('shift+ctrl+z', () => setShrotCutShiftCtrlZ(prevCount => prevCount + 1))
+    const [shrotCutAllSave, setShrotCutAllSave] = useState(0)
+    const shrotCutKeyAllSave = 'shift+ctrl+alt+x'
+    useHotkeys(shrotCutKeyAllSave, () => setShrotCutAllSave(prevCount => prevCount + 1))
+
 
     const [isDisplayMatrix, setIsDisplayMatrix] = useState(false)
+    const isFirstDisplayMatrix = useRef(true)
+    const [shrotCutDisplayMatrix, setShrotCutDisplayMatrix] = useState(0)
+    const shrotCutKeyDisplayMatrix = 'shift+ctrl+alt+q'
+    useHotkeys(shrotCutKeyDisplayMatrix, () => setShrotCutDisplayMatrix(prevCount => prevCount + 1))
+
+    const isFirstShrotCutFill = useRef(true)
+    const [shrotCutFill, setShrotCutFill] = useState(0)
+    const shrotCutKeyFill = 'shift+ctrl+alt+w'
+    useHotkeys(shrotCutKeyFill, () => setShrotCutFill(prevCount => prevCount + 1))
 
     // Laravelでデータ送信するときに下記を書き忘れるとエラーになるので注意する。
     // headers: {'X-CSRF-TOKEN': G_CSRF_TOKEN}
@@ -133,7 +151,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [shrotCutShiftCtrlD]
+        [shrotCutCodeSave]
     )
     // 初期セル色保存送信
     useEffect(
@@ -161,7 +179,7 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [shrotCutShiftCtrlF]
+        [shrotCutColorsSave]
     )
     // 全て保存送信
     useEffect(
@@ -192,12 +210,12 @@ function CellAutomatonAppController(props) {
                 )
             }
         },
-        [shrotCutShiftCtrlZ]
+        [shrotCutAllSave]
     )
     // 実行中の送信
     useInterval(
-        () => {
-            if(cellCalcState === cellCalcStateIsRun){
+        cellCalcState === cellCalcStateIsRun ?
+            () => {
                 const sendData = new FormData()
                 sendData.append('id',G_LOCAL_CELL_ID)
                 sendData.append('cell_colors',JSON.stringify(cellColors))
@@ -218,14 +236,38 @@ function CellAutomatonAppController(props) {
                     }
                 )
             }
+        :
+            ()=>{},
+        3000
+    )
+
+    useEffect(
+        () => {
+            if(isFirstDisplayMatrix.current) {
+                isFirstDisplayMatrix.current = false
+            }
+            else {
+                setIsDisplayMatrix(!isDisplayMatrix)
+            }
         },
-        30000
+        [shrotCutDisplayMatrix]
+    )
+
+    useEffect(
+        () => {
+            if(isFirstShrotCutFill.current) {
+                isFirstShrotCutFill.current = false
+            }
+            else {
+                setCellColors(Array(MAX_CELL_NUM).fill(getInUseColor()))
+            }
+        },
+        [shrotCutFill]
     )
 
 
-    function getInUseColor() {
-        return acceptedColorCodes[inUseColor]
-    }
+
+
     const inUseColorStyle = {
         height: "40px",
         width: "40px",
@@ -247,12 +289,6 @@ function CellAutomatonAppController(props) {
                 <Col md={6} style={cellMatrixColStyle}>
                     <p className="align-middle">
                         ライフゲーム名：<input className="align-middle" type="text" value={cellName} onChange={event=>setCellName(event.target.value)}/>
-                        <Button
-                            className="align-middle p-0 ml-1"
-                            onClick={()=>{isDisplayMatrix ? setIsDisplayMatrix(false) : setIsDisplayMatrix(true)}}
-                        >
-                        {isDisplayMatrix ? "行列成分非表示" : "行列成分表示"}
-                        </Button>
                     </p>
                     <CellMatrix
                         MAX_CELL_ROW_NUM={MAX_CELL_ROW_NUM}
@@ -267,33 +303,49 @@ function CellAutomatonAppController(props) {
                 <Col md={6}>
                     <Row>
                         <Col md={6}>
-                        <div className="mt-1 border border-secondary rounded" style={inUseColorStyle}></div>
-                        {acceptedColorCodes.map((acceptedColorCode, i) => {
-                            return(
+                            <p className="mt-1 mb-0 p-0">
                                 <Button
-                                    key = {i}
-                                    className="mt-1 border border-secondary rounded"
-                                    style={getAcceptedColorCodesStyle(i)}
-                                    onClick={()=>setInUseColor(i)}
+                                    className="border border-secondary rounded"
+                                    onClick={() => setIsDisplayMatrix(!isDisplayMatrix)}
                                 >
+                                {isDisplayMatrix ? "行列番号非表示" : "行列番号表示"}({shrotCutKeyDisplayMatrix})
                                 </Button>
-                            )
-                        })}
-                        {acceptedColorCodes.map((acceptedColorCode, i) => {
-                            return(
-                                <ColorValidation
-                                    key = {i}
-                                    i = {i}
-                                    className={"mt-1" + " " + (inUseColor === i ? "" : "d-none")}
-                                    acceptedColorCode={acceptedColorCode}
-                                    setAcceptedColorCode={(colorCode)=>{
-                                        const newColorCodes = acceptedColorCodes.slice()
-                                        newColorCodes[i] = colorCode
-                                        setAcceptedColorCodes(newColorCodes)
-                                    }}
-                                />
-                            )
-                        })}
+                            </p>
+                            <p className="mt-1 mb-0 p-0">
+                                <Button
+                                    className="border border-secondary rounded"
+                                    onClick={() => setCellColors(Array(MAX_CELL_NUM).fill(getInUseColor()))}
+                                >
+                                塗りつぶし({shrotCutKeyFill})
+                                </Button>
+                            </p>
+                            <div className="mt-1 border border-secondary rounded" style={inUseColorStyle}></div>
+                            {acceptedColorCodes.map((acceptedColorCode, i) => {
+                                return(
+                                    <Button
+                                        key = {i}
+                                        className="mt-1 border border-secondary rounded"
+                                        style={getAcceptedColorCodesStyle(i)}
+                                        onClick={()=>setInUseColor(i)}
+                                    >
+                                    </Button>
+                                )
+                            })}
+                            {acceptedColorCodes.map((acceptedColorCode, i) => {
+                                return(
+                                    <ColorValidation
+                                        key = {i}
+                                        i = {i}
+                                        className={"mt-1" + " " + (inUseColor === i ? "" : "d-none")}
+                                        acceptedColorCode={acceptedColorCode}
+                                        setAcceptedColorCode={(colorCode)=>{
+                                            const newColorCodes = acceptedColorCodes.slice()
+                                            newColorCodes[i] = colorCode
+                                            setAcceptedColorCodes(newColorCodes)
+                                        }}
+                                    />
+                                )
+                            })}
                         </Col>
                         <Col md={6}>
                             <label htmlFor="cellMemo">メモ:</label>
@@ -302,7 +354,7 @@ function CellAutomatonAppController(props) {
                                 id="cellMemo"
                                 rows="8"
                                 cols="40"
-                                value={cellMemo === null ? '' : cellMemo}
+                                value={cellMemo}
                                 onChange={(event)=>setCellMemo(event.target.value)}
                             >
                             </textarea>
@@ -314,7 +366,7 @@ function CellAutomatonAppController(props) {
                         // onClick={()=>setCellCalcState(event.target.value)}
                         onClick={()=>setCellCalcState(cellCalcStateIsRun)}
                     >
-                        実行<small>(ctrl+chift+a)</small>
+                        実行<small>({shrotCutKeyRun})</small>
                     </Button>
                     <Button
                         className={"mt-1 mx-1" + " " + (cellCalcState === cellCalcStateIsStop ? "bg-primary border-primary" : "bg-secondary border-secondary")}
@@ -322,25 +374,25 @@ function CellAutomatonAppController(props) {
                         // onClick={event=>setCellCalcState(event.target.value)}
                         onClick={()=>setCellCalcState(cellCalcStateIsStop)}
                     >
-                        停止<small>(ctrl+chift+s)</small>
+                        停止<small>({shrotCutKeyStop})</small>
                     </Button>
                     <Button
                         className={"mt-1 mx-1" + " " + (codeSaveState === codeSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
-                        onClick={()=>setShrotCutShiftCtrlD(prevCount => prevCount + 1)}
+                        onClick={()=>setShrotCutCodeSave(prevCount => prevCount + 1)}
                     >
-                        コード保存<small>(ctrl+chift+d)</small>
+                        コード保存<small>({shrotCutKeyCodeSave})</small>
                     </Button>
                     <Button
                         className={"mt-1 mx-1" + " " + (cellColorsSaveState === cellColorsSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
-                        onClick={()=>setShrotCutShiftCtrlF(prevCount => prevCount + 1)}
+                        onClick={()=>setShrotCutColorsSave(prevCount => prevCount + 1)}
                     >
-                        初期セル色保存<small>(ctrl+chift+f)</small>
+                        初期セル色保存<small>({shrotCutKeyColorsSave})</small>
                     </Button>
                     <Button
                         className={"mt-1 mx-1" + " " + (allSaveState === allSaveStateIsSaved ? "bg-success border-success" : "bg-secondary border-secondary")}
-                        onClick={()=>setShrotCutShiftCtrlZ(prevCount => prevCount + 1)}
+                        onClick={()=>setShrotCutAllSave(prevCount => prevCount + 1)}
                     >
-                        全て保存<small>(ctrl+chift+g)</small>
+                        全て保存<small>({shrotCutKeyAllSave})</small>
                     </Button>
                     <div>
                         <AceEditor

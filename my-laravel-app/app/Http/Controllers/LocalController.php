@@ -37,11 +37,11 @@ class LocalController extends Controller
         Storage::delete(Auth::user()->name . '/code/code.py');
 
         //chr(10)は改行文字
-        $cellCodeWithAddCellColors = 'input_colors = ' . $request->cell_colors . chr(10) . $localCell->cell_code;
+        $cellCodeWithAddCellColors = 'input_colors = ' . strtolower($request->cell_colors) . chr(10) . $localCell->cell_code;
         // log::debug($cellCodeWithAddCellColors);
         Storage::put(Auth::user()->name . '/code/code.py', $cellCodeWithAddCellColors);
 
-log::debug($request->cell_colors);
+        // log::debug(strtolower($request->cell_colors));
         // $dockerRunCmd =
         //     'sudo docker create -i '.
         //     '--net none '.
@@ -112,7 +112,7 @@ log::debug($request->cell_colors);
         );
 
         // log::debug($codeExeCmd);
-        log::debug($codeExeCmdOutput);
+        // log::debug($codeExeCmdOutput);
         // log::debug($codeExeCmdStatus);
 
         $tmpFormatedCodeExeCmdOutput_1 = str_replace('\'', '', $codeExeCmdOutput);
